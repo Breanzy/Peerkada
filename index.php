@@ -195,7 +195,7 @@
                                                 <td><?php echo $row['LOGDATE'];?></td>
                                                 <td><?php echo ($row['TIMEIN'] != null) ? date('h:i:s A', strtotime($row['TIMEIN'])) : null;?></td>
                                                 <td><?php echo ($row['TIMEOUT'] != null) ? date('h:i:s A', strtotime($row['TIMEOUT'])) : null;?></td>
-                                                <td><?php echo ($row['TIMEOUT'] != null) ? gmdate("H \\h\\r/\\s, i \\m\\i\\n/\\s, s \\s\\e\\c/\\s", (int)$row['TIMEOUT'] - (int)$row['TIMEIN']): null ;?></td>
+                                                <td><?php echo ($row['TIMEOUT'] != null) ? gmdate("H \\h\\r/\\s, i \\m\\i\\n/\\s, s \\s\\e\\c/\\s", $row['TOTALTIME']): null ;?></td>
                                             </tr>
                                         <?php
                                         }
