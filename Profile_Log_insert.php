@@ -47,7 +47,7 @@
             $writer = new PngWriter();
             $result = $writer->write($qr_code);
             
-            $result->saveToFile(__DIR__.'/QrCodes/' .$SchoolID. '.png');
+            $result->saveToFile(__DIR__.'/QrCodes/' .$Name. '.png');
 
             
             header('Content-Description: File Transfer');
