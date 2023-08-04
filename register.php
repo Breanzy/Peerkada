@@ -109,14 +109,14 @@
                     </div> -->
                 </nav>
             </div>
-            <div id="layoutSidenav_content">
+            <div id="layoutSidenav_content" style="background: linear-gradient(0deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.3)), url(backgroundd.jpg); background-repeat: no-reapeat; background-attachment: fixed; background-size: cover;">
                 <div id="layoutAuthentication">
                     <div id="layoutAuthentication_content">
                         <main>
                             <div class="container">
                                 <div class="row justify-content-center">
                                     <div class="col-lg-8 pt-4">
-                                        <div class="card">
+                                        <div class="card rounded-3">
                                             <div class="card-header">
                                                 <strong>PROFILE</strong> Creation Form
                                             </div>
@@ -211,15 +211,15 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="row form-group">
+                                                    <!-- <div class="row form-group">
                                                         <div class="col-12 col-md">
                                                             <input type="file" id="file-input" name="file-input" class="form-control-file">
                                                             <small class="help-block form-text">Please Select your Profile Picture</small>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
 
-                                                    <div class="card-footer">
-                                                        <button type="submit" class="btn btn-primary btn-sm">
+                                                    <div class="card-footer rounded-3">
+                                                        <button type="submit" class="btn btn-sm btn-primary">
                                                             <i class="fa fa-dot-circle-o"></i> Submit
                                                         </button>
                                                     </div>
