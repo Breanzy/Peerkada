@@ -31,7 +31,7 @@
 
     
     </head>
-    <body class="sb-nav-fixed">
+    <body class="sb-nav-fixed" style="background: linear-gradient(0deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.3)), url(backgroundd.jpg); background-repeat: no-reapeat; background-attachment: fixed; background-size: cover;">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-3" href="index.php">PEERKADA</a>
@@ -109,7 +109,7 @@
                     </div> -->
                 </nav>
             </div>
-            <div id="layoutSidenav_content" style="background: linear-gradient(0deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.3)), url(backgroundd.jpg); background-repeat: no-reapeat; background-attachment: fixed; background-size: cover;">
+            <div id="layoutSidenav_content" >
                 <div id="layoutAuthentication">
                     <div id="layoutAuthentication_content">
                         <main>
