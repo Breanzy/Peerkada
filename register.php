@@ -135,12 +135,13 @@
 
                                                         <div class="col-md-2">
                                                             <select name="Title" id="select" class="form-control" required>
-                                                                <option value="" disabled selected>SPF Title</option>
-                                                                <option value="Assistant">Assistant</option>
-                                                                <option value="Junior">Junior</option>
-                                                                <option value="Senior">Senior</option>
+                                                                <option value="" disabled selected>Title</option>
+                                                                <option value="Assistant">SPF Assistant</option>
+                                                                <option value="Junior">SPF Junior</option>
+                                                                <option value="Senior">SPF Senior</option>
+                                                                <option value="LAV">LAV Associate</option>
                                                             </select>
-                                                            <small class="help-block form-text">Select Your SPF Title</small>
+                                                            <small class="help-block form-text">Select Your Title</small>
                                                         </div>
                                                     </div> 
 
