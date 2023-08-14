@@ -142,7 +142,7 @@
                                                             </select>
                                                             <small class="help-block form-text">Select Your SPF Title</small>
                                                         </div>
-                                                    </div>
+                                                    </div> 
 
                                                     <div class="row form-group my-2">
                                                         <div class="col-md-4">
@@ -161,14 +161,14 @@
                                                         
                                                         <div class="col-md-3">
                                                             <select name="SchoolYr" id="select" class="form-control" required>
-                                                                <option value="" disabled selected>School Year</option>
+                                                                <option value="" disabled selected>Year Level</option>
                                                                 <option value="1">1</option>
                                                                 <option value="2">2</option>
                                                                 <option value="3">3</option>
                                                                 <option value="4">4</option>
                                                                 <option value="5">Other</option>
                                                             </select>
-                                                            <small class="help-block form-text">Select School Year</small>
+                                                            <small class="help-block form-text">Select Year Level</small>
                                                         </div>
 
                                                         <div class="col-md-5">
