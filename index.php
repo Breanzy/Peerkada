@@ -41,6 +41,7 @@
         <script src= https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js></script>
         <script src="js/listhingy.js"></script>
     </head>
+
     <body class="sb-nav-fixed">
         
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -121,6 +122,8 @@
                     </div> -->
                 </nav>
             </div>
+
+            <!-- THE WHOLE CONTENT -->
             <div id="layoutSidenav_content">
                 <main>
                     <div class = "container-fluid px-4">
