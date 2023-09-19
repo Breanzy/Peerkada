@@ -117,24 +117,26 @@
                                 <div class="row justify-content-center">
                                     <div class="col-lg-8 pt-4">
                                         <div class="card rounded-3">
+
                                             <div class="card-header">
                                                 <strong>PROFILE</strong> Creation Form
                                             </div>
+
                                             <div class="card-body card-block text-left">
                                                 <form action="Profile_Log_insert.php" method="post" enctype="multipart/form-data" class="form-horizontal">
                                                     <div class="row form-group my-2">
                                                         <div class="col-md-7">
-                                                            <input type="text" id="text-input" name="Name" placeholder="Last Name, First Name" class="form-control" required>
+                                                            <input type="text" name="Name" placeholder="Last Name, First Name" class="form-control" required>
                                                             <small class="help-block form-text">Please enter your name</small>
                                                         </div>
 
                                                         <div class="col-md-3">
-                                                            <input type="number" id="text-input" name="SchoolID" placeholder="20191387" class="form-control" required>
+                                                            <input type="number" name="SchoolID" placeholder="20191387" class="form-control" required>
                                                             <small class="help-block form-text">Please enter ID Number</small>
                                                         </div>
 
                                                         <div class="col-md-2">
-                                                            <select name="Title" id="select" class="form-control" required>
+                                                            <select name="Title" class="form-control" required>
                                                                 <option value="" disabled selected>Title</option>
                                                                 <option value="Assistant">SPF Assistant</option>
                                                                 <option value="Junior">SPF Junior</option>

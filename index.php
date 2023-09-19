@@ -7,9 +7,6 @@
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        font-family: 'Roboto Slab', serif;
         <title>Dashboard - SB Admin</title>
 
         <!-- font style -->
@@ -46,9 +43,28 @@
         
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand text-center" href="index.php">PEERKADA</a>
+            <a class="navbar-brand m-0 fw-bold fs-3 text-center" href="index.php">PEERKADA</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+
+            <!-- char ra ni para nice ang layout -->
+                <!-- <div class="input-group"></div> -->
+
+            <p class="text-white text-end m-0 p-2 fw-lighter">Logged in as: <br> <?php echo $_SESSION["name"];?> </p>
+            <a class="text-white text-center m-0 p-2 fw-bold" href="login.php">LOG OUT</a>
+
+            <!-- Navbar-->
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4 end-0 float-right">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#!">Settings</a></li>
+                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="#!">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
         </nav>
 
         <div id="layoutSidenav">
@@ -126,10 +142,10 @@
             <!-- THE WHOLE CONTENT -->
             <div id="layoutSidenav_content">
                 <main>
-                    <div class = "container-fluid px-4">
+                    <div class = "container-fluid p-4">
                         <div class = "row">
                             
-                            <div class="col-xl-5">
+                            <div class="col-xl-5 col-lg-6 col-md-10">
                                 <div class="card mb-4">
                                     <div class="card-header">
                                         <i class="fa fa-camera " aria-hidden="true"></i>
@@ -142,26 +158,27 @@
                                 </div>
                             </div>
    
-                            <div class = "col-xl-7" >
+                            <div class="col">
                             <?php
-                            if(isset($_SESSION['error'])){
-                                echo "
-                                <div class='position-absolute top-0 end-0 alert alert-danger alert-dismissible fadee' style='background:red;color:#fff'>
-                                    <h4><i class='icon fa fa-warning fadee'></i> Error!</h4>
-                                    ".$_SESSION['error']."
-                                </div>
-                                ";
-                                unset($_SESSION['error']);
-                            }
-                            if(isset($_SESSION['success'])){
-                                echo "
-                                <div class='position-absolute top-0 end-0 alert alert-success alert-dismissible fadee' style='background:green;color:#fff'>
-                                    <h4><i class='icon fa fa-check'></i> Success!</h4>
-                                    ".$_SESSION['success']."
-                                </div>
-                                ";
-                                unset($_SESSION['success']);
-                            }?>
+                                if(isset($_SESSION['error'])){
+                                    echo "
+                                    <div class='position-absolute top-0 end-0 alert alert-danger alert-dismissible fadee' style='background:red;color:#fff'>
+                                        <h4><i class='icon fa fa-warning fadee'></i> Error!</h4>
+                                        ".$_SESSION['error']."
+                                    </div>
+                                    ";
+                                    unset($_SESSION['error']);
+                                }
+                                if(isset($_SESSION['success'])){
+                                    echo "
+                                    <div class='position-absolute top-0 end-0 alert alert-success alert-dismissible fadee' style='background:green;color:#fff'>
+                                        <h4><i class='icon fa fa-check'></i> Success!</h4>
+                                        ".$_SESSION['success']."
+                                    </div>
+                                    ";
+                                    unset($_SESSION['success']);
+                                }?>
+
                                 <h1>Recent Logs</h1>
                                 <table class="table table-hover table-bordered table-striped rounded-3 overflow-hidden">
                                     <thead class="table-dark">
@@ -216,7 +233,7 @@
 
                     </div>
 
-                    <div class="container-fluid px-4">
+                    <div class="container-fluid p-4">
                         <h1 class="mt-4">Dashboard</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active">Dashboard</li>

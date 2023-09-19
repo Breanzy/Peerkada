@@ -1,7 +1,24 @@
-<?php
-$test = 3;
-$wew = (int)'52' - (int)'45';
-$test += $wew;
+<!DOCTYPE html>
 
-echo $test;
-?>
+<html>
+
+    <head>
+        <link href="css/styles.css" rel="stylesheet">
+
+    </head>
+
+
+    <body>
+        
+        <div class="container">
+            <div class="row justify-content-around ">
+                <div class="col-2">test</div>
+                <div class="col-2">test</div>
+                <div class="col-2">test</div>
+       
+
+            </div>
+        </div>
+
+    </body>
+</html>

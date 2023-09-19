@@ -10,7 +10,7 @@
 
 
 <body>
-    <span>
+    <!-- <span>
         <p class="text-center display-1 text-warning bg-dark rounded-4 table-hover">Hello World!</p>
     </span>
 
@@ -29,6 +29,7 @@
         </tr>
         <tr class="
         ">
+        
             <td>July</td>
             <td>Dooley</td>
             <td>july@example.com</td>
@@ -36,5 +37,29 @@
     </table>
 
     <img src="icon.ico">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-4" style="color:blue;">test</div>
+            <div class="col-2" style="color:red;">test</div>
+            <div class="col-3" style="color:orange;">test</div>
+            <div class="col-3" style="color:green;">test</div>
+        </div>
+
+        <div class="row">
+            <div class="col-4" style="color:blue;">test</div>
+            <div class="col-2" style="color:red;">test</div>
+            <div class="col-3" style="color:orange;">test</div>
+            <div class="col-3" style="color:green;">test</div>
+        </div>
+
+        <div class="row">
+            <div class="col-4" style="color:blue;">test</div>
+            <div class="col-2" style="color:red;">test</div>
+            <div class="col-3" style="color:orange;">test</div>
+            <div class="col-3" style="color:green;">test</div>
+        </div>
+    </div> -->
+
 
 </body>

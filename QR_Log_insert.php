@@ -67,18 +67,13 @@
             } else {
                 $_SESSION['error'] = $conn->error;
             }
-
-            
-            header("location: index.php");
-            $conn->close();
         }
-
     }
 
     else{
         $_SESSION['error'] = 'No Such Member ID exist!!';
     }
-
+    
     header("location: index.php");
     $conn->close();
 ?>

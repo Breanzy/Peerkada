@@ -49,13 +49,10 @@
             
             $result->saveToFile(__DIR__.'/QrCodes/' .$Name. '.png');
 
-            
             header('Content-Description: File Transfer');
             header('Content-Type: '.$result->getMimeType());
             header('Content-Disposition: /image');
 
-
-            
             $_SESSION['success'] = "Successfully Registered New Profile!";
         } else {
             $_SESSION['error'] = $conn->error;
