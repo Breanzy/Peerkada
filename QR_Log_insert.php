@@ -36,7 +36,7 @@
             $sql = "UPDATE table_attendance SET TIMEOUT = '$time', STATUS='1', TOTALTIME = '$sessionTime' WHERE STUDENTID='$text' AND LOGDATE='$date' AND STATUS='0'";
             $query = $conn->query($sql);
             
-            $month = date('m-Y', strtotime($date));
+            $month = date('m-Y');
             $sql = "SELECT * FROM table_dutytotal WHERE STUDENTID =  $text AND LOGDATE = '$month'";
             $query = $conn->query($sql);
 

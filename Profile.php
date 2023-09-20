@@ -134,27 +134,34 @@
                                         $Address = $row['ADDRESS'];
                                         $Birth = $row['BIRTH'];
                                         $Sex = $row['SEX'];
+                                        $DutyHour = $row['DUTYHOUR'];
                                     }
 
                                     // GET MONTHLY DUTY TIME RENDERED
                                     // P.S I think this code can also be optimized somehow with the total duty time, idk.
                                     $MonthDate = date('m-Y');
-                                    $sql = "SELECT * FROM table_dutytotal WHERE PROFILE_ID = '$SchoolID' AND LOGDATE = '$MonthDate'";
+                                    $sql = "SELECT * FROM table_dutytotal WHERE STUDENTID = '$SchoolID' AND LOGDATE = '$MonthDate'";
                                     $query = $conn->query($sql);
                                     $MonthlyDutyTime = 0;
 
                                     while ($row = $query->fetch_assoc()){
-                                        $MonthlyDutyTime = $row['TOTAL_DUTY_TIME'];
+                                        $MonthlyDutyTime = (int)$row['TOTAL_DUTY_TIME'];
                                     }
 
                                     // GET TOTAL DUTY TIME RENDERED
-                                    $sql = "SELECT * FROM table_dutytotal WHERE PROFILE_ID = '$SchoolID'";
+                                    $sql = "SELECT * FROM table_dutytotal WHERE STUDENTID = '$SchoolID'";
                                     $query = $conn->query($sql);
                                     $TotalDutyTime = 0;
 
                                     while ($row = $query->fetch_assoc()){
-                                        $TotalDutyTime += $row['TOTAL_DUTY_TIME'];
+                                        $TotalDutyTime += (int)$row['TOTAL_DUTY_TIME'];
                                     }
+                                    
+
+                                    // CONVERT SECONDS TO HOURS
+                                    $TotalDutyTime /= 3600;
+                                    $MonthlyDutyTime /= 3600;
+
                                 ?>
               
                                 <h3 class="fw-bold fs-1"><?php echo $Name; ?></h3>
@@ -178,6 +185,7 @@
                                         <div class="media">
                                             <label class="fw-bold">Phone</label>
                                             <p><?php echo $Number; ?></p>
+
                                         </div>
                                     </div>
 
@@ -204,26 +212,43 @@
                             </div>
                         </div>
 
-                        <div class="row justify-content-around">
-                            <div class="col-md-5 shadow rounded-3 p-3 m-4">
-                                <div class="count-data text-center hover-overlay">
-                                    <h6 class="count h2" data-to="500" data-speed="500">500</h6>
-                                    <p class="m-0px font-w-600">D</p>
-                                    <div class="progress mb-2">
-                                        <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" style="width: 25%"
-                                        aria-valuemin="0" aria-valuemax="100">25%</div>
-                                    </div>
+                        <div class="row justify-content-evenly">
 
-                                    <div class="progress mb-2">
-											<div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" role="progressbar" style="width: 75%"
-											 aria-valuemin="0" aria-valuemax="100">75%</div>
-                                    </div>
+                            <div class="col-xl-3 col-md-10 shadow rounded-3 p-3 alert">
+                                <div class="count-data text-center">
+                                    <h6 class="fw-bold fs-2"> <?php echo $DutyHour/4; ?> Hours</h6>
+                                    <p class="m-0px font-w-600">Required Duty Per Week</p>
                                 </div>
                             </div>
-                            <div class="col-md-5 shadow rounded-3 p-3 m-4">
+
+
+                            <!-- Krazy garbage code, but it works. I hate it. It is for changing card color depending on value -->
+                            <?php 
+                                $MonthlyPercent = ($MonthlyDutyTime / $DutyHour)*100;
+
+                                if($MonthlyPercent < 100/3){$CardColor = "danger";}
+                                else if($MonthlyPercent > 200/3){$CardColor = "success";} 
+                                else{$CardColor = "warning";} 
+                            ?>
+
+                            <div class="col-xl-3 col-md-10 shadow alert alert-<?php echo $CardColor;?> rounded-3 p-3">
+                                <div class="count-data text-center hover-overlay">
+                                    <h6 class="fw-bold fs-2"> <?php echo $MonthlyDutyTime; ?> / <?php echo $DutyHour; ?> </h6>
+                                    <p class="m-0px font-w-600">Monthly Duty Hours Rendered</p>
+
+
+                                    <div class="progress mb-2">
+                                        <div class="progress-bar bg-<?php echo $CardColor; ?> progress-bar-striped progress-bar-animated" 
+                                        role="progressbar" style="width: <?php echo $MonthlyPercent; ?>%" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="text-white col-xl-3 col-md-10 shadow rounded-3 p-3 alert bg-dark">
                                 <div class="count-data text-center">
-                                    <h6 class="count h2" data-to="150" data-speed="150">150</h6>
-                                    <p class="m-0px font-w-600">Project Completed</p>
+                                    <h6 class="fw-bold fs-2"> <?php echo $TotalDutyTime; ?> </h6>
+                                    <p class="m-0px font-w-600">Overall Duty Hours Rendered</p>
                                 </div>
                             </div>
                         </div>

@@ -27,6 +27,17 @@
     $Birth = $_POST['Birth'];
     $Sex = $_POST['Sex'];
 
+    // Calculates total duty time per month according to title. I think this function could be optimized.
+    if($Title == 'Assistant'){
+        $DutyHour = 16;
+    } else if($Title == 'Junior'){
+        $DutyHour = 12;
+    } else if($Title == 'Senior'){
+        $DutyHour = 10;
+    } else if($Title == 'LAV'){
+        $DutyHour = 20;
+    } else { $DutyHour = 0; }
+
     $sql = "SELECT * FROM members_profile WHERE ID_NUMBER = '$SchoolID'";
     if($conn->query($sql)->num_rows>0)
     {
@@ -38,7 +49,7 @@
 
     }else {
         // Proceed with function
-        $sql = "INSERT INTO members_profile(NAME, ID_NUMBER, TITLE, COLLEGE, SCHOOL_YR, COURSE, EMAIL_ADD, PHONE_NUM, ADDRESS, BIRTH, SEX) VALUES('$Name', '$SchoolID', '$Title', '$College', '$SchoolYr', '$Course', '$Email', '$Number', '$Address', '$Birth', '$Sex')";
+        $sql = "INSERT INTO members_profile(NAME, ID_NUMBER, TITLE, COLLEGE, SCHOOL_YR, COURSE, EMAIL_ADD, PHONE_NUM, ADDRESS, BIRTH, SEX, DUTYHOUR) VALUES('$Name', '$SchoolID', '$Title', '$College', '$SchoolYr', '$Course', '$Email', '$Number', '$Address', '$Birth', '$Sex', '$DutyHour')";
 
         if($conn->query($sql) === TRUE){
 
