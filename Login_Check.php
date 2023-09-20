@@ -6,6 +6,8 @@
     $username = "root";
     $password = "";
     $dbname = "qrcode";
+    $conn = new mysqli($server, $username, $password, $dbname) or die("Unable to connect");
+
 
     $ID_Number = $_POST['ID_Number'];
     $User_Password = $_POST['User_Password'];
@@ -22,7 +24,7 @@
         $query = $conn->query($sql);
 
         if($query->num_rows>0){
-            // SETS SESSION NAME TO THE NAME OF THE OWNER OF ID NUMBER AND GOES TO MAIN DASHBOARD
+            // SETS SESSION 'name' TO THE ID NUMBER OF USER AND GOES TO MAIN DASHBOARD
             $_SESSION['name'] = $ID_Number;
             header("location: index.php");
 

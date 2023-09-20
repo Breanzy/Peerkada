@@ -5,7 +5,6 @@
     $username = "root";
     $password = "";
     $dbname = "qrcode";
-
     $conn = new mysqli($server, $username, $password, $dbname) or die("Unable to connect");
 
 

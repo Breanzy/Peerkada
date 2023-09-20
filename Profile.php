@@ -1,9 +1,8 @@
 <?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+    <head>    
 
-    
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -18,17 +17,10 @@
         <!-- para sa mga icons -->
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 
-
-
-
-
-
-
-
-        
-
     </head>
+
     <body class="sb-nav-fixed">
+
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
             <a class="navbar-brand text-center" href="index.php">PEERKADA</a>
@@ -108,64 +100,115 @@
             </div>
             <div id="layoutSidenav_content">
                 <main>
-                    <div class = "container-fluid px-3">
+                    <div class = "container-fluid p-5">
                         <div class= "row">
-                            <div class="col-md-4 p-2">
+                            <div class="col-xl-4 p-2">
                                 <img src="testt.jpg" class="img-fluid rounded-circle mx-auto d-block" alt="Image" style="height: 50%;">
                             </div>
      
-                            <div class="col-md-6">
+                            <div class="col-xl-8 col-md-12 center-align text-lg-start text-center">
+
+                                <?php
+                                    // INITIALIZING FOR PROFILE INFORMATION
+                                    $server = "localhost";
+                                    $username = "root";
+                                    $password = "";
+                                    $dbname = "qrcode";
+                                    $conn = new mysqli($server, $username, $password, $dbname) or die("Unable to connect");
+
+                                    // SCHOOL ID INITIALIZED ALREADY THROUGH "name" SESSION
+                                    $SchoolID = $_SESSION['name'];
+
+                                    $sql = "SELECT * FROM members_profile WHERE ID_NUMBER = '$SchoolID'";
+                                    $query = $conn->query($sql);
+
+                                    while ($row = $query->fetch_assoc()){
+                                    
+                                        $Name = $row['NAME'];
+                                        $Title = $row['TITLE'];
+                                        $College = $row['COLLEGE'];
+                                        $SchoolYr = $row['SCHOOL_YR'];
+                                        $Course = $row['COURSE'];
+                                        $Email = $row['EMAIL_ADD'];
+                                        $Number = $row['PHONE_NUM'];
+                                        $Address = $row['ADDRESS'];
+                                        $Birth = $row['BIRTH'];
+                                        $Sex = $row['SEX'];
+                                    }
+
+                                    // GET MONTHLY DUTY TIME RENDERED
+                                    // P.S I think this code can also be optimized somehow with the total duty time, idk.
+                                    $MonthDate = date('m-Y');
+                                    $sql = "SELECT * FROM table_dutytotal WHERE PROFILE_ID = '$SchoolID' AND LOGDATE = '$MonthDate'";
+                                    $query = $conn->query($sql);
+                                    $MonthlyDutyTime = 0;
+
+                                    while ($row = $query->fetch_assoc()){
+                                        $MonthlyDutyTime = $row['TOTAL_DUTY_TIME'];
+                                    }
+
+                                    // GET TOTAL DUTY TIME RENDERED
+                                    $sql = "SELECT * FROM table_dutytotal WHERE PROFILE_ID = '$SchoolID'";
+                                    $query = $conn->query($sql);
+                                    $TotalDutyTime = 0;
+
+                                    while ($row = $query->fetch_assoc()){
+                                        $TotalDutyTime += $row['TOTAL_DUTY_TIME'];
+                                    }
+                                ?>
               
-                                <h3>BREANZY</h3>
-                                <h6 class="theme-color lead">Senior SPF</h6>
+                                <h3 class="fw-bold fs-1"><?php echo $Name; ?></h3>
+                                <h6 class="theme-color lead"><?php echo $Title; ?></h6>
                                 <br>
                                 <div class="row about-list">
-                                    <div class="col-md-6">
+                                    <div class="col-sm-6 col-xs-12">
                                         <div class="media">
-                                            <label>Birthday</label>
-                                            <p>4th april 1998</p>
+                                            <label class="fw-bold">Birthday</label>
+                                            <p><?php echo $Birth; ?></p>
                                         </div>
                                         <div class="media">
-                                            <label>Age</label>
-                                            <p>22 Yr</p>
+                                            <label class="fw-bold">Address</label>
+                                            <p><?php echo $Address; ?></p>
+                                        </div>
+
+                                        <div class="media">
+                                            <label class="fw-bold">E-mail</label>
+                                            <p><?php echo $Email; ?></p>
                                         </div>
                                         <div class="media">
-                                            <label>Residence</label>
-                                            <p>Canada</p>
-                                        </div>
-                                        <div class="media">
-                                            <label>Address</label>
-                                            <p>California, USA</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="media">
-                                            <label>E-mail</label>
-                                            <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="462f2820290622292b272f286825292b">[email&#160;protected]</a></p>
-                                        </div>
-                                        <div class="media">
-                                            <label>Phone</label>
-                                            <p>820-885-3321</p>
-                                        </div>
-                                        <div class="media">
-                                            <label>Skype</label>
-                                            <p>skype.0404</p>
-                                        </div>
-                                        <div class="media">
-                                            <label>Freelance</label>
-                                            <p>Available</p>
+                                            <label class="fw-bold">Phone</label>
+                                            <p><?php echo $Number; ?></p>
                                         </div>
                                     </div>
+
+                                    <div class="col-sm-6 col-xs-12">
+                                        <div class="media">
+                                            <label class="fw-bold">School ID</label>
+                                            <p><?php echo $SchoolID; ?></p>
+                                        </div>
+                                        <div class="media">
+                                            <label class="fw-bold">College</label>
+                                            <p><?php echo $College; ?></p>
+                                        </div>
+                                        <div class="media">
+                                            <label class="fw-bold">Course</label>
+                                            <p><?php echo $Course; ?></p>
+                                        </div>
+                                        <div class="media">
+                                            <label class="fw-bold">School Year</label>
+                                            <p><?php echo $SchoolYr; ?></p>
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
 
-
-                        <div class="row">
-                            <div class="col-md-3 shadow rounded-3 p-3 m-4">
+                        <div class="row justify-content-around">
+                            <div class="col-md-5 shadow rounded-3 p-3 m-4">
                                 <div class="count-data text-center hover-overlay">
                                     <h6 class="count h2" data-to="500" data-speed="500">500</h6>
-                                    <p class="m-0px font-w-600">Happy Clients</p>
+                                    <p class="m-0px font-w-600">D</p>
                                     <div class="progress mb-2">
                                         <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" style="width: 25%"
                                         aria-valuemin="0" aria-valuemax="100">25%</div>
@@ -177,16 +220,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3 shadow rounded-3 p-3 m-4">
+                            <div class="col-md-5 shadow rounded-3 p-3 m-4">
                                 <div class="count-data text-center">
                                     <h6 class="count h2" data-to="150" data-speed="150">150</h6>
                                     <p class="m-0px font-w-600">Project Completed</p>
-                                </div>
-                            </div>
-                            <div class="col-md-3 shadow rounded-3 p-3 m-4">
-                                <div class="count-data text-center">
-                                    <h6 class="count h2" data-to="850" data-speed="850">850</h6>
-                                    <p class="m-0px font-w-600">Photo Capture</p>
                                 </div>
                             </div>
                         </div>
@@ -207,18 +244,10 @@
 
                                     <tbody>
                                         <?php
-                                        $server = "localhost";
-                                        $username="root";
-                                        $password="";
-                                        $dbname="qrcode";
-                                        
+
                                         date_default_timezone_set("Asia/Singapore");
                                         $DATE = date('d-m-Y');
 
-                                        $conn = new mysqli($server, $username, $password, $dbname);
-                                        if($conn->connect_error){
-                                            die("Connection failed" .$conn->connect_error);
-                                        }
                                         $sql ="SELECT * FROM table_attendance WHERE LOGDATE = '$DATE' ORDER BY ATTENDANCE_ID DESC limit 6";
                                         $query = $conn->query($sql);
                                         

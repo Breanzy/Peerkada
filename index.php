@@ -3,7 +3,6 @@
 <html lang="en">
     <head>
 
-    
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -121,11 +120,11 @@
                                     </div>
                                 </nav>
                             </div> -->
-                            <!-- <div class="sb-sidenav-menu-heading">Addons</div>
-                            <a class="nav-link" href="charts.html">
+                            <div class="sb-sidenav-menu-heading">Addons</div>
+                            <a class="nav-link" href="Profile.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                                Charts
-                            </a> -->
+                                Profile
+                            </a>
                             <a class="nav-link" href="register.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Create New Profile
@@ -197,14 +196,12 @@
                                         $username="root";
                                         $password="";
                                         $dbname="qrcode";
+                                        $conn = new mysqli($server, $username, $password, $dbname) or die("Unable to connect");
+
                                         
                                         date_default_timezone_set("Asia/Singapore");
                                         $DATE = date('d-m-Y');
 
-                                        $conn = new mysqli($server, $username, $password, $dbname);
-                                        if($conn->connect_error){
-                                            die("Connection failed" .$conn->connect_error);
-                                        }
                                         $sql ="SELECT * FROM table_attendance WHERE LOGDATE = '$DATE' ORDER BY ATTENDANCE_ID DESC limit 6";
                                         $query = $conn->query($sql);
                                         

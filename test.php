@@ -62,4 +62,8 @@
     </div> -->
 
 
+<?php $test = "test"; ?>
+
+<?php echo $test; ?>
+
 </body>

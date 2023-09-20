@@ -6,9 +6,9 @@
     $username = "root";
     $password = "";
     $dbname = "qrcode";
+    $conn = new mysqli($server, $username, $password, $dbname) or die("Unable to connect");
 
     $text = $_POST['text'];
-    $conn = new mysqli($server, $username, $password, $dbname) or die("Unable to connect");
 
     //CHECKS IF THE INPUT ID NUMBER EXISTS IN THE PROFILE DB
     $sql = "SELECT * FROM members_profile WHERE ID_NUMBER = '$text'";
