@@ -127,12 +127,12 @@
                                                     <div class="row form-group my-2">
                                                         <div class="col-md-7">
                                                             <input type="text" name="Name" placeholder="Last Name, First Name" class="form-control" required>
-                                                            <small class="help-block form-text">Please enter your name</small>
+                                                            <small class="help-block form-text">Please enter your Name</small>
                                                         </div>
 
                                                         <div class="col-md-3">
                                                             <input type="number" name="SchoolID" placeholder="20191387" class="form-control" required>
-                                                            <small class="help-block form-text">Please enter ID Number</small>
+                                                            <small class="help-block form-text">Enter ID Number</small>
                                                         </div>
 
                                                         <div class="col-md-2">
@@ -143,13 +143,13 @@
                                                                 <option value="Senior">SPF Senior</option>
                                                                 <option value="LAV">LAV Associate</option>
                                                             </select>
-                                                            <small class="help-block form-text">Select Your Title</small>
+                                                            <small class="help-block form-text">Select Org Title</small>
                                                         </div>
                                                     </div> 
 
                                                     <div class="row form-group my-2">
                                                         <div class="col-md-4">
-                                                            <select name="College" id="select" class="form-control" required>
+                                                            <select name="College" class="form-control" required>
                                                                 <option value="" disabled selected>Select College</option>
                                                                 <option value="COE">COE</option>
                                                                 <option value="CHS">CHS</option>
@@ -159,11 +159,11 @@
                                                                 <option value="CSM">CSM</option>
                                                                 <option value="CASS">CASS</option>
                                                             </select>
-                                                            <small class="help-block form-text">Select Your College</small>
+                                                            <small class="help-block form-text">Select College</small>
                                                         </div>
                                                         
                                                         <div class="col-md-3">
-                                                            <select name="SchoolYr" id="select" class="form-control" required>
+                                                            <select name="SchoolYr" class="form-control" required>
                                                                 <option value="" disabled selected>Year Level</option>
                                                                 <option value="1">1</option>
                                                                 <option value="2">2</option>
@@ -175,18 +175,18 @@
                                                         </div>
 
                                                         <div class="col-md-5">
-                                                            <input type="text" id="text-input" name="Course" placeholder="BS (Course)" class="form-control" required>
-                                                            <small class="help-block form-text">Please Enter Your Course</small>
+                                                            <input type="text" name="Course" placeholder="BS (Course)" class="form-control" required>
+                                                            <small class="help-block form-text">Enter Course</small>
                                                         </div>
                                                     </div>
 
                                                     <div class="row form-group my-2">
                                                         <div class="col-md-6">
-                                                            <input type="email" id="email-input" name="Email" placeholder="Enter Email" class="form-control" required>
+                                                            <input type="email" name="Email" placeholder="Enter Email" class="form-control" required>
                                                             <small class="help-block form-text">Please enter your email address</small>
                                                         </div>
                                                         <div class="col-md-6">
-                                                            <input type="tel" id="number-input" name="Number" placeholder="Enter Phone #" class="form-control" required>
+                                                            <input type="tel" name="Number" placeholder="Enter Phone #" class="form-control" required>
                                                             <small class="help-block form-text">Please enter your phone number</small>
                                                         </div>
 
@@ -195,31 +195,36 @@
 
                                                     <div class="row form-group my-2">
                                                         <div class="col-md-7">
-                                                            <input type="text" id="email-input" name="Address" placeholder="Home Address" class="form-control" required>
+                                                            <input type="text" name="Address" placeholder="Home Address" class="form-control" required>
                                                             <small class="help-block form-text">Please enter your current home address</small>
                                                         </div>
 
                                                         <div class="col-md-3">
-                                                            <input type="date" id="email-input" name="Birth" placeholder="Date of Birth" class="form-control" required>
-                                                            <small class="help-block form-text">Please enter your Date of Birth</small>
+                                                            <input type="date" name="Birth" placeholder="Date of Birth" class="form-control" required>
+                                                            <small class="help-block form-text">Enter Date of Birth</small>
                                                         </div>
 
                                                         <div class="col-md-2">
-                                                            <select name="Sex" id="select" class="form-control" required>
+                                                            <select name="Sex" class="form-control" required>
                                                                 <option value="" disabled selected>Sex</option>
                                                                 <option value="Male">Male</option>
                                                                 <option value="Female">Female</option>
                                                             </select>
-                                                            <small class="help-block form-text">Select Biological Sex</small>
+                                                            <small class="help-block form-text">Select Sex</small>
                                                         </div>
                                                     </div>
 
-                                                    <!-- <div class="row form-group">
-                                                        <div class="col-12 col-md">
-                                                            <input type="file" id="file-input" name="file-input" class="form-control-file">
+                                                    <div class="row form-group">
+                                                        <div class="col-md-6">
+                                                            <input type="password" name="Password" class="form-control" required>
+                                                            <small class="help-block form-text">Please Input Your Password</small>
+                                                        </div>
+
+                                                        <div class="col-md-6">
+                                                            <input type="file" name="Picture" class="form-control-file">
                                                             <small class="help-block form-text">Please Select your Profile Picture</small>
                                                         </div>
-                                                    </div> -->
+                                                    </div>
 
                                                     <div class="card-footer rounded-3">
                                                         <button type="submit" class="btn btn-sm btn-primary">

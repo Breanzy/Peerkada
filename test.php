@@ -68,31 +68,20 @@
     $dbname = "qrcode";
     $conn = new mysqli($server, $username, $password, $dbname) or die("Unable to connect");
 
-    $test1 = 0;
-    $test1 += (int)'1';
-    $test1 += "1";
-
-    $test2 = 3.5;
-
-    $test1 /= ($test2)*100;
-
-    echo $test2;
-
-
     // $sql = "UPDATE members_profile SET DUTYHOUR = 12 WHERE TITLE = 'Junior'";
     // $sql = "SELECT * FROM table_dutytotal WHERE STUDENTID = '$SchoolID'";
     // $query = $conn->query($sql);
     // $TotalDutyTime = 0;
 
-    // $sql = "INSERT INTO table_dutytotal(STUDENTID, LOGDATE, TOTAL_DUTY_TIME) VALUES('$SchoolID', '$month', '$sessionTime')";
+    $sql = "INSERT INTO members_profile(STUDENTID, LOGDATE, TOTAL_DUTY_TIME) VALUES('$SchoolID', '$month', '$sessionTime')";
 
     // while ($row = $query->fetch_assoc()){
     //     // $TotalDutyTime += $row['TOTAL_DUTY_TIME']; 
     //     echo $row['TOTAL_DUTY_TIME'];
     // }
 
-    // if($conn->query($sql) === TRUE){
-    //     echo "deed haz been doone";} 
+    if($conn->query($sql) === TRUE){
+        echo "deed haz been doone";} 
     
     ?>
 

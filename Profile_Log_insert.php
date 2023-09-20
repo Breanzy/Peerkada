@@ -26,6 +26,7 @@
     $Address = $_POST['Address'];
     $Birth = $_POST['Birth'];
     $Sex = $_POST['Sex'];
+    $Password = $_POST['Password'];
 
     // Calculates total duty time per month according to title. I think this function could be optimized.
     if($Title == 'Assistant'){
@@ -49,7 +50,8 @@
 
     }else {
         // Proceed with function
-        $sql = "INSERT INTO members_profile(NAME, ID_NUMBER, TITLE, COLLEGE, SCHOOL_YR, COURSE, EMAIL_ADD, PHONE_NUM, ADDRESS, BIRTH, SEX, DUTYHOUR) VALUES('$Name', '$SchoolID', '$Title', '$College', '$SchoolYr', '$Course', '$Email', '$Number', '$Address', '$Birth', '$Sex', '$DutyHour')";
+        $sql = "INSERT INTO members_profile(NAME, ID_NUMBER, TITLE, COLLEGE, SCHOOL_YR, COURSE, EMAIL_ADD, PHONE_NUM, ADDRESS, BIRTH, SEX, PASSWORD, DUTYHOUR) 
+        VALUES('$Name', '$SchoolID', '$Title', '$College', '$SchoolYr', '$Course', '$Email', '$Number', '$Address', '$Birth', '$Sex', '$Password', '$DutyHour')";
 
         if($conn->query($sql) === TRUE){
 
