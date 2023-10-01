@@ -73,6 +73,7 @@
     // $query = $conn->query($sql);
     // $TotalDutyTime = 0;
 
+    // $sql = "INSERT INTO members_profile(STUDENTID, LOGDATE, TOTAL_DUTY_TIME) VALUES('$SchoolID', '$month', '$sessionTime')";
     $sql = "INSERT INTO members_profile(STUDENTID, LOGDATE, TOTAL_DUTY_TIME) VALUES('$SchoolID', '$month', '$sessionTime')";
 
     // while ($row = $query->fetch_assoc()){

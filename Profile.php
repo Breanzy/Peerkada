@@ -16,6 +16,10 @@
 
         <!-- para sa mga icons -->
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <script src="js/listhingy.js"></script>
+        <script src= https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js></script>
+
+
 
     </head>
 
@@ -256,7 +260,7 @@
                         <div class = "row">
                             <div class = "col-xl" >
                                 <h2 class="text-center">Duty Logs</h2>
-                                <table class="table table-hover table-bordered table-striped rounded-3 overflow-hidden">
+                                <table class="table table-hover table-bordered table-striped rounded-3 overflow-hidden example">
                                     <thead class="table-dark">
                                         <tr>
                                             <th scope="col">Student ID</th>
@@ -268,12 +272,12 @@
                                     </thead>
 
                                     <tbody>
-                                        <?php
 
+                                        <?php
                                         date_default_timezone_set("Asia/Singapore");
                                         $DATE = date('d-m-Y');
 
-                                        $sql ="SELECT * FROM table_attendance WHERE LOGDATE = '$DATE' ORDER BY ATTENDANCE_ID DESC limit 6";
+                                        $sql ="SELECT * FROM table_attendance WHERE STUDENTID = $SchoolID ORDER BY ATTENDANCE_ID DESC";
                                         $query = $conn->query($sql);
                                         
                                         while ($row = $query->fetch_assoc()){
