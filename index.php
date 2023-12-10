@@ -96,6 +96,8 @@
                                             <th scope="col">Time In</th>
                                             <th scope="col">Time Out</th>
                                             <th scope="col">Total Time</th>
+                                            <th scope="col">Actions</td>
+
                                         </tr>
                                     </thead>
 
@@ -122,10 +124,10 @@
                                                 <td><?php echo ($row['TIMEIN'] != null) ? date('h:i:s A', strtotime($row['TIMEIN'])) : null;?></td>
                                                 <td><?php echo ($row['TIMEOUT'] != null) ? date('h:i:s A', strtotime($row['TIMEOUT'])) : null;?></td>
                                                 <td><?php echo ($row['TIMEOUT'] != null) ? gmdate("H \\h\\r/\\s, i \\m\\i\\n/\\s, s \\s\\e\\c/\\s", $row['TOTALTIME']): null ;?></td>
+                                                <td class="text-center"><a class="btn btn-warning fa-solid fa-pen-to-square m-1"></a><a class="btn btn-danger fa-solid fa-trash m-1"></a></td>
                                             </tr>
                                         <?php
-                                        }
-                                        ?>
+                                        }?>
                                     </tbody>
                                 </table>
                             </div>
