@@ -29,6 +29,8 @@
             <!-- MAIN CONTENT -->
             <div id="layoutSidenav_content">
                 <main>
+
+                <div class="container"></div>
                     <div class = "container-fluid p-5">
                         <div class= "row">
                             <div class="col-xl-4 p-2">
@@ -42,7 +44,7 @@
                                     $server = "localhost";
                                     $username = "root";
                                     $password = "";
-                                    $dbname = "qrcode";
+                                    $dbname = "id21827628_peerkada";
                                     $conn = new mysqli($server, $username, $password, $dbname) or die("Unable to connect");
 
                                     // SCHOOL ID INITIALIZED ALREADY THROUGH "name" SESSION
@@ -69,7 +71,7 @@
                                     // GET MONTHLY DUTY TIME RENDERED
                                     // P.S I think this code can also be optimized somehow with the total duty time, idk.
                                     $MonthDate = date('m-Y');
-                                    $sql = "SELECT * FROM table_dutytotal WHERE STUDENTID = '$SchoolID' AND LOGDATE = '$MonthDate'";
+                                    $sql = "SELECT * FROM table_attendance WHERE STUDENTID = '$SchoolID' AND LOGDATE = '$MonthDate'";
                                     $query = $conn->query($sql);
                                     $MonthlyDutyTime = 0;
 

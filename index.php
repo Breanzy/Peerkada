@@ -53,7 +53,7 @@
                     <div class = "container-fluid p-4">
                         <div class = "row">
                             
-                            <div class="col-xl-5 col-lg-6 col-md-10">
+                            <div class="col-xl-5 col-lg-6 col-md-10 bg-primary">
                                 <div class="card mb-4">
                                     <div class="card-header">
                                         <i class="fa fa-camera " aria-hidden="true"></i>
@@ -106,7 +106,7 @@
                                         $server = "localhost";
                                         $username="root";
                                         $password="";
-                                        $dbname="qrcode";
+                                        $dbname = "id21827628_peerkada";
                                         $conn = new mysqli($server, $username, $password, $dbname) or die("Unable to connect");
 
                                         

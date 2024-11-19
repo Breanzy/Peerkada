@@ -5,7 +5,7 @@
     $server = "localhost";
     $username = "root";
     $password = "";
-    $dbname = "qrcode";
+    $dbname = "id21827628_peerkada";
     $conn = new mysqli($server, $username, $password, $dbname) or die("Unable to connect");
 
 
