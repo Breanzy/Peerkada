@@ -32,24 +32,24 @@
                     <br>
 
                     <?php
-					if(isset($_SESSION['error'])){
+                    if (isset($_SESSION['error'])) {
                         echo "
                           <div class='alert alert-danger alert-dismissible fade fadeout' style='background:red;color:#fff'>
                             <h4><i class='icon fa fa-warning fade fadeout'></i> Error!</h4>
-                            ".$_SESSION['error']."
+                            " . $_SESSION['error'] . "
                           </div>
                         ";
                         unset($_SESSION['error']);
-                      }
-                      if(isset($_SESSION['success'])){
+                    }
+                    if (isset($_SESSION['success'])) {
                         echo "
                           <div class='alert alert-success alert-dismissible fade fadeout' style='background:green;color:#fff'>
                             <h4><i class='icon fa fa-check'></i> Success!</h4>
-                            ".$_SESSION['success']."
+                            " . $_SESSION['success'] . "
                           </div>
                         ";
                         unset($_SESSION['success']);
-                      }
+                    }
                     ?>
                 </div>
                 <!-- FOR THE RIGHT SIDE THINGY -->
@@ -69,28 +69,28 @@
                         <tbody>
                             <?php
                             $server = "localhost";
-                            $username="root";
-                            $password="";
-                            $dbname="qrcode";
+                            $username = "root";
+                            $password = "";
+                            $dbname = "qrcode";
 
                             $DATE = date('d-m-Y');
-                        
+
                             $conn = new mysqli($server, $username, $password, $dbname);
-                            if($conn->connect_error){
-                                die("Connection failed" .$conn->connect_error);
+                            if ($conn->connect_error) {
+                                die("Connection failed" . $conn->connect_error);
                             }
-                            $sql ="SELECT * FROM table_attendance WHERE LOGDATE = '$DATE' ORDER BY ID DESC";
+                            $sql = "SELECT * FROM table_attendance WHERE LOGDATE = '$DATE' ORDER BY ID DESC";
                             $query = $conn->query($sql);
-                            while ($row = $query->fetch_assoc()){
-                            ?>
-                                <tr>
-                                    <td><?php echo $row['STUDENTID'];?></td>
-                                    <td><?php echo $row['LOGDATE'];?></td>
-                                    <td><?php echo ($row['TIMEIN'] != null) ? date('h:i:s A', strtotime($row['TIMEIN'])) : null;?></td>
-                                    <td><?php echo ($row['TIMEOUT'] != null) ? date('h:i:s A', strtotime($row['TIMEOUT'])) : null;?></td>
-                                    <td><?php echo ($row['TIMEOUT'] != null) ? gmdate("H \\h\\r/\\s, i \\m\\i\\n/\\s, s \\s\\e\\c/\\s", $row['TIMEOUT'] - $row['TIMEIN']): null ;?></td>
-                                </tr>
-                            <?php
+                            while ($row = $query->fetch_assoc()) {
+                                ?>
+                                    <tr>
+                                        <td><?php echo $row['STUDENTID']; ?></td>
+                                        <td><?php echo $row['LOGDATE']; ?></td>
+                                        <td><?php echo ($row['TIMEIN'] != null) ? date('h:i:s A', strtotime($row['TIMEIN'])) : null; ?></td>
+                                        <td><?php echo ($row['TIMEOUT'] != null) ? date('h:i:s A', strtotime($row['TIMEOUT'])) : null; ?></td>
+                                        <td><?php echo ($row['TIMEOUT'] != null) ? gmdate("H \\h\\r/\\s, i \\m\\i\\n/\\s, s \\s\\e\\c/\\s", $row['TIMEOUT'] - $row['TIMEIN']) : null; ?></td>
+                                    </tr>
+                                <?php
                             }
                             ?>
                         </tbody>

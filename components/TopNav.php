@@ -11,7 +11,7 @@
 
     <div class="col-xl-3 col-6">
         <div class="row justify-content-end">
-            <div class="col-auto text-white text-end fw-lighter">Logged in as: <?php echo $_SESSION["name"];?> </div>
+            <div class="col-auto text-white text-end fw-lighter">Logged in as: <?php echo $_SESSION["name"]; ?> </div>
             <div class="col-auto"><a class="text-white text-end fw-bold m-3" href="login.php">OUT</a></div>
         </div>
 

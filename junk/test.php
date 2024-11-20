@@ -15,7 +15,7 @@
 
     <?php
     $server = "localhost";
-    $username = "root"; 
+    $username = "root";
     $password = "";
     $dbname = "id21827628_peerkada";
     $conn = new mysqli($server, $username, $password, $dbname) or die("Unable to connect");
@@ -24,13 +24,13 @@
 
     // $sql = "INSERT INTO table_attendance(LOGDATE) VALUES('$date')";
     $sql = "SELECT * FROM table_attendance WHERE MONTH(LOGDATE)= 2";
-    $query = $conn->query($sql);   
+    $query = $conn->query($sql);
 
-    while ($row = $query->fetch_assoc()){
+    while ($row = $query->fetch_assoc()) {
         echo "the deed iz done";
         echo $row['LOGDATE'];
     }
-    
+
     ?>
 
 </body>

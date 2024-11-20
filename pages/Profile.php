@@ -21,10 +21,10 @@
     </head>
 
     <body class="sb-nav-fixed">
-        <?php include('TopNav.php');?>
+        <?php include('TopNav.php'); ?>
 
         <div id="layoutSidenav">
-            <?php include('SideNav.php');?>
+            <?php include('SideNav.php'); ?>
 
             <!-- MAIN CONTENT -->
             <div id="layoutSidenav_content">
@@ -40,57 +40,57 @@
                             <div class="col-xl-8 col-md-12 center-align text-lg-start text-center">
 
                                 <?php
-                                    // INITIALIZING FOR PROFILE INFORMATION
-                                    $server = "localhost";
-                                    $username = "root";
-                                    $password = "";
-                                    $dbname = "id21827628_peerkada";
-                                    $conn = new mysqli($server, $username, $password, $dbname) or die("Unable to connect");
+                                // INITIALIZING FOR PROFILE INFORMATION
+                                $server = "localhost";
+                                $username = "root";
+                                $password = "";
+                                $dbname = "id21827628_peerkada";
+                                $conn = new mysqli($server, $username, $password, $dbname) or die("Unable to connect");
 
-                                    // SCHOOL ID INITIALIZED ALREADY THROUGH "name" SESSION
-                                    $SchoolID = $_SESSION['name'];
+                                // SCHOOL ID INITIALIZED ALREADY THROUGH "name" SESSION
+                                $SchoolID = $_SESSION['name'];
 
-                                    $sql = "SELECT * FROM members_profile WHERE ID_NUMBER = '$SchoolID'";
-                                    $query = $conn->query($sql);
+                                $sql = "SELECT * FROM members_profile WHERE ID_NUMBER = '$SchoolID'";
+                                $query = $conn->query($sql);
 
-                                    while ($row = $query->fetch_assoc()){
-                                    
-                                        $Name = $row['NAME'];
-                                        $Title = $row['TITLE'];
-                                        $College = $row['COLLEGE'];
-                                        $SchoolYr = $row['SCHOOL_YR'];
-                                        $Course = $row['COURSE'];
-                                        $Email = $row['EMAIL_ADD'];
-                                        $Number = $row['PHONE_NUM'];
-                                        $Address = $row['ADDRESS'];
-                                        $Birth = $row['BIRTH'];
-                                        $Sex = $row['SEX'];
-                                        $DutyHour = $row['DUTYHOUR'];
-                                    }
+                                while ($row = $query->fetch_assoc()) {
 
-                                    // GET MONTHLY DUTY TIME RENDERED
-                                    // P.S I think this code can also be optimized somehow with the total duty time, idk.
-                                    $MonthDate = date('m-Y');
-                                    $sql = "SELECT * FROM table_attendance WHERE STUDENTID = '$SchoolID' AND LOGDATE = '$MonthDate'";
-                                    $query = $conn->query($sql);
-                                    $MonthlyDutyTime = 0;
+                                    $Name = $row['NAME'];
+                                    $Title = $row['TITLE'];
+                                    $College = $row['COLLEGE'];
+                                    $SchoolYr = $row['SCHOOL_YR'];
+                                    $Course = $row['COURSE'];
+                                    $Email = $row['EMAIL_ADD'];
+                                    $Number = $row['PHONE_NUM'];
+                                    $Address = $row['ADDRESS'];
+                                    $Birth = $row['BIRTH'];
+                                    $Sex = $row['SEX'];
+                                    $DutyHour = $row['DUTYHOUR'];
+                                }
 
-                                    while ($row = $query->fetch_assoc()){
-                                        $MonthlyDutyTime = (int)$row['TOTAL_DUTY_TIME'];
-                                    }
+                                // GET MONTHLY DUTY TIME RENDERED
+                                // P.S I think this code can also be optimized somehow with the total duty time, idk.
+                                $MonthDate = date('m-Y');
+                                $sql = "SELECT * FROM table_attendance WHERE STUDENTID = '$SchoolID' AND LOGDATE = '$MonthDate'";
+                                $query = $conn->query($sql);
+                                $MonthlyDutyTime = 0;
 
-                                    // GET TOTAL DUTY TIME RENDERED
-                                    $sql = "SELECT * FROM table_dutytotal WHERE STUDENTID = '$SchoolID'";
-                                    $query = $conn->query($sql);
-                                    $TotalDutyTime = 0;
+                                while ($row = $query->fetch_assoc()) {
+                                    $MonthlyDutyTime = (int) $row['TOTAL_DUTY_TIME'];
+                                }
 
-                                    while ($row = $query->fetch_assoc()){
-                                        $TotalDutyTime += (int)$row['TOTAL_DUTY_TIME'];
-                                    }                                    
+                                // GET TOTAL DUTY TIME RENDERED
+                                $sql = "SELECT * FROM table_dutytotal WHERE STUDENTID = '$SchoolID'";
+                                $query = $conn->query($sql);
+                                $TotalDutyTime = 0;
 
-                                    // CONVERT SECONDS TO HOURS
-                                    $TotalDutyTime /= 3600;
-                                    $MonthlyDutyTime /= 3600;
+                                while ($row = $query->fetch_assoc()) {
+                                    $TotalDutyTime += (int) $row['TOTAL_DUTY_TIME'];
+                                }
+
+                                // CONVERT SECONDS TO HOURS
+                                $TotalDutyTime /= 3600;
+                                $MonthlyDutyTime /= 3600;
 
                                 ?>
               
@@ -146,22 +146,26 @@
 
                             <div class="col-xl-3 col-md-10 shadow rounded-3 p-3 alert">
                                 <div class="count-data text-center">
-                                    <h6 class="fw-bold fs-2"> <?php echo $DutyHour/4; ?> Hours</h6>
+                                    <h6 class="fw-bold fs-2"> <?php echo $DutyHour / 4; ?> Hours</h6>
                                     <p class="m-0px font-w-600">Required Duty Per Week</p>
                                 </div>
                             </div>
 
 
                             <!-- Krazy garbage code, but it works. I hate it. It is for changing card color depending on value -->
-                            <?php 
-                                $MonthlyPercent = ($MonthlyDutyTime / $DutyHour)*100;
+                            <?php
+                            $MonthlyPercent = ($MonthlyDutyTime / $DutyHour) * 100;
 
-                                if($MonthlyPercent < 100/3){$CardColor = "danger";}
-                                else if($MonthlyPercent > 200/3){$CardColor = "success";} 
-                                else{$CardColor = "warning";} 
+                            if ($MonthlyPercent < 100 / 3) {
+                                $CardColor = "danger";
+                            } else if ($MonthlyPercent > 200 / 3) {
+                                $CardColor = "success";
+                            } else {
+                                $CardColor = "warning";
+                            }
                             ?>
 
-                            <div class="col-xl-3 col-md-10 shadow alert alert-<?php echo $CardColor;?> rounded-3 p-3">
+                            <div class="col-xl-3 col-md-10 shadow alert alert-<?php echo $CardColor; ?> rounded-3 p-3">
                                 <div class="count-data text-center hover-overlay">
                                     <h6 class="fw-bold fs-2"> <?php echo $MonthlyDutyTime; ?> / <?php echo $DutyHour; ?> </h6>
                                     <p class="m-0px font-w-600">Monthly Duty Hours Rendered</p>
@@ -203,19 +207,19 @@
                                         date_default_timezone_set("Asia/Singapore");
                                         $DATE = date('d-m-Y');
 
-                                        $sql ="SELECT * FROM table_attendance WHERE STUDENTID = $SchoolID AND STATUS = 1 ORDER BY ATTENDANCE_ID DESC";
+                                        $sql = "SELECT * FROM table_attendance WHERE STUDENTID = $SchoolID AND STATUS = 1 ORDER BY ATTENDANCE_ID DESC";
                                         $query = $conn->query($sql);
-                                        
-                                        while ($row = $query->fetch_assoc()){
-                                        ?>
-                                            <tr>
-                                                <th scope="row"><?php echo $row['STUDENTID'];?></td>
-                                                <td><?php echo $row['LOGDATE'];?></td>
-                                                <td><?php echo ($row['TIMEIN'] != null) ? date('h:i:s A', strtotime($row['TIMEIN'])) : null;?></td>
-                                                <td><?php echo ($row['TIMEOUT'] != null) ? date('h:i:s A', strtotime($row['TIMEOUT'])) : null;?></td>
-                                                <td><?php echo ($row['TIMEOUT'] != null) ? gmdate("H \\h\\r/\\s, i \\m\\i\\n/\\s, s \\s\\e\\c/\\s", (int)$row['TIMEOUT'] - (int)$row['TIMEIN']): null ;?></td>
-                                            </tr>
-                                        <?php
+
+                                        while ($row = $query->fetch_assoc()) {
+                                            ?>
+                                                <tr>
+                                                    <th scope="row"><?php echo $row['STUDENTID']; ?></td>
+                                                    <td><?php echo $row['LOGDATE']; ?></td>
+                                                    <td><?php echo ($row['TIMEIN'] != null) ? date('h:i:s A', strtotime($row['TIMEIN'])) : null; ?></td>
+                                                    <td><?php echo ($row['TIMEOUT'] != null) ? date('h:i:s A', strtotime($row['TIMEOUT'])) : null; ?></td>
+                                                    <td><?php echo ($row['TIMEOUT'] != null) ? gmdate("H \\h\\r/\\s, i \\m\\i\\n/\\s, s \\s\\e\\c/\\s", (int) $row['TIMEOUT'] - (int) $row['TIMEIN']) : null; ?></td>
+                                                </tr>
+                                            <?php
                                         }
                                         ?>
                                     </tbody>
