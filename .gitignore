@@ -9,6 +9,7 @@ Thumbs.db
 
 # idk bruh
 /QrCodes/
+.env
 
 # Composer modules
 /vendor
