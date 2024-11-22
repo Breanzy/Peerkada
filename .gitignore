@@ -13,3 +13,4 @@ Thumbs.db
 
 # Composer modules
 /vendor
+test.php

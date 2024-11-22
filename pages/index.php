@@ -43,12 +43,17 @@
     <?php include('../components/TopNav.php'); ?>
 
     <div id="layoutSidenav">
-        <?php include('SideNav.php'); ?>
+        <?php include('../components/SideNav.php'); ?>
+
+        <!-- Notifications -->
+        <!-- SLICE 3 -->
 
         <!-- THE WHOLE CONTENT -->
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid p-4">
+
+                    <!-- QR tab -->
                     <div class="row">
 
                         <div class="col-xl-5 col-lg-6 col-md-10">
@@ -64,14 +69,32 @@
                             </div>
                         </div>
 
-                        <!-- SLICED 2  -->
+                        <div class="col-xl-7 col-lg-6 col-md-10">
+                            <h1>Recent Logs</h1>
+                            <table class="table table-hover table-bordered table-striped rounded-3 overflow-hidden" id="example">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th scope="col">Student ID</th>
+                                        <th scope="col">Log Date</th>
+                                        <th scope="col">Time In</th>
+                                        <th scope="col">Time Out</th>
+                                        <th scope="col">Total Time</th>
+                                        <th scope="col">Actions</td>
+
+                                    </tr>
+                                </thead>
+
+                                SLICE 2
+                            </table>
+                        </div>
                     </div>
 
-                    <!-- <div class="col-md-4">
-                        <form action="QR_Log_insert.php" method="post" class="form-horizontal" name="text">
+                    <!-- Hidden text input for passing qr code -->
+                    <div class="col-md-4">
+                        <form action="../controllers/QR_Log_insert.php" method="post" class="form-horizontal" name="text">
                             <input type="hidden" name="text" id="text" readonny="" placeholder="scan qrcode" class="form-control">
                         </form>
-                    </div> -->
+                    </div>
 
                 </div>
 
@@ -82,23 +105,24 @@
 
     <!-- FOR CAMERA -->
     <script>
-             let scanner = new Instascan.Scanner({video: document.getElementById('preview')});
-                Instascan.Camera.getCameras().then(function(cameras)
-                {
-                    if(cameras.length > 0){
-                        scanner.start(cameras[0]);
-                    } else {
-                        alert('No cameras found');
-                    }
-                }).catch(function(e){
-                    console.error(e);
-                });
+        let scanner = new Instascan.Scanner({
+            video: document.getElementById('preview')
+        });
+        Instascan.Camera.getCameras().then(function(cameras) {
+            if (cameras.length > 0) {
+                scanner.start(cameras[0]);
+            } else {
+                alert('No cameras found');
+            }
+        }).catch(function(e) {
+            console.error(e);
+        });
 
-                scanner.addListener('scan', function(c){
-                    document.getElementById('text').value=c;
-                    document.forms['text'].submit();
-                });
-        </script>
+        scanner.addListener('scan', function(c) {
+            document.getElementById('text').value = c;
+            document.forms['text'].submit();
+        });
+    </script>
 
 </body>
 
