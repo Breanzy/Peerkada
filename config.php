@@ -1,15 +1,14 @@
 <?php
 
 // Load environment variables
-require_once __DIR__ . "/../vendor/autoload.php";
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/../");
+require_once __DIR__ . "/vendor/autoload.php";
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 
 try {
     // Get credentials from .env
-    $dsn = 'mysql:host=' . $_ENV['DATABASE_HOSTNAME'] . 'dbname=' . $_ENV['DATABASE_NAME'];
-
+    $dsn = 'mysql:host=' . $_ENV['DATABASE_HOSTNAME'] . ';dbname=' . $_ENV['DATABASE_NAME'];
     // Create PDO instance
     $pdo = new PDO($dsn, $_ENV['DATABASE_USERNAME'], $_ENV['DATABASE_PASSWORD']);
 

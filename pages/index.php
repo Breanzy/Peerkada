@@ -1,4 +1,6 @@
-<?php session_start(); ?>
+<?php session_start();
+require '../config.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -46,7 +48,25 @@
         <?php include('../components/SideNav.php'); ?>
 
         <!-- Notifications -->
-        <!-- SLICE 3 -->
+        <?php
+        if (isset($_SESSION['error'])) {
+            echo "
+            <div class='position-absolute top-0 end-0 alert alert-danger alert-dismissible fadee' style='background:red;color:#fff'>
+                <h4><i class='icon fa fa-warning fadee'></i> Error!</h4>
+                " . $_SESSION['error'] . "
+            </div>
+            ";
+            unset($_SESSION['error']);
+        }
+        if (isset($_SESSION['success'])) {
+            echo "
+            <div class='position-absolute top-0 end-0 alert alert-success alert-dismissible fadee' style='background:green;color:#fff'>
+                <h4><i class='icon fa fa-check'></i> Success!</h4>
+                " . $_SESSION['success'] . "
+            </div>
+            ";
+            unset($_SESSION['success']);
+        } ?>
 
         <!-- THE WHOLE CONTENT -->
         <div id="layoutSidenav_content">
