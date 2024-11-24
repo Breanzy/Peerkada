@@ -3,7 +3,7 @@
 
 // INITIALIZING
 
-require 'config.php';
+require '../config.php';
 
 // Retrieve the input ID number from POST data
 $text = $_POST['text'];
@@ -18,7 +18,7 @@ $stmt->execute(['id_number' => $text]);
 if ($stmt->rowCount() > 0) {
     // SET TIMEZONE TO ASIA FOR SYNCHRONIZED TIME RECORDING
     date_default_timezone_set("Asia/Singapore");
-    $date = date('d-m-Y');
+    $date = date('Y-m-d');
     $time = date('His');
 
     // Prepare the SQL statement to check for unclosed time-in logs
@@ -39,7 +39,7 @@ if ($stmt->rowCount() > 0) {
     } else {
         // IF FALSE, CREATE A NEW UNCLOSED TIME-IN LOG
         $insertStmt = $pdo->prepare("INSERT INTO table_attendance (STUDENTID, TIMEIN, LOGDATE, STATUS) VALUES (:student_id, :timein, :log_date, :status)");
-        $updateStmt->execute([
+        $insertStmt->execute([
             'student_id' => $text,
             'timein' => $time,
             'log_date' => $date,
