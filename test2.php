@@ -1,14 +1,9 @@
 <?php
-$server = "localhost";
-$username = "root";
-$password = "root";
-$dbname = "Peerkada";
-$conn = new mysqli($server, $username, $password, $dbname, 8889) or die("Unable to connect");
+require 'config.php';
 
+$stmt = $pdo->query("SELECT * FROM members_profile WHERE ID_NUMBER = '$text'");
 
-$sql = "SELECT * FROM members_profile";
-$query = $conn->query($sql);
-
-while ($row = $query->fetch_assoc()) {
+while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     echo "ID: " . $row['PROFILE_ID'];
+    echo "ID: " . $row['PASSWORD'];
 }
