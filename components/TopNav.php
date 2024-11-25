@@ -12,7 +12,7 @@
     <div class="col-xl-3 col-6">
         <div class="row justify-content-end">
             <div class="col-auto text-white text-end fw-lighter">Logged in as: <?php echo (isset($_SESSION["name"]) ? $_SESSION["name"] : "Guest"); ?> </div>
-            <div class="col-auto"><a class="text-white text-end fw-bold m-3" href="login.php">Log Out</a></div>
+            <div class="col-auto"><a class="text-white text-end fw-bold m-3" href="../controllers/login.php">Log Out</a></div>
         </div>
 
         <!-- Navbar-->
@@ -22,7 +22,9 @@
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="#!">Settings</a></li>
                     <li><a class="dropdown-item" href="#!">Activity Log</a></li>
-                    <li><hr class="dropdown-divider" /></li>
+                    <li>
+                        <hr class="dropdown-divider" />
+                    </li>
                     <li><a class="dropdown-item" href="#!">Logout</a></li>
                 </ul>
             </li>
