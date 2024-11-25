@@ -39,8 +39,9 @@
 </head>
 
 <body class="sb-nav-fixed">
-    <?php include('../components/TopNav.php'); ?>
 
+    <!-- Notifications -->
+    <?php include('../components/TopNav.php'); ?>
     <div id="layoutSidenav">
         <?php include('../components/SideNav.php'); ?>
 
@@ -52,6 +53,7 @@
 
                     <!-- QR tab -->
                     <div class="row">
+                        <?php require '../components/Notifications.php'; ?>
 
                         <div class="col-xl-5 col-lg-6 col-md-10">
                             <div class="card mb-4">
@@ -155,28 +157,6 @@
             </main>
         </div>
     </div>
-
-    <!-- Notifications -->
-    <?php
-    if (isset($_SESSION['error'])) {
-        echo "
-            <div class='position-absolute top-0 end-0 alert alert-danger alert-dismissible fadee' style='background:red;color:#fff'>
-                <h4><i class='icon fa fa-warning fadee'></i> Error!</h4>
-                " . $_SESSION['error'] . "
-            </div>
-            ";
-        unset($_SESSION['error']);
-    }
-    if (isset($_SESSION['success'])) {
-        echo "
-            <div class='position-absolute top-0 end-0 alert alert-success alert-dismissible fadee' style='background:green;color:#fff'>
-                <h4><i class='icon fa fa-check'></i> Success!</h4>
-                " . $_SESSION['success'] . "
-            </div>
-            ";
-        unset($_SESSION['success']);
-    } ?>
-
 
     <!-- Hidden text input for passing qr code -->
     <div class="col-md-4">

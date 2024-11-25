@@ -16,7 +16,7 @@
 <body class="bg-dark d-flex flex-column min-vh-100">
 
     <?php unset($_SESSION['name']); ?>
-
+    <?php require '../components/Notifications.php'; ?>
     <div class="container h-100 flex-fill d-flex align-items-center justify-content-center">
         <div class="row w-100 d-flex justify-content-between align-items-center gap-4">
             <div class="col-lg-6 mx-auto d-flex justify-content-around gap-3 align-items-center">
@@ -27,32 +27,6 @@
                 </div>
             </div>
             <div class="col-lg-4">
-                <?php
-                if (isset($_SESSION['error'])) {
-                    echo "
-                        <div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                            <h4><i class='icon fa fa-warning'></i> Error!</h4>
-                            " . $_SESSION['error'] . "
-                            <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                                <span aria-hidden='true'>&times;</span>
-                            </button>
-                        </div>
-                    ";
-                    unset($_SESSION['error']);
-                }
-                if (isset($_SESSION['success'])) {
-                    echo "
-                        <div class='alert alert-success alert-dismissible fade show' role='alert'>
-                            <h4><i class='icon fa fa-check'></i> Success!</h4>
-                            " . $_SESSION['success'] . "
-                            <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
-                                <span aria-hidden='true'>&times;</span>
-                            </button>
-                        </div>
-                    ";
-                    unset($_SESSION['success']);
-                }
-                ?>
 
                 <div class="card">
                     <div class="card-body">
@@ -81,7 +55,9 @@
             </div>
         </div>
     </div>
+
     <?php include('../components/Footer.php'); ?>
+    <!-- Notifications -->
 </body>
 
 </html>
