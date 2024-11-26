@@ -1,15 +1,10 @@
-<?php session_start(); ?>
-<!-- ayaw nalang paghimog totaldate i tally nalang sila sa pikas na panel jud para mas dali -->
-<?php
-$server = "localhost";
-$username = "root";
-$password = "";
-$dbname = "id21827628_peerkada";
-$conn = new mysqli($server, $username, $password, $dbname) or die("Unable to connect");
+<?php session_start();
 
 
 //For QR Code Generation
 require "vendor/autoload.php";
+
+
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 
@@ -48,7 +43,6 @@ if ($conn->query($sql)->num_rows > 0) {
 
     header("location: register.php");
     $conn->close();
-
 } else {
     // Proceed with function
     $sql = "INSERT INTO members_profile(NAME, ID_NUMBER, TITLE, COLLEGE, SCHOOL_YR, COURSE, EMAIL_ADD, PHONE_NUM, ADDRESS, BIRTH, SEX, PASSWORD, DUTYHOUR) 
@@ -74,5 +68,3 @@ if ($conn->query($sql)->num_rows > 0) {
     header("location: index.php");
     $conn->close();
 }
-
-?>

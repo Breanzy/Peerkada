@@ -12,7 +12,7 @@
     <div class="col-xl-3 col-6">
         <div class="row justify-content-end">
             <div class="col-auto text-white text-end fw-lighter">Logged in as: <?php echo (isset($_SESSION["name"]) ? $_SESSION["name"] : "Guest"); ?> </div>
-            <div class="col-auto"><a class="text-white text-end fw-bold m-3" href="../pages/login.php">Log Out</a></div>
+            <div class="col-auto"><a class="text-white text-end fw-bold m-3" href="../controllers/login.php">Log Out</a></div>
         </div>
 
         <!-- Navbar-->

@@ -40,7 +40,6 @@
 
 <body class="sb-nav-fixed">
 
-    <!-- Notifications -->
     <?php include('../components/TopNav.php'); ?>
     <div id="layoutSidenav">
         <?php include('../components/SideNav.php'); ?>
@@ -48,13 +47,12 @@
 
         <!-- THE WHOLE CONTENT -->
         <div id="layoutSidenav_content">
+            <!-- Notifications -->
+            <?php require '../components/Notifications.php'; ?>
             <main>
                 <div class="container-fluid p-4">
-
                     <!-- QR tab -->
                     <div class="row">
-                        <?php require '../components/Notifications.php'; ?>
-
                         <div class="col-xl-5 col-lg-6 col-md-10">
                             <div class="card mb-4">
                                 <div class="card-header">
