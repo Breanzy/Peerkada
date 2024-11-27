@@ -9,7 +9,27 @@
         <label>Input name if no QR Code</label>
         <input type="text" name="text" id="text" readonny="" placeholder="scan qrcode" class="form-control">
     </form>
-</div> 
+</div>
 
 
 
+
+<?php
+
+// Calculates total duty time per month according to title. I think this function could be optimized.
+switch ($Title) {
+    case 'Assistant':
+        $DutyHour = 16;
+        break;
+    case 'Junior':
+        $DutyHour = 12;
+        break;
+    case 'Senior':
+        $DutyHour = 10;
+        break;
+    case 'LAV':
+        $DutyHour = 20;
+        break;
+    default:
+        $DutyHour = 0;
+}

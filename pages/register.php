@@ -34,7 +34,8 @@
 </head>
 
 <body class="sb-nav-fixed" style="background: linear-gradient(0deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.3)), url(../assets/backgroundd.jpg); background-repeat: no-reapeat; background-attachment: fixed; background-size: cover;">
-
+    <!-- Notifications -->
+    <?php require '../components/Notifications.php'; ?>
     <?php include('../components/TopNav.php'); ?>
     <div id="layoutSidenav">
         <?php include('../components/SideNav.php'); ?>
@@ -42,10 +43,6 @@
         <div id="layoutSidenav_content">
             <div id="layoutAuthentication">
                 <div id="layoutAuthentication_content">
-
-                    <!-- Notifications -->
-                    <?php require '../components/Notifications.php'; ?>
-
                     <main>
                         <div class="container">
                             <div class="row justify-content-center">
