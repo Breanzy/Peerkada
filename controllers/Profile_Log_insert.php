@@ -9,6 +9,7 @@ use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\Label\Label;
 use Endroid\QrCode\Logo\Logo;
+use Endroid\QrCode\ErrorCorrectionLevel;
 
 //Form Contents
 $Name = $_POST['Name'];
@@ -59,7 +60,11 @@ if ($stmt->rowCount() > 0) {
 
         // Create QR code
         $writer = new PngWriter();
-        $qrCode = new QrCode(data: $SchoolID, encoding: new Encoding('UTF-8'));
+        $qrCode = new QrCode(
+            data: $SchoolID,
+            encoding: new Encoding('UTF-8'),
+            errorCorrectionLevel: ErrorCorrectionLevel::High
+        );
 
         $logo = new Logo(
             path: __DIR__ . '/../assets/LogoRed.png',

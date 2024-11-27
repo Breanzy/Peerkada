@@ -9,7 +9,7 @@ Thumbs.db
 
 # idk bruh
 /assets/QrCodes/*
-!/assets/QrCodes/example code.png
+!/assets/QrCodes/sample qr code.png
 .env
 
 # Composer modules

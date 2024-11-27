@@ -11,13 +11,32 @@
     <meta name="author" content="" />
     <title>Dashboard - SB Admin</title>
 
-    <!-- bootstrap style  -->
-    <link href="css/styles.css" rel="stylesheet">
-
     <!-- para sa mga icons -->
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <script src="js/listhingy.js"></script>
-    <script src=https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js></script>
+
+    <!-- para chada na table. Jesus It's a lot -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css" />
+
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+
+    <!-- para camera thingy -->
+    <script type="text/javascript" src="../js/instascan.min.js"></script>
+
+    <!-- styles  -->
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/customStyle.css">
+    <!-- FOR BUTTON FUNCTIONALITIES -->
+    <script src="../js/scripts.js"></script>
+    <script src="../js/listhingy.js"></script>z
 </head>
 
 <body class="sb-nav-fixed">
@@ -33,25 +52,24 @@
                 <div class="container"></div>
                 <div class="container-fluid p-5">
                     <div class="row">
-                        <div class="col-xl-4 p-2">
-                            <img src="testt.jpg" class="img-fluid rounded-circle mx-auto d-block" alt="Image" style="height: 50%;">
+                        <div class="col-xl-4 p-10 d-flex justify-content-center align-items-center">
+                            <div class="" style="height: 250px; width: 250px;">
+
+                                <img src="../assets/backgroundd.jpg" class="h-100 w-100 rounded-circle" style="object-fit: cover;" alt="Image">
+                            </div>
                         </div>
 
                         <div class="col-xl-8 col-md-12 center-align text-lg-start text-center">
-
                             <?php
-                            // INITIALIZING FOR PROFILE INFORMATION
+                            require '../config.php';
+                            // $SchoolID = $_SESSION['name'];
+                            $SchoolID = 12345;
+                            // Fetch profile information
+                            $stmt = $pdo->prepare("SELECT * FROM members_profile WHERE ID_NUMBER = :id");
+                            $stmt->execute(['id' => $SchoolID]);
+                            $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                            $conn = new mysqli($server, $username, $password, $dbname) or die("Unable to connect");
-
-                            // SCHOOL ID INITIALIZED ALREADY THROUGH "name" SESSION
-                            $SchoolID = $_SESSION['name'];
-
-                            $sql = "SELECT * FROM members_profile WHERE ID_NUMBER = '$SchoolID'";
-                            $query = $conn->query($sql);
-
-                            while ($row = $query->fetch_assoc()) {
-
+                            if ($row) {
                                 $Name = $row['NAME'];
                                 $Title = $row['TITLE'];
                                 $College = $row['COLLEGE'];
@@ -62,33 +80,60 @@
                                 $Address = $row['ADDRESS'];
                                 $Birth = $row['BIRTH'];
                                 $Sex = $row['SEX'];
-                                $DutyHour = $row['DUTYHOUR'];
+                                //Duty hour requirement per month
+                                switch ($Title) {
+                                    case 'Assistant':
+                                        $DutyHour = 16;
+                                        break;
+                                    case 'Junior':
+                                        $DutyHour = 12;
+                                        break;
+                                    case 'Senior':
+                                        $DutyHour = 10;
+                                        break;
+                                    case 'LAV':
+                                        $DutyHour = 20;
+                                        break;
+                                    default:
+                                        $DutyHour = 0;
+                                        break;
+                                }
                             }
 
-                            // GET MONTHLY DUTY TIME RENDERED
-                            // P.S I think this code can also be optimized somehow with the total duty time, idk.
-                            $MonthDate = date('m-Y');
-                            $sql = "SELECT * FROM table_attendance WHERE STUDENTID = '$SchoolID' AND LOGDATE = '$MonthDate'";
-                            $query = $conn->query($sql);
-                            $MonthlyDutyTime = 0;
+                            // Function to calculate total duty time
+                            function calculateDutyTime($pdo, $SchoolID, $month = null)
+                            {
+                                $query = "SELECT TIMEIN, TIMEOUT FROM table_attendance WHERE STUDENTID = :id";
+                                if ($month) {
+                                    $query .= " AND DATE_FORMAT(LOGDATE, '%Y-%m') = :logdate";
+                                }
 
-                            while ($row = $query->fetch_assoc()) {
-                                $MonthlyDutyTime = (int) $row['TOTAL_DUTY_TIME'];
+                                $stmt = $pdo->prepare($query);
+                                $params = ['id' => $SchoolID];
+                                if ($month) {
+                                    $params['logdate'] = $month;
+                                }
+                                $stmt->execute($params);
+
+                                $totalDutyTime = 0;
+
+                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                    $signIn = strtotime($row['TIMEIN']);
+                                    $signOut = strtotime($row['TIMEOUT']);
+
+                                    if ($signIn && $signOut) {
+                                        $totalDutyTime += ($signOut - $signIn);
+                                    }
+                                }
+                                return round(($totalDutyTime / 3600), 2); // Convert seconds to hours
                             }
 
-                            // GET TOTAL DUTY TIME RENDERED
-                            $sql = "SELECT * FROM table_dutytotal WHERE STUDENTID = '$SchoolID'";
-                            $query = $conn->query($sql);
-                            $TotalDutyTime = 0;
+                            // Get the current month in 'Y-m' format
+                            $currentMonth = date('Y-m');
 
-                            while ($row = $query->fetch_assoc()) {
-                                $TotalDutyTime += (int) $row['TOTAL_DUTY_TIME'];
-                            }
-
-                            // CONVERT SECONDS TO HOURS
-                            $TotalDutyTime /= 3600;
-                            $MonthlyDutyTime /= 3600;
-
+                            // Calculate monthly and total duty time
+                            $MonthlyDutyTime = calculateDutyTime($pdo, $SchoolID, $currentMonth);
+                            $TotalDutyTime = calculateDutyTime($pdo, $SchoolID);
                             ?>
 
                             <h3 class="fw-bold fs-1"><?php echo $Name; ?></h3>
@@ -139,88 +184,61 @@
                         </div>
                     </div>
 
-                    <div class="row justify-content-evenly">
+                    <!-- Changing card color depending on threshold -->
+                    <?php
+                    // Constants for percentage thresholds
+                    define('LOW_THRESHOLD', 33.33);
+                    define('HIGH_THRESHOLD', 66.67);
 
-                        <div class="col-xl-3 col-md-10 shadow rounded-3 p-3 alert">
+                    // Calculate required duty hours per week
+                    $requiredDutyPerWeek = $DutyHour / 4;
+
+                    // Calculate monthly duty percentage
+                    $monthlyPercent = ($DutyHour > 0) ? ($MonthlyDutyTime / $DutyHour) * 100 : 0;
+
+                    // Determine card color based on monthly percentage
+                    $cardColor = ($monthlyPercent < LOW_THRESHOLD) ? "danger" : (($monthlyPercent > HIGH_THRESHOLD) ? "success" : "warning");
+                    ?>
+
+                    <div class="row justify-content-evenly mt-5">
+                        <div class="col-xl-3 col-md-10 shadow rounded-3 p-3 alert d-flex justify-content-center align-items-center">
                             <div class="count-data text-center">
-                                <h6 class="fw-bold fs-2"> <?php echo $DutyHour / 4; ?> Hours</h6>
+                                <h6 class="fw-bold fs-2"><?php echo htmlspecialchars($requiredDutyPerWeek); ?> Hours</h6>
                                 <p class="m-0px font-w-600">Required Duty Per Week</p>
                             </div>
                         </div>
 
-
-                        <!-- Krazy garbage code, but it works. I hate it. It is for changing card color depending on value -->
-                        <?php
-                        $MonthlyPercent = ($MonthlyDutyTime / $DutyHour) * 100;
-
-                        if ($MonthlyPercent < 100 / 3) {
-                            $CardColor = "danger";
-                        } else if ($MonthlyPercent > 200 / 3) {
-                            $CardColor = "success";
-                        } else {
-                            $CardColor = "warning";
-                        }
-                        ?>
-
-                        <div class="col-xl-3 col-md-10 shadow alert alert-<?php echo $CardColor; ?> rounded-3 p-3">
+                        <div class="col-xl-3 col-md-10 shadow alert alert-<?php echo htmlspecialchars($cardColor); ?> rounded-3 p-3 d-flex justify-content-center align-items-center">
                             <div class="count-data text-center hover-overlay">
-                                <h6 class="fw-bold fs-2"> <?php echo $MonthlyDutyTime; ?> / <?php echo $DutyHour; ?> </h6>
+                                <h6 class="fw-bold fs-2"><?php echo htmlspecialchars($MonthlyDutyTime); ?> / <?php echo htmlspecialchars($DutyHour); ?></h6>
                                 <p class="m-0px font-w-600">Monthly Duty Hours Rendered</p>
 
-
                                 <div class="progress mb-2">
-                                    <div class="progress-bar bg-<?php echo $CardColor; ?> progress-bar-striped progress-bar-animated"
-                                        role="progressbar" style="width: <?php echo $MonthlyPercent; ?>%" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-<?php echo htmlspecialchars($cardColor); ?> progress-bar-striped progress-bar-animated"
+                                        role="progressbar" style="width: <?php echo htmlspecialchars($monthlyPercent); ?>%" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
-
                             </div>
                         </div>
 
-                        <div class="text-white col-xl-3 col-md-10 shadow rounded-3 p-3 alert bg-dark">
+                        <div class="text-white col-xl-3 col-md-10 shadow rounded-3 p-3 alert bg-dark d-flex justify-content-center align-items-center">
                             <div class="count-data text-center">
-                                <h6 class="fw-bold fs-2"> <?php echo $TotalDutyTime; ?> </h6>
+                                <h6 class="fw-bold fs-2"><?php echo htmlspecialchars($TotalDutyTime); ?></h6>
                                 <p class="m-0px font-w-600">Overall Duty Hours Rendered</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="row">
+
+                    <div class="row mt-5">
                         <div class="col-xl">
-                            <h2 class="text-center">Duty Logs</h2>
-                            <table class="table table-hover table-bordered table-striped rounded-3 overflow-hidden example">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <th scope="col">Student ID</th>
-                                        <th scope="col">Log Date</th>
-                                        <th scope="col">Time In</th>
-                                        <th scope="col">Time Out</th>
-                                        <th scope="col">Total Time</th>
-                                    </tr>
-                                </thead>
+                            <h2 class="text-center fw-bolder">Duty Logs</h2>
+                            <?php
+                            $stmt = $pdo->prepare("SELECT * FROM table_attendance WHERE STUDENTID = $SchoolID AND STATUS = 1 ORDER BY ATTENDANCE_ID DESC");
+                            $stmt->execute();
 
-                                <tbody>
+                            include '../components/DutyLogTable.php';
+                            ?>
 
-                                    <?php
-                                    date_default_timezone_set("Asia/Singapore");
-                                    $DATE = date('d-m-Y');
-
-                                    $sql = "SELECT * FROM table_attendance WHERE STUDENTID = $SchoolID AND STATUS = 1 ORDER BY ATTENDANCE_ID DESC";
-                                    $query = $conn->query($sql);
-
-                                    while ($row = $query->fetch_assoc()) {
-                                    ?>
-                                        <tr>
-                                            <th scope="row"><?php echo $row['STUDENTID']; ?></td>
-                                            <td><?php echo $row['LOGDATE']; ?></td>
-                                            <td><?php echo ($row['TIMEIN'] != null) ? date('h:i:s A', strtotime($row['TIMEIN'])) : null; ?></td>
-                                            <td><?php echo ($row['TIMEOUT'] != null) ? date('h:i:s A', strtotime($row['TIMEOUT'])) : null; ?></td>
-                                            <td><?php echo ($row['TIMEOUT'] != null) ? gmdate("H \\h\\r/\\s, i \\m\\i\\n/\\s, s \\s\\e\\c/\\s", (int) $row['TIMEOUT'] - (int) $row['TIMEIN']) : null; ?></td>
-                                        </tr>
-                                    <?php
-                                    }
-                                    ?>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                 </div>
