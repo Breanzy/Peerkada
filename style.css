@@ -1,9 +1,0 @@
-#example1 tr, #example1 td{
-    border: black solid 1px;
-}
-
-td{
-    white-space: nowrap;
-    padding: 10px;
-}
-

@@ -2,7 +2,7 @@
 
 
 //For QR Code Generation
-require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
@@ -57,48 +57,25 @@ if ($stmt->rowCount() > 0) {
         ':Password' => $Password,
     ])) {
 
-
-        $writer = new PngWriter();
-
         // Create QR code
+        $writer = new PngWriter();
         $qrCode = new QrCode(data: $SchoolID, encoding: new Encoding('UTF-8'));
 
         $logo = new Logo(
-            path: __DIR__ . '/assets/LogoRed.png',
-            resizeToWidth: 50,
+            path: __DIR__ . '/../assets/LogoRed.png',
+            resizeToWidth: 125,
             punchoutBackground: false
         );
 
         $label = new Label(text: $Name);
-
         $result = $writer->write($qrCode, $logo, $label);
-
-        header('Content-Type: ' . $result->getMimeType());
-        echo $result->getString();
-
-        $result->saveToFile(__DIR__ . '../assets/QrCodes/' . $Name . '.png');
-
-
-
-        $qr_code = QrCode::create();
-        $writer = new PngWriter();
-        $result = $writer->write($qr_code);
-
-        $result->saveToFile(__DIR__ . );
+        $result->saveToFile(__DIR__ . '/../assets/QrCodes/' . $Name . '.png');
 
         $_SESSION['success'] = "Successfully Registered New Profile!";
-
-        header('Content-Description: File Transfer');
-        header('Content-Type: ' . $result->getMimeType());
-        header('Content-Disposition: /image');
-
-        $_SESSION['success'] = "Successfully Registered New Profile!";
-        header("location: ../pages/index.php");
-        exit();
     } else {
         $_SESSION['error'] = "Error: " . $stmt->errorInfo()[2];
     }
 
-    header("location: ../pages/index.php");
+    header("location: ../pages/login.php");
     exit();
 }
