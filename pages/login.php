@@ -31,7 +31,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title text-center">Login</h5>
-                        <form action="Login_Check.php" method="post" class="form-horizontal">
+                        <form action="../controllers/Login_Check.php" method="post" class="form-horizontal">
                             <div class="form-group mb-3">
                                 <label class="label" for="ID_Number">ID Number</label>
                                 <input type="text" name="ID_Number" class="form-control" placeholder="Ex. 20191387" required>

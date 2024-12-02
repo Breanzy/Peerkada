@@ -1,42 +1,29 @@
-<?php session_start(); ?>
 <?php
 
-// INITIALIZING
-$server = "localhost";
-$username = "root";
-$password = "";
-$dbname = "id21827628_peerkada";
-$conn = new mysqli($server, $username, $password, $dbname) or die("Unable to connect");
+session_start();
+require '../config.php';
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $id_number = $_POST['ID_Number'];
+    $password = $_POST['User_Password'];
 
-$ID_Number = $_POST['ID_Number'];
-$User_Password = $_POST['User_Password'];
-$conn = new mysqli($server, $username, $password, $dbname) or die("Unable to connect");
+    $stmt = $pdo->prepare("SELECT * FROM members_profile WHERE ID_NUMBER = :id_number");
+    $stmt->execute(['id_number' => $id_number]);
+    $user = $stmt->fetch();
 
-//CHECKS IF THE INPUT ID NUMBER EXISTS IN THE PROFILE DB.
-$sql = "SELECT * FROM members_profile WHERE ID_NUMBER = '$ID_Number'";
-$query = $conn->query($sql);
-
-if ($query->num_rows > 0) {
-    // CHECKS IF PASSWORD IS CORRECT.
-    // P.S. I think this process could be optimized by using the $query result instead of just creating a new request
-    $sql = "SELECT * FROM members_profile WHERE ID_NUMBER = '$ID_Number' AND PASSWORD = '$User_Password'";
-    $query = $conn->query($sql);
-
-    if ($query->num_rows > 0) {
+    // Check if user exists or password is correct
+    if ($user && password_verify($password, $user['PASSWORD'])) {
         // SETS SESSION 'name' TO THE ID NUMBER OF USER AND GOES TO MAIN DASHBOARD
-        $_SESSION['name'] = $ID_Number;
-        header("location: index.php");
-
+        $_SESSION['name'] = $user['NAME'];
+        $_SESSION['ID_Number'] = $user['ID_Number'];
+        $_SESSION['success'] = 'Logged in Successfully!';
+        header("location: ../pages/index.php");
     } else {
-        $_SESSION['error'] = 'Incorrect Password!';
-        header("location: login.php");
+        $_SESSION['error'] = 'Incorrect Password / User does not exist. Please try again.';
+        header("location: ../pages/login.php");
     }
-
+    exit();
 } else {
-    $_SESSION['error'] = 'No Such Member ID Number exist!';
-    header("location: login.php");
+    header("location: ../pages/login.php");
+    exit();
 }
-
-$conn->close();
-?>
