@@ -46,7 +46,7 @@
 
 
         <!-- THE WHOLE CONTENT -->
-        <div id="layoutSidenav_content">
+        <div id="layoutSidenav_content" class="d-flex flex-column justify-content-start">
             <!-- Notifications -->
             <?php require '../components/Notifications.php'; ?>
             <main>

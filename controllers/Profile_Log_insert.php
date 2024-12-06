@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($stmt->rowCount() > 0) {
         // Registered Profile already exists
         $_SESSION['error'] = "ID Number Already Exist in the Database!";
-        header("location: ../pages/register.php");
+        header("location: ../pages/login.php");
         exit();
     } else {
         // Proceed with function

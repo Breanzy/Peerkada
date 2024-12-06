@@ -1,40 +1,48 @@
 <?php
 
-// For index
-if (isset($_SESSION['error'])) {
+function renderNotification($type, $message)
+{
+    $icon = $type === 'error' ? 'fa-warning' : 'fa-check';
+    $alertClass = $type === 'error' ? 'alert-danger' : 'alert-success';
+
     echo "
-        <div id='error-notification' class='p-2 alert alert-danger alert-dismissible fadee'>
-            <h4><i class='icon fa fa-warning fadee'></i> Error!</h4>
-            " . $_SESSION['error'] . "
+        <div id='notification' class='alert {$alertClass} alert-dismissible fade show notification fadee' role='alert'>
+            <h4 class='alert-heading text-nowrap'><i class='icon fa {$icon}'></i> " . ucfirst($type) . "!</h4>
+            <span class='text-nowrap'>" . htmlspecialchars($message) . "</span>
         </div>
         <script>
-            // Set a timeout to remove the notification after 4 seconds
             setTimeout(function() {
-                var notification = document.getElementById('error-notification');
+                var notification = document.getElementById('notification');
                 if (notification) {
-                    notification.style.display = 'none';
-                }
+                    notification.fadeOut(1000, function() {
+                        this.style.display = 'none';
+                    });
             }, 4000);
         </script>
     ";
+}
+
+echo "<div class='notification-container' style='position: relative;'>";
+
+if (isset($_SESSION['error'])) {
+    renderNotification('error', $_SESSION['error']);
     unset($_SESSION['error']);
 }
 
 if (isset($_SESSION['success'])) {
-    echo "
-        <div id='success-notification' class='p-2 success alert-success alert-dismissible fadee'>
-            <h4><i class='icon fa fa-check'></i> Success!</h4>
-            " . $_SESSION['success'] . "
-        </div>
-        <script>
-            // Set a timeout to remove the notification after 4 seconds
-            setTimeout(function() {
-                var notification = document.getElementById('success-notification');
-                if (notification) {
-                    notification.style.display = 'none';
-                }
-            }, 4000); 
-        </script>
-        ";
+    renderNotification('success', $_SESSION['success']);
     unset($_SESSION['success']);
 }
+
+echo "</div>"; // Close the notification container
+?>
+
+<style>
+    #notification {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        z-index: 1000;
+    }
+</style>
