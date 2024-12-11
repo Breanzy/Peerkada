@@ -1,4 +1,91 @@
-<?php session_start(); ?>
+<?php
+
+session_start();
+ob_start(); // Start output buffering
+require '../config.php';
+
+// Check if the ID is valid
+$SchoolID = $_SESSION['name'];
+
+// Fetch profile information
+$stmt = $pdo->prepare("SELECT * FROM members_profile WHERE ID_NUMBER = :id");
+$stmt->execute(['id' => $SchoolID]);
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$row) {
+    $_SESSION['error'] = 'ID Does not exist';
+    header("Location: ../pages/login.php");
+    exit();
+}
+
+if ($row) {
+    $Name = $row['NAME'];
+    $Title = $row['TITLE'];
+    $College = $row['COLLEGE'];
+    $SchoolYr = $row['SCHOOL_YR'];
+    $Course = $row['COURSE'];
+    $Email = $row['EMAIL_ADD'];
+    $Number = $row['PHONE_NUM'];
+    $Address = $row['ADDRESS'];
+    $Birth = $row['BIRTH'];
+    $Sex = $row['SEX'];
+    //Duty hour requirement per month
+    switch ($Title) {
+        case 'Assistant':
+            $DutyHour = 16;
+            break;
+        case 'Junior':
+            $DutyHour = 12;
+            break;
+        case 'Senior':
+            $DutyHour = 10;
+            break;
+        case 'LAV':
+            $DutyHour = 20;
+            break;
+        default:
+            $DutyHour = 0;
+            break;
+    }
+}
+
+// Function to calculate total duty time
+function calculateDutyTime($pdo, $SchoolID, $month = null)
+{
+    $query = "SELECT TIMEIN, TIMEOUT FROM table_attendance WHERE STUDENTID = :id";
+    if ($month) {
+        $query .= " AND DATE_FORMAT(LOGDATE, '%Y-%m') = :logdate";
+    }
+
+    $stmt = $pdo->prepare($query);
+    $params = ['id' => $SchoolID];
+    if ($month) {
+        $params['logdate'] = $month;
+    }
+    $stmt->execute($params);
+
+    $totalDutyTime = 0;
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $signIn = strtotime($row['TIMEIN']);
+        $signOut = strtotime($row['TIMEOUT']);
+
+        if ($signIn && $signOut) {
+            $totalDutyTime += ($signOut - $signIn);
+        }
+    }
+    return round(($totalDutyTime / 3600), 2); // Convert seconds to hours
+}
+
+// Get the current month in 'Y-m' format
+$currentMonth = date('Y-m');
+
+// Calculate monthly and total duty time
+$MonthlyDutyTime = calculateDutyTime($pdo, $SchoolID, $currentMonth);
+$TotalDutyTime = calculateDutyTime($pdo, $SchoolID);
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -48,8 +135,6 @@
         <!-- MAIN CONTENT -->
         <div id="layoutSidenav_content">
             <main>
-
-                <div class="container"></div>
                 <div class="container-fluid p-5">
                     <div class="row">
                         <div class="col-xl-4 p-10 d-flex justify-content-center align-items-center">
@@ -60,82 +145,6 @@
                         </div>
 
                         <div class="col-xl-8 col-md-12 center-align text-lg-start text-center">
-                            <?php
-                            require '../config.php';
-                            // $SchoolID = $_SESSION['name'];
-                            $SchoolID = 12345;
-                            // Fetch profile information
-                            $stmt = $pdo->prepare("SELECT * FROM members_profile WHERE ID_NUMBER = :id");
-                            $stmt->execute(['id' => $SchoolID]);
-                            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                            if ($row) {
-                                $Name = $row['NAME'];
-                                $Title = $row['TITLE'];
-                                $College = $row['COLLEGE'];
-                                $SchoolYr = $row['SCHOOL_YR'];
-                                $Course = $row['COURSE'];
-                                $Email = $row['EMAIL_ADD'];
-                                $Number = $row['PHONE_NUM'];
-                                $Address = $row['ADDRESS'];
-                                $Birth = $row['BIRTH'];
-                                $Sex = $row['SEX'];
-                                //Duty hour requirement per month
-                                switch ($Title) {
-                                    case 'Assistant':
-                                        $DutyHour = 16;
-                                        break;
-                                    case 'Junior':
-                                        $DutyHour = 12;
-                                        break;
-                                    case 'Senior':
-                                        $DutyHour = 10;
-                                        break;
-                                    case 'LAV':
-                                        $DutyHour = 20;
-                                        break;
-                                    default:
-                                        $DutyHour = 0;
-                                        break;
-                                }
-                            }
-
-                            // Function to calculate total duty time
-                            function calculateDutyTime($pdo, $SchoolID, $month = null)
-                            {
-                                $query = "SELECT TIMEIN, TIMEOUT FROM table_attendance WHERE STUDENTID = :id";
-                                if ($month) {
-                                    $query .= " AND DATE_FORMAT(LOGDATE, '%Y-%m') = :logdate";
-                                }
-
-                                $stmt = $pdo->prepare($query);
-                                $params = ['id' => $SchoolID];
-                                if ($month) {
-                                    $params['logdate'] = $month;
-                                }
-                                $stmt->execute($params);
-
-                                $totalDutyTime = 0;
-
-                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                    $signIn = strtotime($row['TIMEIN']);
-                                    $signOut = strtotime($row['TIMEOUT']);
-
-                                    if ($signIn && $signOut) {
-                                        $totalDutyTime += ($signOut - $signIn);
-                                    }
-                                }
-                                return round(($totalDutyTime / 3600), 2); // Convert seconds to hours
-                            }
-
-                            // Get the current month in 'Y-m' format
-                            $currentMonth = date('Y-m');
-
-                            // Calculate monthly and total duty time
-                            $MonthlyDutyTime = calculateDutyTime($pdo, $SchoolID, $currentMonth);
-                            $TotalDutyTime = calculateDutyTime($pdo, $SchoolID);
-                            ?>
-
                             <h3 class="fw-bold fs-1"><?php echo $Name; ?></h3>
                             <h6 class="theme-color lead"><?php echo $Title; ?></h6>
                             <br>
