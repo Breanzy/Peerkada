@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Dashboard - SB Admin</title>
+    <title>Peerkada | Home</title>
 
     <!-- para sa mga icons -->
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -60,7 +60,15 @@
                                     QR Scanner
                                 </div>
 
+
                                 <div class="card-body">
+                                    <div id="timer-container" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                                        <svg width="200" height="200">
+                                            <circle cx="100" cy="100" r="90" stroke="#007bff" stroke-width="10" fill="none" stroke-dasharray="565" stroke-dashoffset="565" transform="rotate(-90 100 100)">
+                                                <animate attributeName="stroke-dashoffset" from="565" to="0" dur="3s" fill="freeze" />
+                                            </circle>
+                                        </svg>
+                                    </div>
                                     <video id="preview" class="rounded-3" width="100%"></video>
                                 </div>
                             </div>
@@ -117,8 +125,7 @@
         </div>
     </div>
 
-    <!-- Hidden text input for passing qr code -->
-    <div class="col-md-4">
+    <div id="form-container">
         <form action="../controllers/QR_Log_insert.php" method="post" class="form-horizontal" name="text">
             <input type="hidden" name="text" id="text" readonny="" placeholder="scan qrcode" class="form-control">
         </form>
@@ -127,25 +134,25 @@
 
     <!-- FOR CAMERA -->
     <script>
-        let scanner = new Instascan.Scanner({
-            video: document.getElementById('preview')
-        });
-        Instascan.Camera.getCameras().then(function(cameras) {
-            if (cameras.length > 0) {
-                scanner.start(cameras[0]);
-            } else {
-                alert('No cameras found');
-            }
-        }).catch(function(e) {
-            console.error(e);
-        });
+        setTimeout(function() {
+            document.getElementById('timer-container').style.display = 'none';
+            let scanner = new Instascan.Scanner({
+                video: document.getElementById('preview')
+            });
+            Instascan.Camera.getCameras().then(function(cameras) {
+                if (cameras.length > 0) {
+                    scanner.start(cameras[0]);
+                } else {
+                    alert('No cameras found');
+                }
+            }).catch(function(e) {
+                console.error(e);
+            });
 
-        scanner.addListener('scan', function(c) {
-            document.getElementById('text').value = c;
-            document.forms['text'].submit();
-        });
+            // Enable the form elements after 3 seconds
+            scanner.addListener('scan', function(c) {
+                document.getElementById('text').value = c;
+                document.forms['text'].submit();
+            });
+        }, 3000);
     </script>
-
-</body>
-
-</html>
