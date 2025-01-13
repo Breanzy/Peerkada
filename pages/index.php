@@ -52,7 +52,7 @@
             <main>
                 <div class="container-fluid p-4">
                     <!-- QR tab -->
-                    <div class="row">
+                    <div class="row d-flex justify-content-center">
                         <div class="col-xl-5 col-lg-6 col-md-10">
                             <div class="card mb-4">
                                 <div class="card-header">
@@ -60,12 +60,11 @@
                                     QR Scanner
                                 </div>
 
-
-                                <div class="card-body">
-                                    <div id="timer-container" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-                                        <svg width="200" height="200">
+                                <div class="card-body" style="position: relative;">
+                                    <div id="timer-container" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50%; max-width: 200px; height: auto; aspect-ratio: 1;">
+                                        <svg width="100%" height="100%" viewBox="0 0 200 200">
                                             <circle cx="100" cy="100" r="90" stroke="#007bff" stroke-width="10" fill="none" stroke-dasharray="565" stroke-dashoffset="565" transform="rotate(-90 100 100)">
-                                                <animate attributeName="stroke-dashoffset" from="565" to="0" dur="3s" fill="freeze" />
+                                                <animate attributeName="stroke-dashoffset" from="565" to="0" dur="2s" fill="freeze" />
                                             </circle>
                                         </svg>
                                     </div>
@@ -90,36 +89,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="container-fluid p-4">
-                    <h1 class="mt-4">Dashboard</h1>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Dashboard</li>
-                    </ol>
-
-                    <div class="row">
-                        <div class="col-xl-6">
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <i class="fas fa-chart-area me-1"></i>
-                                    Area Chart Example
-                                </div>
-                                <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
-                            </div>
-                        </div>
-                        <div class="col-xl-6">
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <i class="fas fa-chart-bar me-1"></i>
-                                    Bar Chart Example
-                                </div>
-                                <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
 
             </main>
         </div>
@@ -154,5 +123,5 @@
                 document.getElementById('text').value = c;
                 document.forms['text'].submit();
             });
-        }, 3000);
+        }, 2000);
     </script>
