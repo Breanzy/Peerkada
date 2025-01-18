@@ -145,10 +145,10 @@ $TotalDutyTime = calculateDutyTime($pdo, $SchoolID);
                         </div>
 
                         <div class="col-xl-8 col-md-12 center-align text-lg-start text-center">
-                            <h3 class="fw-bold fs-1"><?php echo $Name; ?></h3>
+                            <div class="fw-bold fs-1"><?php echo $Name; ?></div>
                             <h6 class="theme-color lead"><?php echo $Title; ?></h6>
                             <br>
-                            <div class="row about-list">
+                            <div class="row about-list fs-3">
                                 <div class="col-sm-6 col-xs-12">
                                     <div class="media">
                                         <label class="fw-bold">Birthday</label>

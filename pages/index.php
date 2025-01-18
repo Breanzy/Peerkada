@@ -41,9 +41,8 @@
 <body class="sb-nav-fixed">
 
     <?php include('../components/TopNav.php'); ?>
-    <div id="layoutSidenav">
+    <div id="layoutSidenav" class="container mt-3">
         <?php include('../components/SideNav.php'); ?>
-
 
         <!-- THE WHOLE CONTENT -->
         <div id="layoutSidenav_content" class="d-flex flex-column justify-content-start">
@@ -61,7 +60,7 @@
                                 </div>
 
                                 <div class="card-body" style="position: relative;">
-                                    <div id="timer-container" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50%; max-width: 200px; height: auto; aspect-ratio: 1;">
+                                    <div id="timer-container" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); aspect-ratio: 1;">
                                         <svg width="100%" height="100%" viewBox="0 0 200 200">
                                             <circle cx="100" cy="100" r="90" stroke="#007bff" stroke-width="10" fill="none" stroke-dasharray="565" stroke-dashoffset="565" transform="rotate(-90 100 100)">
                                                 <animate attributeName="stroke-dashoffset" from="565" to="0" dur="2s" fill="freeze" />
