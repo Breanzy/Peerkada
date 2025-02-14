@@ -14,3 +14,23 @@
         <a class="text-white fw-bold ms-3" href="../controllers/logout.php">Log Out</a>
     </div>
 </nav>
+
+<!-- Toggle the side navigation -->
+<script>
+    window.addEventListener("DOMContentLoaded", (event) => {
+        const sidebarToggle = document.body.querySelector("#sidebarToggle");
+        if (sidebarToggle) {
+            if (localStorage.getItem("sb|sidebar-toggle") === "true") {
+                document.body.classList.toggle("sb-sidenav-toggled");
+            }
+            sidebarToggle.addEventListener("click", (event) => {
+                event.preventDefault();
+                document.body.classList.toggle("sb-sidenav-toggled");
+                localStorage.setItem(
+                    "sb|sidebar-toggle",
+                    document.body.classList.contains("sb-sidenav-toggled")
+                );
+            });
+        }
+    });
+</script>
