@@ -9,19 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>Peerkada | Home</title>
 
-    <!-- para sa mga icons -->
+    <!-- Icons -->
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-
-
-    <!-- para camera thingy -->
-    <script type="text/javascript" src="../js/instascan.min.js"></script>
-
-    <!-- styles  -->
+    <!-- Bootstrap Styling  -->
     <link rel="stylesheet" href="../css/styles.css">
-    <link rel="stylesheet" href="../css/customStyle.css">
-    <!-- FOR BUTTON FUNCTIONALITIES -->
-    <script src="../js/scripts.js"></script>
-    <script src="../js/listhingy.js"></script>
 
 </head>
 

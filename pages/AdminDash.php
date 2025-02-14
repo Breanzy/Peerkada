@@ -33,16 +33,12 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Peerkada | Admin Dashboard</title>
-    <!-- para sa mga icons -->
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-
-
-    <!-- styles  -->
+    
+   <!-- Icons -->
+   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Bootstrap Styling  -->
     <link rel="stylesheet" href="../css/styles.css">
-    <link rel="stylesheet" href="../css/customStyle.css">
-    <!-- FOR BUTTON FUNCTIONALITIES -->
-    <script src="../js/scripts.js"></script>
-    <script src="../js/listhingy.js"></script>
+
 
     <script>
         function editRow(button) {
