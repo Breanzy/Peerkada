@@ -40,9 +40,9 @@
 
 <body class="sb-nav-fixed">
 
-    <?php include('../components/TopNav.php'); ?>
+    <?php require('../components/TopNav.php'); ?>
     <div id="layoutSidenav" class="container mt-3">
-        <?php include('../components/SideNav.php'); ?>
+        <?php require('../components/SideNav.php'); ?>
 
         <!-- THE WHOLE CONTENT -->
         <div id="layoutSidenav_content" class="d-flex flex-column justify-content-start">
@@ -51,25 +51,13 @@
             <main>
                 <div class="container-fluid p-4">
                     <!-- QR tab -->
-                    <div class="row d-flex justify-content-center">
-                        <div class="col-xl-5 col-lg-6 col-md-10">
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <i class="fa fa-camera " aria-hidden="true"></i>
-                                    QR Scanner
-                                </div>
-
-                                <div class="card-body" style="position: relative;">
-                                    <div id="timer-container" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); aspect-ratio: 1;">
-                                        <svg width="100%" height="100%" viewBox="0 0 200 200">
-                                            <circle cx="100" cy="100" r="90" stroke="#007bff" stroke-width="10" fill="none" stroke-dasharray="565" stroke-dashoffset="565" transform="rotate(-90 100 100)">
-                                                <animate attributeName="stroke-dashoffset" from="565" to="0" dur="2s" fill="freeze" />
-                                            </circle>
-                                        </svg>
-                                    </div>
-                                    <video id="preview" class="rounded-3" width="100%"></video>
-                                </div>
+                    <div class="d-flex flex-column justify-content-center gap-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fa fa-camera " aria-hidden="true"></i>
+                                QR Scanner
                             </div>
+                            <?php include '../components/QRCamera.php'; ?>
                         </div>
 
                         <div class="col-xl-7 col-lg-6 col-md-10">
@@ -92,35 +80,3 @@
             </main>
         </div>
     </div>
-
-    <div id="form-container">
-        <form action="../controllers/QR_Log_insert.php" method="post" class="form-horizontal" name="text">
-            <input type="hidden" name="text" id="text" readonny="" placeholder="scan qrcode" class="form-control">
-        </form>
-    </div>
-
-
-    <!-- FOR CAMERA -->
-    <script>
-        setTimeout(function() {
-            document.getElementById('timer-container').style.display = 'none';
-            let scanner = new Instascan.Scanner({
-                video: document.getElementById('preview')
-            });
-            Instascan.Camera.getCameras().then(function(cameras) {
-                if (cameras.length > 0) {
-                    scanner.start(cameras[0]);
-                } else {
-                    alert('No cameras found');
-                }
-            }).catch(function(e) {
-                console.error(e);
-            });
-
-            // Enable the form elements after 3 seconds
-            scanner.addListener('scan', function(c) {
-                document.getElementById('text').value = c;
-                document.forms['text'].submit();
-            });
-        }, 2000);
-    </script>
