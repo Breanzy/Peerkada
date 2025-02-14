@@ -38,19 +38,22 @@
                             <?php include '../components/QRCamera.php'; ?>
                         </div>
 
-                        <div class="col-xl-7 col-lg-6 col-md-10">
-                            <h1>Recent Logs</h1>
+                        <div class="card">
+                            <div class="card-header mb-2">
+                                <i class="fa-solid fa-arrows-rotate " aria-hidden="true"></i>
+                                Recent Logs
+                            </div>
 
-                            <?php
-                            require '../config.php';
-                            date_default_timezone_set("Asia/Singapore");
-                            $DATE = date('Y-m-d');
-
-                            $stmt = $pdo->prepare("SELECT * FROM table_attendance WHERE LOGDATE = :logdate ORDER BY ATTENDANCE_ID DESC limit 6");
-                            $stmt->execute(['logdate' => $DATE]);
-
-                            include '../components/DutyLogTable.php';
-                            ?>
+                            <div class="p-2">
+                                <?php
+                                require '../config.php';
+                                date_default_timezone_set("Asia/Singapore");
+                                $DATE = date('Y-m-d');
+                                $stmt = $pdo->prepare("SELECT * FROM table_attendance WHERE LOGDATE = :logdate ORDER BY ATTENDANCE_ID DESC limit 6");
+                                $stmt->execute(['logdate' => $DATE]);
+                                include '../components/DutyLogTable.php';
+                                ?>
+                            </div>
                         </div>
                     </div>
                 </div>
