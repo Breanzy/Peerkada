@@ -11,7 +11,7 @@
 <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.colVis.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
 
-<table class="table table-hover table-bordered table-striped rounded-3 overflow-hidden" id="example">
+<table class="table table-hover table-bordered table-striped rounded-3 overflow-hidden" id="dutyLogId">
     <thead class="table-dark">
         <tr>
             <th scope="col">Student ID</th>
@@ -59,7 +59,7 @@
 
 <script>
     $(document).ready(function() {
-        var table = $('#example').DataTable({
+        var table = $('#dutyLogId').DataTable({
             lengthChange: false,
             buttons: [{
                     text: "View ",
@@ -77,6 +77,6 @@
             ]
         });
 
-        table.buttons().container().appendTo('#example_wrapper .col-md-6:eq(0)');
+        table.buttons().container().appendTo('#dutyLogId_wrapper .col-md-6:eq(0)');
     });
 </script>
