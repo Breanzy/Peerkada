@@ -15,7 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($user && password_verify($password, $user['PASSWORD'])) {
         // SETS SESSION 'name' TO THE ID NUMBER OF USER AND GOES TO MAIN DASHBOARD
         $_SESSION['name'] = $user['NAME'];
-        $_SESSION['ID_Number'] = $user['ID_Number'];
+        $_SESSION['ID_Number'] = $user['ID_NUMBER'];
+        $_SESSION['isAdmin'] = $user['IS_ADMIN'];
         $_SESSION['success'] = 'Logged in Successfully!';
         header("location: ../pages/index.php");
     } else {
