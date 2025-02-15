@@ -73,17 +73,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             );
 
             $label = new Label(text: $Name);
+            $filePath = __DIR__ . '/../assets/QrCodes/' . $Name . '.png';
             $result = $writer->write($qrCode, $logo, $label);
-            $result->saveToFile(__DIR__ . '/../assets/QrCodes/' . $Name . '.png');
+            $result->saveToFile($filePath);
 
-            $_SESSION['success'] = "Successfully Registered New Profile!";
+            // After successfully generating and saving the QR code
+            $_SESSION['qr_code_path'] = $filePath;
+            $_SESSION['qr_code_name'] = $Name;
         } else {
             $_SESSION['error'] = "Error: " . $stmt->errorInfo()[2];
+            header("location:../pages/register.php");
+            exit();
         }
-        header("location: ../pages/login.php");
-        exit();
     }
 } else {
-    header("location:../pages/login.php");
+    header("location:../pages/register.php");
     exit();
 }
+?>
+
+<!DOCTYPE html>
+<html>
+
+<body>
+    <iframe src="../controllers/Register_Download_QR.php" frameborder="0"></iframe>
+    <script>
+        // Redirect after 100 miliseconds
+        setTimeout(() => {
+            window.location.href = "../pages/login.php";
+        }, 100);
+    </script>
+</body>
+
+</html>

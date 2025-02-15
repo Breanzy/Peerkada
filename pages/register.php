@@ -37,7 +37,6 @@
                                         </div>
 
                                         <div class="card-body card-block text-left">
-                                            <form action="../controllers/Profile_Log_insert.php" method="post" enctype="multipart/form-data" class="form-horizontal">
                                                 <div class="row form-group my-2">
                                                     <div class="col-md-7">
                                                         <input type="text" name="Name" placeholder="Last Name, First Name" class="form-control" required>
