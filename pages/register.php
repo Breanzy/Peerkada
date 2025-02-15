@@ -37,6 +37,7 @@
                                         </div>
 
                                         <div class="card-body card-block text-left">
+                                            <form action="../controllers/Register_Log_Insert.php" method="post" enctype="multipart/form-data" class="form-horizontal">
                                                 <div class="row form-group my-2">
                                                     <div class="col-md-7">
                                                         <input type="text" name="Name" placeholder="Last Name, First Name" class="form-control" required>
@@ -155,18 +156,6 @@
 
             </div>
         </div>
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="js/scripts.js"></script>
-
-        <!-- Jquery JS-->
-        <script src="vendor/jquery/jquery.min.js"></script>
-        <!-- Vendor JS-->
-        <script src="vendor/select2/select2.min.js"></script>
-
-        <!-- Main JS-->
-        <script src="js/global.js"></script>
-
 </body>
 
 </html>
