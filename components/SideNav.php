@@ -8,7 +8,7 @@
                     Dashboard
                 </a>
 
-                <?php if (isset($_SESSION['name']) && $_SESSION['name'] == 'ADMIN') { ?>
+                <?php if (isset($_SESSION['isAdmin'])) { ?>
                     <a class="nav-link" href="../pages/AdminDash.php">
                         <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                         Admin Dashboard
