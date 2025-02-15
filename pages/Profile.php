@@ -3,15 +3,15 @@ session_start();
 ob_start(); // Start output buffering
 require '../config.php';
 
-// Check if Session name is set
-if (!isset($_SESSION['name'])) {
+// Check if Session ID is set
+if (!isset($_SESSION['ID_Number'])) {
     // If not set, redirect to login page
     header('Location: login.php');
     exit();
 }
 
 // Check if the ID is valid
-$SchoolID = $_SESSION['name'];
+$SchoolID = $_SESSION['ID_Number'];
 
 // Fetch profile information
 $stmt = $pdo->prepare("SELECT * FROM members_profile WHERE ID_NUMBER = :id");
@@ -19,7 +19,7 @@ $stmt->execute(['id' => $SchoolID]);
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$row) {
-    $_SESSION['error'] = 'ID Does not existtt';
+    $_SESSION['error'] = 'ID Does not exist';
     header("Location: ../pages/login.php");
     exit();
 }
@@ -107,13 +107,6 @@ if ($row) {
             </main>
         </div>
     </div>
-
-    <script src="js/scripts.js"></script>
-
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript"></script>
 </body>
 
 </html>
