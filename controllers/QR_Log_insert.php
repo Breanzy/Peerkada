@@ -1,8 +1,5 @@
-<?php session_start(); ?>
 <?php
-
-// INITIALIZING
-
+session_start();
 require '../config.php';
 
 // Retrieve the input ID number from POST data
@@ -11,8 +8,6 @@ $text = $_POST['text'];
 // Prepare the SQL statement to check if the ID number exists in the profile DB
 $stmt = $pdo->prepare("SELECT * FROM members_profile WHERE ID_NUMBER = :id_number");
 $stmt->execute(['id_number' => $text]);
-
-
 
 //IF TRUE, UPDATE NEW TIME OUT LOG AND ADD TOTAL TIME TO TOTAL TIME DB
 if ($stmt->rowCount() > 0) {
@@ -53,4 +48,3 @@ if ($stmt->rowCount() > 0) {
 
 header("location: ../pages/index.php");
 $conn->close();
-?>
