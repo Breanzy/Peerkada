@@ -30,86 +30,8 @@ try {
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php require_once '../components/Header.php'; ?>
     <title>Peerkada | Admin Dashboard</title>
-
-    <!-- Icons -->
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <!-- Bootstrap Styling  -->
-    <link rel="stylesheet" href="../css/styles.css">
-
-
-    <script>
-        function editRow(button) {
-            var row = button.parentNode.parentNode; // Get the row of the button
-            var cells = row.getElementsByTagName("td");
-
-            // Loop through each cell and replace the text with input fields
-            for (var i = 0; i < cells.length - 1; i++) { // Exclude the last cell (Actions)
-                var cellValue = cells[i].innerHTML;
-
-                // Determine the type of input based on the column index
-                switch (i) {
-                    case 1: // Title column
-                        cells[i].innerHTML = `
-                   <select name="Title" class="form-control" required>
-                        <option value="" disabled selected>Title</option>
-                        <option value="Assistant">SPF Assistant</option>
-                        <option value="Junior">SPF Junior</option>
-                        <option value="Senior">SPF Senior</option>
-                        <option value="LAV">LAV Associate</option>
-                    </select>`;
-                        break;
-                    case 2: // College column
-                        cells[i].innerHTML = `
-                    <select name="College" class="form-control" required>
-                        <option value="" disabled selected>Select College</option>
-                        <option value="COE">COE</option>
-                        <option value="CHS">CHS</option>
-                        <option value="CEBA">CEBA</option>
-                        <option value="CCS">CCS</option>
-                        <option value="CED">CED</option>
-                        <option value="CSM">CSM</option>
-                        <option value="CASS">CASS</option>
-                    </select>`;
-                        break;
-                    case 3:
-                    case 5: // Email column
-                        cells[i].innerHTML = `<input type = "email" required
-                        value = "${cellValue}"/>`;
-                        break;
-                    case 6: // Phone Number column
-                        cells[i].innerHTML = `<input type = "number" required
-                        value = "${cellValue}"/>`;
-                        break;
-                    case 8: // Birth Date column
-                        cells[i].innerHTML = `<input type = "date" required
-                        value = "${cellValue}"/>`;
-                        break;
-                    case 9: // Birth Date column
-                        cells[i].innerHTML = ` 
-                        <select name="Sex" class="form-control" required>
-                            <option value="" disabled selected>Sex</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                            value = "${cellValue}"
-                        </select>`;
-                        break;
-
-
-                    default:
-                        cells[i].innerHTML = `<input type = "text" required
-                        value = "${cellValue}"/>`;
-                        break;
-                }
-            }
-
-            // Change the button to confirm
-            button.innerHTML = "Confirm";
-            button.setAttribute("onclick", "confirmEdit(this)");
-        }
-    </script>
 </head>
 
 <body class="sb-nav-fixed">

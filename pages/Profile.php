@@ -60,18 +60,8 @@ if ($row) {
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <?php require_once '../components/Header.php'; ?>
     <title>Dashboard - SB Admin</title>
-
-    <!-- Icons -->
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <!-- Bootstrap Styling  -->
-    <link rel="stylesheet" href="../css/styles.css">
-
 </head>
 
 <body class="sb-nav-fixed">
@@ -99,7 +89,7 @@ if ($row) {
 
                             $stmt = $pdo->prepare("SELECT * FROM table_attendance WHERE STUDENTID = :studentId AND STATUS = 1 ORDER BY ATTENDANCE_ID DESC");
                             $stmt->execute(['studentId' => $SchoolID]);
-                            include '../components/DutyLogTable.php';
+                            include '../components/TableAttendance.php';
                             ?>
                         </div>
                     </div>

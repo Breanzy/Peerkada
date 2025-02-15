@@ -2,18 +2,8 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>PEERKADA</title>
-
-    <!-- Icons -->
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <!-- Bootstrap Styling  -->
-    <link rel="stylesheet" href="../css/styles.css">
-
+    <?php require_once '../components/Header.php'; ?>
+    <title>Peerkada | Register</title>
 </head>
 
 <body class="sb-nav-fixed" style="background: linear-gradient(0deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.3)), url(../assets/backgroundd.jpg); background-repeat: no-reapeat; background-attachment: fixed; background-size: cover;">
