@@ -87,8 +87,8 @@ if ($row) {
                             <h2 class="text-center fw-bolder">Duty Logs</h2>
                             <?php
 
-                            $stmt = $pdo->prepare("SELECT * FROM table_attendance WHERE STUDENTID = :studentId AND STATUS = 1 ORDER BY ATTENDANCE_ID DESC");
-                            $stmt->execute(['studentId' => $SchoolID]);
+                            $tableID = 'profileID';
+                            $query = "SELECT * FROM table_attendance WHERE STUDENTID = '$SchoolID' AND STATUS = 1 ORDER BY ATTENDANCE_ID DESC";
                             include '../components/TableAttendance.php';
                             ?>
                         </div>

@@ -1,4 +1,4 @@
-<table class="table table-hover table-bordered table-striped rounded-3 overflow-hidden" id="dutyLogId">
+<table class="table table-hover table-bordered table-striped rounded-3 overflow-hidden" id="<?php echo $tableID; ?>">
     <thead class="table-dark">
         <tr>
             <th scope="col">Student ID</th>
@@ -6,47 +6,42 @@
             <th scope="col">Time In</th>
             <th scope="col">Time Out</th>
             <th scope="col">Total Time</th>
-            <th scope="col">Actions</th>
+            <?php if (isset($_SESSION['isAdmin'])): ?>
+                <th scope="col">Actions</th>
+            <?php endif; ?>
         </tr>
     </thead>
-
     <tbody>
         <?php
+        require_once  '../config.php';
+        $attendanceStmt = $pdo->prepare($query);
+        $attendanceStmt->execute();
+        $logs = $attendanceStmt->fetchAll();
+        unset($query);
 
-        // Check if the required parameters are set
-        if (isset($stmt)) {
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $studentId = htmlspecialchars($row['STUDENTID']);
-                $logDate = htmlspecialchars($row['LOGDATE']);
-                $timeInTimestamp = strtotime($row['TIMEIN']);
-                $timeOutTimestamp = $row['TIMEOUT'] ? strtotime($row['TIMEOUT']) : null;
-                $timeIn = $row['TIMEIN'] ? date('h:i:s A', $timeInTimestamp) : null;
-                $timeOut = $row['TIMEOUT'] ? date('h:i:s A', $timeOutTimestamp) : null;
-                $totalTime = $row['TIMEOUT'] ? gmdate("H \\h\\r/\\s, i \\m\\i\\n/\\s, s \\s\\e\\c/\\s", $timeOutTimestamp - $timeInTimestamp) : null;
-
-                echo "
+        if (!empty($logs)) {
+            foreach ($logs as $log) { ?>
                 <tr>
-                    <th scope='row'>{$studentId}</th>
-                    <td>{$logDate}</td>
-                    <td>{$timeIn}</td>
-                    <td>{$timeOut}</td>
-                    <td>{$totalTime}</td>
-                    <td class='text-center'>
-                        <a class='btn btn-warning fa-solid fa-pen-to-square m-1'></a>
-                        <a class='btn btn-danger fa-solid fa-trash m-1'></a>
-                    </td>
-                </tr>";
-            }
-        } else {
-            echo "<tr><td colspan='6' class='text-center'>No records found.</td></tr>";
-        }
-        ?>
+                    <th scope='row'><?php echo htmlspecialchars($log['STUDENTID']); ?></th>
+                    <td><?php echo htmlspecialchars($log['LOGDATE']); ?></td>
+                    <td><?php echo htmlspecialchars($log['TIMEIN'] ? date('h:i:s A', strtotime($log['TIMEIN'])) : null); ?></td>
+                    <td><?php echo htmlspecialchars($log['TIMEOUT'] ? date('h:i:s A', strtotime($log['TIMEOUT'])) : 'N/A'); ?></td>
+                    <td><?php echo htmlspecialchars($log['TIMEOUT'] ? gmdate("H \\h\\r/\\s, i \\m\\i\\n/\\s, s \\s\\e\\c/\\s", strtotime($log['TIMEOUT']) - strtotime($log['TIMEIN'])) : 'N/A'); ?></td>
+                    <?php if (isset($_SESSION['isAdmin'])): ?>
+                        <td class='text-center'>
+                            <a class='btn btn-warning fa-solid fa-pen-to-square m-1'></a>
+                            <a class='btn btn-danger fa-solid fa-trash m-1'></a>
+                        </td>
+                    <?php endif; ?>
+                </tr>
+        <?php };
+        } ?>
     </tbody>
 </table>
 
 <script>
     $(document).ready(function() {
-        var table = $('#dutyLogId').DataTable({
+        var table = $('#<?php echo $tableID; ?>').DataTable({
             lengthChange: false,
             buttons: [{
                     text: "View ",
@@ -63,7 +58,6 @@
                 }
             ]
         });
-
-        table.buttons().container().appendTo('#dutyLogId_wrapper .col-md-6:eq(0)');
+        table.buttons().container().appendTo('#<?php echo $tableID; ?>_wrapper .col-md-6:eq(0)');
     });
 </script>

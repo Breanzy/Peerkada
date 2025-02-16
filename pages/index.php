@@ -41,8 +41,9 @@ require_once '../config.php';
                                 <?php
                                 date_default_timezone_set("Asia/Singapore");
                                 $DATE = date('Y-m-d');
-                                $stmt = $pdo->prepare("SELECT * FROM table_attendance WHERE LOGDATE = :logdate ORDER BY ATTENDANCE_ID DESC limit 6");
-                                $stmt->execute(['logdate' => $DATE]);
+                                $tableID = 'recentID';
+                                $query = "SELECT * FROM table_attendance WHERE LOGDATE = '$DATE' ORDER BY ATTENDANCE_ID DESC limit 6";
+                                require_once '../components/TableAttendance.php';
                                 ?>
                             </div>
                         </div>
