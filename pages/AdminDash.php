@@ -1,33 +1,12 @@
 <?php session_start();
 require_once '../config.php';
 
-try {
-    // Fetch users
-    $userQuery = "SELECT * FROM members_profile";
-    $userStmt = $pdo->prepare($userQuery);
-    $userStmt->execute();
-    $users = $userStmt->fetchAll();
-
-    // Fetch attendance logs where TIMEOUT is not null
-    $attendanceQuery = "SELECT * FROM table_attendance WHERE TIMEOUT IS NOT NULL";
-    $attendanceStmt = $pdo->prepare($attendanceQuery);
-    $attendanceStmt->execute();
-    $attendanceLogs = $attendanceStmt->fetchAll();
-
-    // Fetch attendance logs where TIMEOUT is null
-    $missingSignOutQuery = "SELECT * FROM table_attendance WHERE TIMEOUT IS NULL";
-    $missingSignOutStmt = $pdo->prepare($missingSignOutQuery);
-    $missingSignOutStmt->execute();
-    $missingSignOutLogs = $missingSignOutStmt->fetchAll();
-} catch (PDOException $e) {
-    die("Query failed: " . $e->getMessage());
 if (!isset($_SESSION['isAdmin'])) {
     // If not set, redirect to login page
     header('Location: login.php');
     exit();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -50,49 +29,12 @@ if (!isset($_SESSION['isAdmin'])) {
 
                 <form action="">
                     <h2>Users</h2>
-                    <table id="usersTable" class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Title</th>
-                                <th>College</th>
-                                <th>School Year</th>
-                                <th>Course</th>
-                                <th>Email Address</th>
-                                <th>Phone Number</th>
-                                <th>Address</th>
-                                <th>Birth Date</th>
-                                <th>Sex</th>
-                                <th>Actions</th> <!-- New column for actions -->
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (!empty($users)) {
-                                foreach ($users as $user) { ?>
-                                    <tr>
-                                        <td><?php echo htmlspecialchars($user['NAME']); ?></td>
-                                        <td><?php echo htmlspecialchars($user['TITLE']); ?></td>
-                                        <td><?php echo htmlspecialchars($user['COLLEGE']); ?></td>
-                                        <td><?php echo htmlspecialchars($user['SCHOOL_YR']); ?></td>
-                                        <td><?php echo htmlspecialchars($user['COURSE']); ?></td>
-                                        <td><?php echo htmlspecialchars($user['EMAIL_ADD']); ?></td>
-                                        <td><?php echo htmlspecialchars($user['PHONE_NUM']); ?></td>
-                                        <td><?php echo htmlspecialchars($user['ADDRESS']); ?></td>
-                                        <td><?php echo htmlspecialchars($user['BIRTH']); ?></td>
-                                        <td><?php echo htmlspecialchars($user['SEX']); ?></td>
-                                        <td>
-                                            <button type="button" onclick="editRow(this)">Edit</button>
-                                            <button type="button" onclick="deleteRow(this)">Delete</button>
-                                        </td>
-                                    </tr>
-                                <?php }
-                            } else { ?>
-                                <tr>
-                                    <td colspan="11">No users found.</td>
-                                </tr>
-                            <?php } ?>
-                        </tbody>
-                    </table>
+
+                    <?php
+                    // Fetch users
+                    $query = "SELECT * FROM members_profile";
+                    require_once '../components/TableUsers.php';
+                    ?>
 
                     <h2>Attendance Logs (Signed Out)</h2>
                     <table id="attendanceTable" class="table table-striped table-bordered">
