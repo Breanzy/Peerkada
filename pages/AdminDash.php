@@ -1,7 +1,3 @@
-<?php
-session_start();
-// Include the PDO configuration
-require '../config.php';
 
 try {
     // Fetch users
@@ -36,15 +32,12 @@ try {
 
 <body class="sb-nav-fixed">
 
-    <?php include('../components/TopNav.php'); ?>
     <div id="layoutSidenav" class="container mt-3">
-        <?php include('../components/SideNav.php'); ?>
 
         <div id="layoutSidenav_content" class="d-flex flex-column justify-content-start">
             <main>
 
                 <h1>Admin Dashboard</h1>
-                <?php require '../components/Notifications.php'; ?>
 
                 <form action="">
                     <h2>Users</h2>

@@ -1,7 +1,7 @@
 <?php
 session_start();
 ob_start(); // Start output buffering
-require '../config.php';
+require_once '../config.php';
 
 // Check if Session ID is set
 if (!isset($_SESSION['ID_Number'])) {
@@ -61,7 +61,7 @@ if ($row) {
 
 <head>
     <?php require_once '../components/Header.php'; ?>
-    <title>Dashboard - SB Admin</title>
+    <title>Peerkada | Profile</title>
 </head>
 
 <body class="sb-nav-fixed">

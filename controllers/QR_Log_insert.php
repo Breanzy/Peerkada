@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../config.php';
+require_once '../config.php';
 
 // Retrieve the input ID number from POST data
 $text = $_POST['text'];

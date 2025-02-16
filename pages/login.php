@@ -11,7 +11,7 @@
 <body class="bg-dark d-flex flex-column min-vh-100">
 
     <?php unset($_SESSION['name']); ?>
-    <?php require '../components/Notifications.php'; ?>
+    <?php require_once '../components/Notifications.php'; ?>
     <div class="container h-100 flex-fill d-flex align-items-center justify-content-center">
         <div class="row w-100 d-flex justify-content-between align-items-center gap-4">
             <div class="col-lg-6 mx-auto d-flex justify-content-around gap-3 align-items-center">
@@ -43,7 +43,7 @@
                         </form>
                         <div class="d-flex justify-content-between mt-3">
                             <p class="text-center my-auto">Not a member? <a data-toggle="tab" href="register.php">Sign Up</a></p>
-                            <p class="text-center my-auto"><a data-toggle="tab" href="register.php">GUEST MODE</a></p>
+                            <p class="text-center my-auto"><a data-toggle="tab" href="index.php">GUEST MODE</a></p>
                         </div>
                     </div>
                 </div>
@@ -51,7 +51,7 @@
         </div>
     </div>
 
-    <?php include('../components/Footer.php'); ?>
+    <?php require_once('../components/Footer.php'); ?>
 </body>
 
 </html>
