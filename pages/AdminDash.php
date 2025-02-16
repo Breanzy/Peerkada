@@ -1,3 +1,5 @@
+<?php session_start();
+require_once '../config.php';
 
 try {
     // Fetch users
@@ -19,6 +21,10 @@ try {
     $missingSignOutLogs = $missingSignOutStmt->fetchAll();
 } catch (PDOException $e) {
     die("Query failed: " . $e->getMessage());
+if (!isset($_SESSION['isAdmin'])) {
+    // If not set, redirect to login page
+    header('Location: login.php');
+    exit();
 }
 ?>
 
@@ -32,12 +38,15 @@ try {
 
 <body class="sb-nav-fixed">
 
+    <?php require_once('../components/TopNav.php'); ?>
     <div id="layoutSidenav" class="container mt-3">
+        <?php require_once('../components/SideNav.php'); ?>
 
         <div id="layoutSidenav_content" class="d-flex flex-column justify-content-start">
             <main>
 
                 <h1>Admin Dashboard</h1>
+                <?php require_once '../components/Notifications.php'; ?>
 
                 <form action="">
                     <h2>Users</h2>
