@@ -62,4 +62,4 @@
     });
 </script>
 
-i'll code tomorrow i swears
+oh lawd the shame
