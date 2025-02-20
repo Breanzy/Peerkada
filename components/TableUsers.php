@@ -122,56 +122,38 @@
                     </select>
                 </td>
                 <td class='text-center'>
-                    <button class='btn btn-success save-btn m-1'>Save</button>
-                    <button class='btn btn-secondary cancel-btn m-1'>Cancel</button>
+                    <div class="btn-group" role="group">
+                        <button class='btn btn-success save-btn m-1 fa-check fa-solid'>Save</button>
+                        <button class='btn btn-secondary cancel-btn m-1 fa-times fa-solid'>Cancel</button>
+                    </div>
                 </td>
             `);
 
-            // Save button click event
-            row.find('.save-btn').on('click', function() {
-                // Collect updated data and send to server for saving
-                var updatedData = {
-                    profileId: userId, // Use profile Id as the unique identifier
-                    name: row.find('input[name="name"]').val(),
-                    idNumber: row.find('input[name="idNumber"]').val(),
-                    title: row.find('select[name="title"]').val(),
-                    college: row.find('input[name="college"]').val(),
-                    schoolYear: row.find('input[name="schoolYear"]').val(),
-                    course: row.find('input[name="course"]').val(),
-                    email: row.find('input[name="email"]').val(),
-                    phone: row.find('input[name="phone"]').val(),
-                    address: row.find('input[name="address"]').val(),
-                    birthDate: row.find('input[name="birthDate"]').val(),
-                    sex: row.find('select[name="sex"]').val()
-                };
-
-                console.log(updatedData); // Log the data being sent
 
 
-            });
-
-            // Cancel button click event
-            row.find('.cancel-btn').on('click', function() {
+            // Cancel button click event (using event delegation)
+            $('#userTable').on('click', '.cancel-btn', function() {
+                var row = $(this).closest('tr');
                 // Revert back to original row data
                 row.html(`
-                    <td>${name}</td>
-                    <td>${idNumber}</td>
-                    <td>${title}</td>
-                    <td>${college}</td>
-                    <td>${schoolYear}</td>
-                    <td>${course}</td>
-                    <td>${email}</td>
-                    <td>${phone}</td>
-                    <td>${address}</td>
-                    <td>${birthDate}</td>
-                    <td>${sex}</td>
-                    <td class='text-center'>
-                        <div class="btn-group" role="group">
-                            <button class='btn btn-warning edit-btn fa-solid fa-pen-to-square m-1'>Edit</button>
-                            <button class='btn btn-danger delete-btn fa-solid fa-trash m-1'>Delete</button>
-                        </div>
-                    </td>
-                `);
+                <td>${name}</td>
+                <td>${idNumber}</td>
+                <td>${title}</td>
+                <td>${college}</td>
+                <td>${schoolYear}</td>
+                <td>${course}</td>
+                <td>${email}</td>
+                <td>${phone}</td>
+                <td>${address}</td>
+                <td>${birthDate}</td>
+                <td>${sex}</td>
+                <td class='text-center'>
+                    <div class="btn-group" role="group">
+                        <button class='btn btn-warning edit-btn fa-solid fa-pen-to-square m-1'>Edit</button>
+                        <button class='btn btn-danger delete-btn fa-solid fa-trash m-1'>Delete</button>
+                    </div>
+                </td>
+            `);
             });
         });
     });
