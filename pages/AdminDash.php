@@ -27,33 +27,29 @@ if (!isset($_SESSION['isAdmin'])) {
                 <h1>Admin Dashboard</h1>
                 <?php require_once '../components/Notifications.php'; ?>
 
-                <form action="">
-                    <h2>Users</h2>
+                <h2>Users</h2>
 
-                    <?php
-                    // Fetch users
-                    $query = "SELECT * FROM members_profile";
-                    require_once '../components/TableUsers.php';
-                    ?>
+                <?php
+                // Fetch users
+                $query = "SELECT * FROM members_profile";
+                require_once '../components/TableUsers.php';
+                ?>
 
-                    <h2>Attendance Logs (Signed Out)</h2>
-                    <?php
-                    // Fetch attendance logs where TIMEOUT is not null
-                    $tableID = 'signedOut';
-                    $query = "SELECT * FROM table_attendance WHERE TIMEOUT IS NOT NULL";
-                    require '../components/TableAttendance.php';
-                    ?>
+                <h2>Attendance Logs (Signed Out)</h2>
+                <?php
+                // Fetch attendance logs where TIMEOUT is not null
+                $tableID = 'signedOut';
+                $query = "SELECT * FROM table_attendance WHERE TIMEOUT IS NOT NULL";
+                require '../components/TableAttendance.php';
+                ?>
 
-                    <h2>Attendance Logs (Missing Sign Out)</h2>
-                    <?php
-                    // Fetch attendance logs where TIMEOUT is null
-                    $tableID = 'notSignedOut';
-                    $query = "SELECT * FROM table_attendance WHERE TIMEOUT IS NULL";
-                    require '../components/TableAttendance.php';
-
-                    ?>
-
-                </form>
+                <h2>Attendance Logs (Missing Sign Out)</h2>
+                <?php
+                // Fetch attendance logs where TIMEOUT is null
+                $tableID = 'notSignedOut';
+                $query = "SELECT * FROM table_attendance WHERE TIMEOUT IS NULL";
+                require '../components/TableAttendance.php';
+                ?>
             </main>
         </div>
     </div>
