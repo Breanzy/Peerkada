@@ -130,6 +130,73 @@
             `);
 
 
+            // Save button click event handler
+            $('#userTable').on('click', '.save-btn', function() {
+                var row = $(this).closest('tr');
+                var userId = row.data('user-id');
+
+                // Gather form data
+                var formData = {
+                    userId: userId,
+                    name: row.find('input[name="name"]').val(),
+                    idNumber: row.find('input[name="idNumber"]').val(),
+                    title: row.find('select[name="title"]').val(),
+                    college: row.find('input[name="college"]').val(),
+                    schoolYear: row.find('input[name="schoolYear"]').val(),
+                    course: row.find('input[name="course"]').val(),
+                    email: row.find('input[name="email"]').val(),
+                    phone: row.find('input[name="phone"]').val(),
+                    address: row.find('input[name="address"]').val(),
+                    birthDate: row.find('input[name="birthDate"]').val(),
+                    sex: row.find('select[name="sex"]').val()
+                };
+
+                // Send AJAX request
+                $.ajax({
+                    url: '../controllers/update_users.php', // Create this PHP file to handle the update
+                    method: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        try {
+                            const result = JSON.parse(response);
+                            if (result.success) {
+                                // Update the row with new values
+                                row.html(`
+                        <td>${formData.name}</td>
+                        <td>${formData.idNumber}</td>
+                        <td>${formData.title}</td>
+                        <td>${formData.college}</td>
+                        <td>${formData.schoolYear}</td>
+                        <td>${formData.course}</td>
+                        <td>${formData.email}</td>
+                        <td>${formData.phone}</td>
+                        <td>${formData.address}</td>
+                        <td>${formData.birthDate}</td>
+                        <td>${formData.sex}</td>
+                        <td class='text-center'>
+                            <div class="btn-group" role="group">
+                                <button class='btn btn-warning edit-btn fa-solid fa-pen-to-square m-1'>Edit</button>
+                                <button class='btn btn-danger delete-btn fa-solid fa-trash m-1'>Delete</button>
+                            </div>
+                        </td>
+                    `);
+
+                                // Show success message
+                                alert('User information updated successfully!');
+                            } else {
+                                alert('Error updating user: ' + result.message);
+                            }
+                        } catch (e) {
+                            alert('Error processing server response');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Error updating user: ' + error);
+                    }
+                });
+            });
+
+
 
             // Cancel button click event (using event delegation)
             $('#userTable').on('click', '.cancel-btn', function() {
