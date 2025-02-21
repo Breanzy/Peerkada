@@ -67,6 +67,49 @@
 
         table.buttons().container().appendTo('#<?php echo $tableID; ?>_wrapper .col-md-6:eq(0)');
 
+        // Add this to your existing $(document).ready function
+        $('#<?php echo $tableID; ?>').on('click', '.delete-btn', function() {
+            var row = $(this).closest('tr');
+            var attendanceId = row.data('attendance-id');
+            var studentId = row.find('th:first').text();
+
+            // Show confirmation dialog
+            if (confirm(`Are you sure you want to delete the attendance record for Student ID: ${studentId}?`)) {
+                $.ajax({
+                    url: '../controllers/DeleteAttendance.php',
+                    method: 'POST',
+                    data: {
+                        attendanceId: attendanceId
+                    },
+                    success: function(response) {
+                        try {
+                            const result = JSON.parse(response);
+                            if (result.success) {
+                                // Remove the row from the table
+                                row.fadeOut(400, function() {
+                                    // Get the DataTable instance
+                                    var table = $('#<?php echo $tableID; ?>').DataTable();
+                                    // Remove the row from DataTable
+                                    table.row(row).remove().draw();
+                                });
+                                alert('Attendance record deleted successfully!');
+                            } else {
+                                alert('Error deleting attendance: ' + result.message);
+                            }
+                        } catch (e) {
+                            alert('Error processing server response');
+                            console.error('Response:', response);
+                            console.error('Error:', e);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Error deleting attendance: ' + error);
+                        console.error('AJAX Error:', status, error);
+                    }
+                });
+            }
+        });
+
         // Edit button click handler
         $('#<?php echo $tableID; ?>').on('click', '.edit-btn', function() {
             // Remove any existing event handlers
