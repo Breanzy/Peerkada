@@ -97,6 +97,13 @@
                         try {
                             const result = JSON.parse(response);
                             if (result.success) {
+                                // Remove the row from the table with animation
+                                row.fadeOut(400, function() {
+                                    // Get the DataTable instance
+                                    var table = $('#userTable').DataTable();
+                                    // Remove the row from DataTable
+                                    table.row(row).remove().draw();
+                                });
                                 alert('User deleted successfully!');
                             } else {
                                 alert('Error deleting user: ' + result.message);
