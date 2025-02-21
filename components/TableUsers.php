@@ -79,6 +79,42 @@
             ]
         });
 
+        // Add this inside your $(document).ready function
+        $('#userTable').on('click', '.delete-btn', function() {
+            var row = $(this).closest('tr');
+            var userId = row.data('user-id');
+            var userName = row.find('td:first').text();
+
+            // Show confirmation dialog with user name
+            if (confirm(`Are you sure you want to delete the user "${userName}"? This action cannot be undone.`)) {
+                $.ajax({
+                    url: '../controllers/DeleteUser.php',
+                    method: 'POST',
+                    data: {
+                        userId: userId
+                    },
+                    success: function(response) {
+                        try {
+                            const result = JSON.parse(response);
+                            if (result.success) {
+                                alert('User deleted successfully!');
+                            } else {
+                                alert('Error deleting user: ' + result.message);
+                            }
+                        } catch (e) {
+                            alert('Error processing server response');
+                            console.error('Response:', response);
+                            console.error('Error:', e);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Error deleting user: ' + error);
+                        console.error('AJAX Error:', status, error);
+                    }
+                });
+            }
+        });
+
         // Use one global event handler for the edit button
         $('#userTable').on('click', '.edit-btn', function() {
             // Remove any existing event handlers for save and cancel
