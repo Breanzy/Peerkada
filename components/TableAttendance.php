@@ -44,9 +44,7 @@
         var table = $('#<?php echo $tableID; ?>').DataTable({
             lengthChange: false,
             pageLength: 5,
-            autoWidth: true,
             responsive: true,
-            scrollX: true,
             columnDefs: [{
                 className: 'text-center',
                 targets: '_all'
@@ -66,81 +64,136 @@
                 }
             ]
         });
+
         table.buttons().container().appendTo('#<?php echo $tableID; ?>_wrapper .col-md-6:eq(0)');
 
-        // Edit button click event
+        // Edit button click handler
         $('#<?php echo $tableID; ?>').on('click', '.edit-btn', function() {
+            // Remove any existing event handlers
+            $('#<?php echo $tableID; ?>').off('click', '.save-btn');
+            $('#<?php echo $tableID; ?>').off('click', '.cancel-btn');
+
             var row = $(this).closest('tr');
             var studentId = row.data('student-id');
             var logDate = row.find('td:nth-child(2)').text();
             var timeIn = row.find('td:nth-child(3)').text();
             var timeOut = row.find('td:nth-child(4)').text();
 
+            // Convert display time format to HTML time input format (HH:mm)
+            function convertToTimeInputFormat(timeStr) {
+                if (timeStr === 'N/A' || !timeStr) return '';
+                var date = new Date(`2000/01/01 ${timeStr}`);
+                return date.getHours().toString().padStart(2, '0') + ':' +
+                    date.getMinutes().toString().padStart(2, '0');
+            }
+
             // Replace row content with input fields
             row.html(`
-                <th scope='row'>${studentId}</th>
-                <td><input type='date' value='${logDate}' class='form-control' name='logDate'></td>
-                <td><input type='time' value='${timeIn}' class='form-control' name='timeIn'></td>
-                <td><input type='time' value='${timeOut}' class='form-control' name='timeOut'></td>
-                <td><span class='total-time'>N/A</span></td>
-                <td class='text-center'>
-                    <button class='btn btn-success save-btn'>Save</button>
-                    <button class='btn btn-secondary cancel-btn'>Cancel</button>
-                </td>
-            `);
+            <th scope='row'>${studentId}</th>
+            <td><input type='date' value='${logDate}' class='form-control' name='logDate'></td>
+            <td><input type='time' value='${convertToTimeInputFormat(timeIn)}' class='form-control' name='timeIn'></td>
+            <td><input type='time' value='${convertToTimeInputFormat(timeOut)}' class='form-control' name='timeOut'></td>
+            <td>Calculated on save</td>
+            <td class='text-center'>
+                <div class="btn-group" role="group">
+                    <button class='btn btn-success save-btn m-1 fa-check fa-solid'>Save</button>
+                    <button class='btn btn-secondary cancel-btn m-1 fa-times fa-solid'>Cancel</button>
+                </div>
+            </td>
+        `);
 
-            // Calculate total time on input change
-            row.find('input[name="timeIn"], input[name="timeOut"]').on('change', function() {
-                var timeInValue = row.find('input[name="timeIn"]').val();
-                var timeOutValue = row.find('input[name="timeOut"]').val();
-                if (timeInValue && timeOutValue) {
-                    var totalTime = (new Date('1970-01-01T' + timeOutValue) - new Date('1970-01-01T' + timeInValue)) / 1000;
-                    var hours = Math.floor(totalTime / 3600);
-                    var minutes = Math.floor((totalTime % 3600) / 60);
-                    var seconds = totalTime % 60;
-                    row.find('.total-time').text(`${hours} h ${minutes} m ${seconds} s`);
-                }
-            });
+            // Save button click handler
+            $('#<?php echo $tableID; ?>').on('click', '.save-btn', function() {
+                var saveRow = $(this).closest('tr');
+                var formData = {
+                    studentId: studentId,
+                    logDate: saveRow.find('input[name="logDate"]').val(),
+                    timeIn: saveRow.find('input[name="timeIn"]').val(),
+                    timeOut: saveRow.find('input[name="timeOut"]').val()
+                };
 
-            // Save button click event
-            row.find('.save-btn').on('click', function() {
-                var updatedLogDate = row.find('input[name="logDate"]').val();
-                var updatedTimeIn = row.find('input[name="timeIn"]').val();
-                var updatedTimeOut = row.find('input[name="timeOut"]').val();
                 $.ajax({
-                    url: 'editusers.php', // Your update script
-                    type: 'POST',
-                    data: {
-                        userId: userId,
-                        name: updatedName,
-                        title: updatedTitle,
-                        college: updatedCollege,
-                        schoolYear: updatedSchoolYear,
-                        course: updatedCourse,
-                        email: updatedEmail,
-                        phone: updatedPhone,
-                        address: updatedAddress,
-                        birthDate: updatedBirthDate,
-                        sex: updatedSex
-                    },
+                    url: '../controllers/UpdateAttendance.php',
+                    method: 'POST',
+                    data: formData,
                     success: function(response) {
-                        var result = JSON.parse(response);
-                        if (result.status === 'success') {
-                            alert(result.message);
-                            location.reload(); // Reload the page to see changes
-                        } else {
-                            alert(result.message);
+                        try {
+                            const result = JSON.parse(response);
+                            if (result.success) {
+                                // Format times for display
+                                const timeInDisplay = formData.timeIn ? new Date(`2000/01/01 ${formData.timeIn}`).toLocaleTimeString('en-US') : '';
+                                const timeOutDisplay = formData.timeOut ? new Date(`2000/01/01 ${formData.timeOut}`).toLocaleTimeString('en-US') : 'N/A';
+
+                                // Calculate total time
+                                let totalTime = 'N/A';
+                                if (formData.timeIn && formData.timeOut) {
+                                    const timeInMs = new Date(`2000/01/01 ${formData.timeIn}`).getTime();
+                                    const timeOutMs = new Date(`2000/01/01 ${formData.timeOut}`).getTime();
+                                    const diff = Math.floor((timeOutMs - timeInMs) / 1000); // difference in seconds
+
+                                    const hours = Math.floor(diff / 3600);
+                                    const minutes = Math.floor((diff % 3600) / 60);
+                                    const seconds = diff % 60;
+                                    totalTime = `${hours} hrs, ${minutes} mins, ${seconds} secs`;
+                                }
+
+                                // Update the row with new values
+                                saveRow.html(`
+                                <th scope='row'>${studentId}</th>
+                                <td>${formData.logDate}</td>
+                                <td>${timeInDisplay}</td>
+                                <td>${timeOutDisplay}</td>
+                                <td>${totalTime}</td>
+                                <td class='text-center'>
+                                    <div class="btn-group" role="group">
+                                        <button class='btn btn-warning edit-btn fa-solid fa-pen-to-square m-1'>Edit</button>
+                                        <button class='btn btn-danger delete-btn fa-solid fa-trash m-1'>Delete</button>
+                                    </div>
+                                </td>
+                            `);
+
+                                alert('Attendance record updated successfully!');
+                            } else {
+                                alert('Error updating attendance: ' + result.message);
+                            }
+                        } catch (e) {
+                            alert('Error processing server response');
+                            console.error('Response:', response);
+                            console.error('Error:', e);
                         }
                     },
                     error: function(xhr, status, error) {
-                        alert('Error updating record: ' + error);
+                        alert('Error updating attendance: ' + error);
+                        console.error('AJAX Error:', status, error);
                     }
                 });
+
+                // Clean up event handlers
+                $('#<?php echo $tableID; ?>').off('click', '.save-btn');
+                $('#<?php echo $tableID; ?>').off('click', '.cancel-btn');
             });
 
-            // Cancel button click event
-            row.find('.cancel-btn').on('click', function() {
-                location.reload(); // Reload the page to discard changes
+            // Cancel button click handler
+            $('#<?php echo $tableID; ?>').on('click', '.cancel-btn', function() {
+                var cancelRow = $(this).closest('tr');
+                // Revert back to original row data
+                cancelRow.html(`
+                <th scope='row'>${studentId}</th>
+                <td>${logDate}</td>
+                <td>${timeIn}</td>
+                <td>${timeOut}</td>
+                <td>${row.find('td:nth-child(5)').text()}</td>
+                <td class='text-center'>
+                    <div class="btn-group" role="group">
+                        <button class='btn btn-warning edit-btn fa-solid fa-pen-to-square m-1'>Edit</button>
+                        <button class='btn btn-danger delete-btn fa-solid fa-trash m-1'>Delete</button>
+                    </div>
+                </td>
+            `);
+
+                // Clean up event handlers
+                $('#<?php echo $tableID; ?>').off('click', '.save-btn');
+                $('#<?php echo $tableID; ?>').off('click', '.cancel-btn');
             });
         });
     });
