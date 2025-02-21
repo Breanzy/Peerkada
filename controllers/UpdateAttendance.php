@@ -10,7 +10,7 @@ if (!isset($_SESSION['isAdmin'])) {
 
 try {
     // Validate input
-    $requiredFields = ['studentId', 'logDate', 'timeIn'];
+    $requiredFields = ['attendanceId', 'logDate', 'timeIn'];
 
     foreach ($requiredFields as $field) {
         if (!isset($_POST[$field]) || empty(trim($_POST[$field]))) {
@@ -23,16 +23,16 @@ try {
               LOGDATE = :logDate,
               TIMEIN = :timeIn,
               TIMEOUT = :timeOut
-              WHERE STUDENTID = :studentId";
+              WHERE ATTENDANCE_ID = :attendanceId";
 
     $stmt = $pdo->prepare($query);
 
     // Execute update with sanitized data
     $result = $stmt->execute([
-        'studentId' => htmlspecialchars($_POST['studentId']),
         'logDate' => htmlspecialchars($_POST['logDate']),
         'timeIn' => htmlspecialchars($_POST['timeIn']),
-        'timeOut' => !empty($_POST['timeOut']) ? htmlspecialchars($_POST['timeOut']) : null
+        'timeOut' => !empty($_POST['timeOut']) ? htmlspecialchars($_POST['timeOut']) : null,
+        'attendanceId' => htmlspecialchars($_POST['attendanceId']),
     ]);
 
     if ($result) {

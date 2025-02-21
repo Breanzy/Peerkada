@@ -102,7 +102,7 @@
             // Replace row content with input fields
             row.html(`
             <td><input type='text' value='${name}' class='form-control' name='name'></td>
-            <td><input type='text' value='${idNumber}' class='form-control' name='idNumber'></td>
+            <td><input type='number' value='${idNumber}' class='form-control' name='idNumber'></td>
             <td>
                 <select class='form-control' name='title'>
                     <option value='Assistant' ${title === 'Assistant' ? 'selected' : ''}>Assistant</option>
@@ -114,7 +114,7 @@
             <td><input type='text' value='${schoolYear}' class='form-control' name='schoolYear'></td>
             <td><input type='text' value='${course}' class='form-control' name='course'></td>
             <td><input type='email' value='${email}' class='form-control' name='email'></td>
-            <td><input type='text' value='${phone}' class='form-control' name='phone'></td>
+            <td><input type='number' value='${phone}' class='form-control' name='phone'></td>
             <td><input type='text' value='${address}' class='form-control' name='address'></td>
             <td><input type='date' value='${birthDate}' class='form-control' name='birthDate'></td>
             <td>
@@ -200,6 +200,8 @@
                     }
                 });
             });
+
+
 
             // Add new cancel button handler
             $('#userTable').on('click', '.cancel-btn', function() {

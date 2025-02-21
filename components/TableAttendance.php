@@ -21,7 +21,7 @@
 
         if (!empty($logs)) {
             foreach ($logs as $log) { ?>
-                <tr data-student-id="<?php echo htmlspecialchars($log['STUDENTID']); ?>">
+                <tr data-attendance-id="<?php echo htmlspecialchars($log['ATTENDANCE_ID']); ?>">
                     <th scope='row'><?php echo htmlspecialchars($log['STUDENTID']); ?></th>
                     <td><?php echo htmlspecialchars($log['LOGDATE']); ?></td>
                     <td><?php echo htmlspecialchars($log['TIMEIN'] ? date('h:i:s A', strtotime($log['TIMEIN'])) : null); ?></td>
@@ -74,7 +74,8 @@
             $('#<?php echo $tableID; ?>').off('click', '.cancel-btn');
 
             var row = $(this).closest('tr');
-            var studentId = row.data('student-id');
+            var attendanceId = row.data('attendance-id');
+            var studentId = row.find('th:nth-child(1)').text();
             var logDate = row.find('td:nth-child(2)').text();
             var timeIn = row.find('td:nth-child(3)').text();
             var timeOut = row.find('td:nth-child(4)').text();
@@ -106,7 +107,7 @@
             $('#<?php echo $tableID; ?>').on('click', '.save-btn', function() {
                 var saveRow = $(this).closest('tr');
                 var formData = {
-                    studentId: studentId,
+                    attendanceId: attendanceId,
                     logDate: saveRow.find('input[name="logDate"]').val(),
                     timeIn: saveRow.find('input[name="timeIn"]').val(),
                     timeOut: saveRow.find('input[name="timeOut"]').val()
