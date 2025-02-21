@@ -23,33 +23,53 @@ if (!isset($_SESSION['isAdmin'])) {
 
         <div id="layoutSidenav_content" class="d-flex flex-column justify-content-start">
             <main>
-
-                <h1>Admin Dashboard</h1>
                 <?php require_once '../components/Notifications.php'; ?>
+                <h1>Admin Dashboard</h1>
 
-                <h2>Users</h2>
+                <div class="card mb-3">
+                    <div class="card-header mb-1">
 
-                <?php
-                // Fetch users
-                $query = "SELECT * FROM members_profile";
-                require_once '../components/TableUsers.php';
-                ?>
+                        <h2>Users</h2>
+                    </div>
+                    <div class="p-2">
+                        <?php
+                        // Fetch users
+                        $query = "SELECT * FROM members_profile";
+                        require_once '../components/TableUsers.php';
+                        ?>
 
-                <h2>Attendance Logs (Signed Out)</h2>
-                <?php
-                // Fetch attendance logs where TIMEOUT is not null
-                $tableID = 'signedOut';
-                $query = "SELECT * FROM table_attendance WHERE TIMEOUT IS NOT NULL";
-                require '../components/TableAttendance.php';
-                ?>
+                    </div>
 
-                <h2>Attendance Logs (Missing Sign Out)</h2>
-                <?php
-                // Fetch attendance logs where TIMEOUT is null
-                $tableID = 'notSignedOut';
-                $query = "SELECT * FROM table_attendance WHERE TIMEOUT IS NULL";
-                require '../components/TableAttendance.php';
-                ?>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-header mb-1">
+                        <h2>Attendance Logs (Signed Out)</h2>
+                    </div>
+                    <div class="p-2">
+                        <?php
+                        // Fetch attendance logs where TIMEOUT is not null
+                        $tableID = 'signedOut';
+                        $query = "SELECT * FROM table_attendance WHERE TIMEOUT IS NOT NULL";
+                        require '../components/TableAttendance.php';
+                        ?>
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-header mb-1">
+
+                        <h2>Attendance Logs (Missing Sign Out)</h2>
+                    </div>
+                    <div class="p-2">
+                        <?php
+                        // Fetch attendance logs where TIMEOUT is null
+                        $tableID = 'notSignedOut';
+                        $query = "SELECT * FROM table_attendance WHERE TIMEOUT IS NULL";
+                        require '../components/TableAttendance.php';
+                        ?>
+                    </div>
+                </div>
             </main>
         </div>
     </div>
