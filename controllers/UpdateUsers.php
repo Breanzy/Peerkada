@@ -36,20 +36,31 @@ try {
         throw new Exception("Invalid email format");
     }
 
+    // Check if ID number already exists (excluding the current user)
+    $checkStmt = $pdo->prepare("SELECT COUNT(*) FROM members_profile WHERE ID_NUMBER = :idNumber AND USER_ID != :userId");
+    $checkStmt->execute([
+        'idNumber' => $_POST['idNumber'],
+        'userId' => $_POST['userId']
+    ]);
+
+    if ($checkStmt->fetchColumn() > 0) {
+        throw new Exception("ID Number already exists");
+    }
+
     // Prepare update query
-    $query = "UPDATE members_profile SET 
-              NAME = :name,
-              ID_NUMBER = :idNumber,
-              TITLE = :title,
-              COLLEGE = :college,
-              SCHOOL_YR = :schoolYear,
-              COURSE = :course,
-              EMAIL_ADD = :email,
-              PHONE_NUM = :phone,
-              ADDRESS = :address,
-              BIRTH = :birthDate,
-              SEX = :sex
-              WHERE USER_ID = :userId";
+    $query = "UPDATE members_profile SET
+        NAME = :name,
+        ID_NUMBER = :idNumber,
+        TITLE = :title,
+        COLLEGE = :college,
+        SCHOOL_YR = :schoolYear,
+        COURSE = :course,
+        EMAIL_ADD = :email,
+        PHONE_NUM = :phone,
+        ADDRESS = :address,
+        BIRTH = :birthDate,
+        SEX = :sex
+        WHERE USER_ID = :userId";
 
     $stmt = $pdo->prepare($query);
 

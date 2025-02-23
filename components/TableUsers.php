@@ -194,7 +194,7 @@
 
                 // Send AJAX request
                 $.ajax({
-                    url: '../controllers/update_users.php', // Create this PHP file to handle the update
+                    url: '../controllers/UpdateUsers.php', // Create this PHP file to handle the update
                     method: 'POST',
                     data: formData,
                     success: function(response) {
