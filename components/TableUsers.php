@@ -25,7 +25,7 @@
 
         if (!empty($users)) {
             foreach ($users as $user) { ?>
-                <tr data-user-id="<?php echo htmlspecialchars($user['PROFILE_ID']); ?>">
+                <tr data-user-id="<?php echo htmlspecialchars($user['USER_ID']); ?>">
                     <td><?php echo htmlspecialchars($user['NAME']); ?></td>
                     <td><?php echo htmlspecialchars($user['ID_NUMBER']); ?></td>
                     <td><?php echo htmlspecialchars($user['TITLE']); ?></td>

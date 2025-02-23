@@ -49,7 +49,7 @@ try {
               ADDRESS = :address,
               BIRTH = :birthDate,
               SEX = :sex
-              WHERE PROFILE_ID = :userId";
+              WHERE USER_ID = :userId";
 
     $stmt = $pdo->prepare($query);
 

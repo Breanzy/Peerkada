@@ -25,11 +25,11 @@ try {
 
     // Delete associated records first (if any)
     // For example, if you have attendance records linked to this user:
-    $stmtAttendance = $pdo->prepare("DELETE FROM table_attendance WHERE STUDENTID = (SELECT ID_NUMBER FROM members_profile WHERE PROFILE_ID = ?)");
+    $stmtAttendance = $pdo->prepare("DELETE FROM table_attendance WHERE STUDENTID = (SELECT ID_NUMBER FROM members_profile WHERE USER_ID = ?)");
     $stmtAttendance->execute([$userId]);
 
     // Delete the user profile
-    $stmtUser = $pdo->prepare("DELETE FROM members_profile WHERE PROFILE_ID = ?");
+    $stmtUser = $pdo->prepare("DELETE FROM members_profile WHERE USER_ID = ?");
     $result = $stmtUser->execute([$userId]);
 
     if ($result) {
