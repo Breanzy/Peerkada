@@ -88,7 +88,7 @@ if ($row) {
                             <?php
 
                             $tableID = 'profileID';
-                            $query = "SELECT * FROM table_attendance WHERE STUDENTID = '$SchoolID' AND STATUS = 1 ORDER BY ATTENDANCE_ID DESC";
+                            $query = "SELECT * FROM table_attendance WHERE STUDENTID = '$SchoolID' AND TIMEOUT IS NOT NULL ORDER BY ATTENDANCE_ID DESC";
                             include '../components/TableAttendance.php';
                             ?>
                         </div>

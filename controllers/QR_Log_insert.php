@@ -17,14 +17,14 @@ if ($stmt->rowCount() > 0) {
     $time = date('His');
 
     // Prepare the SQL statement to check for unclosed time-in logs
-    $attendanceStmt = $pdo->prepare("SELECT * FROM table_attendance WHERE STUDENTID = :student_id AND LOGDATE = :log_date AND STATUS = '0'");
+    $attendanceStmt = $pdo->prepare("SELECT * FROM table_attendance WHERE STUDENTID = :student_id AND LOGDATE = :log_date AND TIMEOUT IS NULL");
     $attendanceStmt->execute(['student_id' => $text, 'log_date' => $date]);
 
     // IF TRUE, UPDATE NEW TIME OUT LOG
     if ($attendanceStmt->rowCount() > 0) {
 
         // Prepare the update statement
-        $updateStmt = $pdo->prepare("UPDATE table_attendance SET TIMEOUT = :timeout, STATUS = '1' WHERE STUDENTID = :student_id AND LOGDATE = :log_date AND STATUS = '0'");
+        $updateStmt = $pdo->prepare("UPDATE table_attendance SET TIMEOUT = :timeout WHERE STUDENTID = :student_id AND LOGDATE = :log_date");
         $updateStmt->execute([
             'timeout' => $time,
             'student_id' => $text,
@@ -33,12 +33,11 @@ if ($stmt->rowCount() > 0) {
         $_SESSION['success'] = "Successfully Signed Out!";
     } else {
         // IF FALSE, CREATE A NEW UNCLOSED TIME-IN LOG
-        $insertStmt = $pdo->prepare("INSERT INTO table_attendance (STUDENTID, TIMEIN, LOGDATE, STATUS) VALUES (:student_id, :timein, :log_date, :status)");
+        $insertStmt = $pdo->prepare("INSERT INTO table_attendance (STUDENTID, TIMEIN, LOGDATE) VALUES (:student_id, :timein, :log_date)");
         $insertStmt->execute([
             'student_id' => $text,
             'timein' => $time,
             'log_date' => $date,
-            'status' => '0'
         ]);
         $_SESSION['success'] = "Successfully Signed In!";
     }
