@@ -92,6 +92,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
+for my blog post only :3
+
 <!DOCTYPE html>
 <html>
 
