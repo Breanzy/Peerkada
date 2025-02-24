@@ -1,14 +1,5 @@
-<?php session_start();
-
-//For QR Code Generation
-require '../vendor/autoload.php';
-
-use Endroid\QrCode\QrCode;
-use Endroid\QrCode\Writer\PngWriter;
-use Endroid\QrCode\Encoding\Encoding;
-use Endroid\QrCode\Label\Label;
-use Endroid\QrCode\Logo\Logo;
-use Endroid\QrCode\ErrorCorrectionLevel;
+<?php
+session_start();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     //Form Contents
@@ -39,49 +30,92 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Proceed with function
         $stmt = $pdo->prepare(
             "INSERT INTO members_profile 
-        (NAME, ID_NUMBER, TITLE, COLLEGE, SCHOOL_YR, COURSE, EMAIL_ADD, PHONE_NUM, ADDRESS, BIRTH, SEX, PASSWORD) 
-        VALUES (:Name, :SchoolID, :Title, :College, :SchoolYr, :Course, :Email, :Number, :Address, :Birth, :Sex, :Password)"
+            (NAME, ID_NUMBER, TITLE, COLLEGE, SCHOOL_YR, COURSE, EMAIL_ADD, PHONE_NUM, ADDRESS, BIRTH, SEX, PASSWORD) 
+            VALUES (:Name, :SchoolID, :Title, :College, :SchoolYr, :Course, :Email, :Number, :Address, :Birth, :Sex, :Password)"
         );
 
-        if ($stmt->execute([
-            ':Name' => $Name,
-            ':SchoolID' => $SchoolID,
-            ':Title' => $Title,
-            ':College' => $College,
-            ':SchoolYr' => $SchoolYr,
-            ':Course' => $Course,
-            ':Email' => $Email,
-            ':Number' => $Number,
-            ':Address' => $Address,
-            ':Birth' => $Birth,
-            ':Sex' => $Sex,
-            ':Password' => $Password,
-        ])) {
+        try {
+            if ($stmt->execute([
+                ':Name' => $Name,
+                ':SchoolID' => $SchoolID,
+                ':Title' => $Title,
+                ':College' => $College,
+                ':SchoolYr' => $SchoolYr,
+                ':Course' => $Course,
+                ':Email' => $Email,
+                ':Number' => $Number,
+                ':Address' => $Address,
+                ':Birth' => $Birth,
+                ':Sex' => $Sex,
+                ':Password' => $Password,
+            ])) {
+                $_SESSION['success'] = "Successfully registered!";
+?>
+                <!DOCTYPE html>
+                <html>
 
-            // Create QR code
-            $writer = new PngWriter();
-            $qrCode = new QrCode(
-                data: $SchoolID,
-                encoding: new Encoding('UTF-8'),
-                errorCorrectionLevel: ErrorCorrectionLevel::High
-            );
+                <head>
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                </head>
 
-            $logo = new Logo(
-                path: __DIR__ . '/../assets/LogoRed.png',
-                resizeToWidth: 125,
-                punchoutBackground: false
-            );
+                <body>
+                    <script>
+                        // Generate QR code using AJAX
+                        $.ajax({
+                            url: '../controllers/QRCodeAPI.php',
+                            method: 'POST',
+                            data: {
+                                action: 'generate',
+                                userId: '<?php echo $SchoolID; ?>',
+                                name: '<?php echo $Name; ?>'
+                            },
+                            success: function(response) {
+                                const result = JSON.parse(response);
+                                if (result.success) {
+                                    // Trigger QR code download
+                                    const form = document.createElement('form');
+                                    form.method = 'POST';
+                                    form.action = '../controllers/QRCodeAPI.php';
 
-            $label = new Label(text: $Name);
-            $filePath = __DIR__ . '/../assets/QrCodes/' . $Name . '.png';
-            $result = $writer->write($qrCode, $logo, $label);
-            $result->saveToFile($filePath);
+                                    const actionInput = document.createElement('input');
+                                    actionInput.type = 'hidden';
+                                    actionInput.name = 'action';
+                                    actionInput.value = 'download';
 
-            // After successfully generating and saving the QR code
-            $_SESSION['qr_code_path'] = $filePath;
-            $_SESSION['qr_code_name'] = $Name;
-        } else {
-            $_SESSION['error'] = "Error: " . $stmt->errorInfo()[2];
+                                    const userIdInput = document.createElement('input');
+                                    userIdInput.type = 'hidden';
+                                    userIdInput.name = 'userId';
+                                    userIdInput.value = '<?php echo $SchoolID; ?>';
+
+                                    form.appendChild(actionInput);
+                                    form.appendChild(userIdInput);
+                                    document.body.appendChild(form);
+                                    form.submit();
+
+                                    // Redirect to login page after a short delay
+                                    setTimeout(() => {
+                                        window.location.href = "../pages/login.php";
+                                    }, 1000);
+                                } else {
+                                    alert('Error generating QR code: ' + result.error);
+                                    window.location.href = "../pages/login.php";
+                                }
+                            },
+                            error: function() {
+                                alert('Error generating QR code');
+                                window.location.href = "../pages/login.php";
+                            }
+                        });
+                    </script>
+                </body>
+
+                </html>
+<?php
+            } else {
+                throw new Exception($stmt->errorInfo()[2]);
+            }
+        } catch (Exception $e) {
+            $_SESSION['error'] = "Error: " . $e->getMessage();
             header("location:../pages/register.php");
             exit();
         }
@@ -91,20 +125,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     exit();
 }
 ?>
-
-for my blog post only :3
-
-<!DOCTYPE html>
-<html>
-
-<body>
-    <iframe src="../controllers/Register_Download_QR.php" frameborder="0"></iframe>
-    <script>
-        // Redirect after 100 miliseconds
-        setTimeout(() => {
-            window.location.href = "../pages/login.php";
-        }, 100);
-    </script>
-</body>
-
-</html>

@@ -1,0 +1,82 @@
+<?php
+require_once '../vendor/autoload.php';
+
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\Label\Label;
+use Endroid\QrCode\Logo\Logo;
+use Endroid\QrCode\ErrorCorrectionLevel;
+
+class QrCodeController
+{
+    private $baseDir;
+
+    public function __construct()
+    {
+        $this->baseDir = __DIR__ . '/../assets/QrCodes/';
+        if (!file_exists($this->baseDir)) {
+            mkdir($this->baseDir, 0755, true);
+        }
+    }
+
+    public function generateQrCode($userId, $name)
+    {
+        try {
+            $writer = new PngWriter();
+            $qrCode = new QrCode(
+                data: $userId,
+                encoding: new Encoding('UTF-8'),
+                errorCorrectionLevel: ErrorCorrectionLevel::High
+            );
+
+            $logo = new Logo(
+                path: __DIR__ . '/../assets/LogoRed.png',
+                resizeToWidth: 125,
+                punchoutBackground: false
+            );
+
+            $label = new Label(text: $name);
+            $filename = $this->sanitizeFilename($userId) . '.png';
+            $filePath = $this->baseDir . $filename;
+
+            $result = $writer->write($qrCode, $logo, $label);
+            $result->saveToFile($filePath);
+
+            return [
+                'success' => true,
+                'filename' => $filename,
+                'filepath' => $filePath
+            ];
+        } catch (Exception $e) {
+            return [
+                'success' => false,
+                'error' => $e->getMessage()
+            ];
+        }
+    }
+
+    public function downloadQrCode($userId)
+    {
+        $filename = $this->sanitizeFilename($userId) . '.png';
+        $filePath = $this->baseDir . $filename;
+
+        if (!file_exists($filePath)) {
+            return [
+                'success' => false,
+                'error' => 'QR Code not found'
+            ];
+        }
+
+        return [
+            'success' => true,
+            'filepath' => $filePath,
+            'filename' => $filename
+        ];
+    }
+
+    private function sanitizeFilename($filename)
+    {
+        return preg_replace('/[^a-zA-Z0-9-_]/', '', $filename);
+    }
+}

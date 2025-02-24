@@ -93,6 +93,10 @@ if ($row) {
                             ?>
                         </div>
                     </div>
+
+                    <button id="downloadQrCode" class="btn btn-primary">
+                        Download QR Code
+                    </button>
                 </div>
             </main>
         </div>
@@ -100,3 +104,28 @@ if ($row) {
 </body>
 
 </html>
+
+<script>
+    document.getElementById('downloadQrCode').addEventListener('click', function() {
+        // Create a form and submit it to trigger the download
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '../controllers/QRCodeAPI.php';
+
+        const actionInput = document.createElement('input');
+        actionInput.type = 'hidden';
+        actionInput.name = 'action';
+        actionInput.value = 'download';
+
+        const userIdInput = document.createElement('input');
+        userIdInput.type = 'hidden';
+        userIdInput.name = 'userId';
+        userIdInput.value = '<?php echo $SchoolID; ?>';
+
+        form.appendChild(actionInput);
+        form.appendChild(userIdInput);
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+    });
+</script>
