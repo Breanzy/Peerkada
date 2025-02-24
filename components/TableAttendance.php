@@ -44,7 +44,9 @@
         var table = $('#<?php echo $tableID; ?>').DataTable({
             lengthChange: false,
             pageLength: 5,
+            autoWidth: true,
             responsive: true,
+            scrollX: true,
             columnDefs: [{
                 className: 'text-center',
                 targets: '_all'

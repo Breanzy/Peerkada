@@ -40,8 +40,9 @@
                     <?php if (isset($_SESSION['isAdmin'])): ?>
                         <td class='text-center'>
                             <div class="btn-group" role="group">
-                                <button class='btn btn-warning edit-btn fa-solid fa-pen-to-square m-1'>Edit</button>
-                                <button class='btn btn-danger delete-btn fa-solid fa-trash m-1'>Delete</button>
+                                <button class='btn btn-warning edit-btn fa-solid fa-pen-to-square m-1' title="Edit User">Edit</button>
+                                <button class='btn btn-danger delete-btn fa-solid fa-trash m-1' title="Delete User">Delete</button>
+                                <button class='btn btn-info qr-btn fa-solid fa-qrcode m-1' title="Download QR Code">QR</button>
                             </div>
                         </td>
                     <?php endif; ?>
@@ -81,7 +82,81 @@
 
         table.buttons().container().appendTo('#userTable_wrapper .col-md-6:eq(0)');
 
-        // Add this inside your $(document).ready function
+        // Add QR code download handler
+        $('#userTable').on('click', '.qr-btn', function() {
+            var table = $('#userTable').DataTable();
+            var rowData = table.row($(this).closest('tr')).data();
+
+            // If rowData is undefined (common in rendered HTML tables), get data from cells
+            if (!rowData) {
+                var tr = $(this).closest('tr');
+                var row = table.row(tr);
+
+                // Using cell().data() to get values
+                var userId = table.cell(row.index(), 1).data(); // ID_NUMBER column (index 1)
+                var userName = table.cell(row.index(), 0).data(); // NAME column (index 0)
+            } else {
+                var userId = rowData[1]; // Access via array index
+                var userName = rowData[0];
+            }
+
+            // First generate/ensure QR code exists
+            $.ajax({
+                url: '../controllers/QRCodeAPI.php',
+                method: 'POST',
+                data: {
+                    action: 'generate',
+                    userId: userId,
+                    name: userName
+                },
+                success: function(response) {
+                    try {
+                        const result = JSON.parse(response);
+                        if (result.success) {
+                            // Create form for download
+                            const form = document.createElement('form');
+                            form.method = 'POST';
+                            form.action = '../controllers/QRCodeAPI.php';
+
+                            const actionInput = document.createElement('input');
+                            actionInput.type = 'hidden';
+                            actionInput.name = 'action';
+                            actionInput.value = 'download';
+
+                            const userIdInput = document.createElement('input');
+                            userIdInput.type = 'hidden';
+                            userIdInput.name = 'userId';
+                            userIdInput.value = userId;
+
+                            form.appendChild(actionInput);
+                            form.appendChild(userIdInput);
+                            document.body.appendChild(form);
+                            form.submit();
+                            document.body.removeChild(form);
+                        } else {
+                            alert('Error generating QR code: ' + result.error);
+                        }
+                    } catch (e) {
+                        alert('Error processing server response');
+                        console.error('Response:', response);
+                        console.error('Error:', e);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    let errorMessage = 'Error generating QR code';
+                    try {
+                        const response = JSON.parse(xhr.responseText);
+                        errorMessage = response.error || errorMessage;
+                    } catch (e) {
+                        console.error('Raw server error:', xhr.responseText);
+                    }
+                    alert(errorMessage);
+                }
+            });
+        });
+
+
+        // Delete function
         $('#userTable').on('click', '.delete-btn', function() {
             var row = $(this).closest('tr');
             var userId = row.data('user-id');
@@ -216,12 +291,13 @@
                                 <td>${formData.address}</td>
                                 <td>${formData.birthDate}</td>
                                 <td>${formData.sex}</td>
-                                <td class='text-center'>
-                                    <div class="btn-group" role="group">
-                                        <button class='btn btn-warning edit-btn fa-solid fa-pen-to-square m-1'>Edit</button>
-                                        <button class='btn btn-danger delete-btn fa-solid fa-trash m-1'>Delete</button>
-                                    </div>
-                                </td>
+                            <td class='text-center'>
+                                <div class="btn-group" role="group">
+                                    <button class='btn btn-warning edit-btn fa-solid fa-pen-to-square m-1' title="Edit User">Edit</button>
+                                    <button class='btn btn-danger delete-btn fa-solid fa-trash m-1' title="Delete User">Delete</button>
+                                    <button class='btn btn-info qr-btn fa-solid fa-qrcode m-1' title="Download QR Code">QR</button>
+                                </div>
+                            </td>
                             `);
 
                                 // Show success message
@@ -266,8 +342,9 @@
                 <td>${sex}</td>
                 <td class='text-center'>
                     <div class="btn-group" role="group">
-                        <button class='btn btn-warning edit-btn fa-solid fa-pen-to-square m-1'>Edit</button>
-                        <button class='btn btn-danger delete-btn fa-solid fa-trash m-1'>Delete</button>
+                        <button class='btn btn-warning edit-btn fa-solid fa-pen-to-square m-1' title="Edit User">Edit</button>
+                        <button class='btn btn-danger delete-btn fa-solid fa-trash m-1' title="Delete User">Delete</button>
+                        <button class='btn btn-info qr-btn fa-solid fa-qrcode m-1' title="Download QR Code">QR</button>
                     </div>
                 </td>
             `);
