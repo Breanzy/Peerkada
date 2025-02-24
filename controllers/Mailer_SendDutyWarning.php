@@ -63,7 +63,7 @@ try {
     $mail->Host       = 'smtp.gmail.com';
     $mail->SMTPAuth   = true;
     $mail->Username   = 'julius.carbonilla@gmail.com';
-    $mail->Password   = 'ymag uqbe ctkt iwhq';
+    $mail->Password   = $_ENV['SMTP_PASSWORD'];
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
     $mail->Port       = 465;
 
@@ -72,15 +72,22 @@ try {
         $mail->addAddress($user['EMAIL_ADD']);
         $mail->addReplyTo('julius.carbonilla@gmail.com');
         $mail->isHTML(true);
-        $mail->Subject = 'OSPF | Insufficient Duty Time Warning - Id Number: ' . $user['NAME'];
+        $mail->Subject = 'Peerkada | Insufficient Duty Time Warning: ' . date('F Y', strtotime($currentMonth));
         $mail->Body = "
-            <p>Dear {$user['NAME']},</p>
-            <p>This is a reminder that you have insufficient duty time for the current month.</p>
-            <p><strong>Total Hours Completed:</strong> {$user['total_hours']} hours</p>
-            <p><strong>Required Hours:</strong> {$user['required_hours']} hours</p>
-            <p>Please make sure to fulfill your duty requirements as soon as possible.</p>
-            <p>Thank you!</p>
-        ";
+        <div style='font-family: Arial, sans-serif; line-height: 1.5;'>
+            <p style='font-size: 18px; font-weight: bold;'>Dear {$user['NAME']},</p>
+            <p style='font-size: 16px;'>We are reaching out to inform you that you currently have insufficient duty time for this month.</p>
+            
+            <p style='font-size: 16px;'><strong style='font-size: 18px;'>Required Hours:</strong> " . number_format($user['required_hours'], 2) . " hours</p>
+            <p style='font-size: 16px;'><strong style='font-size: 18px;'>Total Hours Completed:</strong> " . number_format($user['total_hours'], 2) . " hours</p>
+            <p style='font-size: 16px;'><strong style='font-size: 18px;'>Remaining Hours:</strong> " . number_format($user['remaining_hours'], 2) . " hours</p>
+            
+            <p style='font-size: 16px;'>Please ensure that you complete your remaining hours as soon as possible. Your participation is important for the success of our organization, and we appreciate your efforts.</p>
+                        
+            <p style='font-size: 16px;'>Thank you.</p>
+            <p style='font-size: 12px; color: gray;'>*This is an automated message. Please do not reply.*</p>
+        </div>
+    ";
 
         if ($mail->send()) {
             $results[] = ['email' => $user['EMAIL_ADD'], 'status' => 'success'];
