@@ -69,6 +69,16 @@ if (!isset($_SESSION['isAdmin'])) {
                         require '../components/TableAttendance.php';
                         ?>
                     </div>
+
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-header mb-1">
+                        <h2>Unfulfilled Monthly Duties</h2>
+                    </div>
+                    <div class="p-2">
+                        <?php require '../components/TableUnfulfilledDuty.php'; ?>
+                    </div>
                 </div>
             </main>
         </div>

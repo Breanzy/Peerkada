@@ -79,6 +79,8 @@
             ]
         });
 
+        table.buttons().container().appendTo('#userTable_wrapper .col-md-6:eq(0)');
+
         // Add this inside your $(document).ready function
         $('#userTable').on('click', '.delete-btn', function() {
             var row = $(this).closest('tr');
