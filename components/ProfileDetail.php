@@ -2,7 +2,7 @@
     <div class="col-xl-4 p-10 d-flex justify-content-center align-items-center">
         <div class="" style="height: 250px; width: 250px;">
 
-            <img src="../assets/backgroundd.jpg" class="h-100 w-100 rounded-circle" style="object-fit: cover;" alt="Image">
+            <img src="<?php echo $profile_pic_path; ?>" alt="Profile Picture" class="img-fluid rounded-circle border border-primary" style="width: 200px; height: 200px; object-fit: cover;">
         </div>
     </div>
 

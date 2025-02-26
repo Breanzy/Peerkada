@@ -107,7 +107,6 @@ $unfulfilled = $stmt->fetchAll();
                 targets: '_all'
             }]
         });
-        streak keeeeeeeeeeeeeeeeeeeeeep
 
         // Append buttons to the correct location
         table.buttons().container().appendTo('#unfulfilledTable_wrapper .col-md-6:eq(0)');
