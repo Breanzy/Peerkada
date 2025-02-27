@@ -5,6 +5,7 @@
             <img src="<?php echo $profile_pic_path; ?>" alt="Profile Picture" class="img-fluid rounded-circle border border-primary" style="width: 200px; height: 200px; object-fit: cover;">
         </div>
     </div>
+    test
 
     <div class="col-xl-8 col-md-12 center-align text-lg-start text-center">
         <div class="fw-bold fs-1"><?php echo $Name; ?></div>
