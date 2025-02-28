@@ -1,3 +1,22 @@
+<?php
+// Check for profile picture in various formats
+$school_id = $SchoolID; // Using the ID from the session
+$profile_pic_found = false;
+$profile_pic_path = "../assets/ProfilePictures/default.jpg"; // Default image
+
+// Check for possible file extensions
+$extensions = ['jpg', 'jpeg', 'png', 'gif'];
+foreach ($extensions as $ext) {
+    $test_path = "../assets/ProfilePictures/" . $school_id . "." . $ext;
+    if (file_exists($test_path)) {
+        $profile_pic_path = $test_path;
+        $profile_pic_found = true;
+        break;
+    }
+}
+?>
+
+
 <div class="row">
     <div class="col-xl-4 p-10 d-flex justify-content-center align-items-center">
         <div class="" style="height: 250px; width: 250px;">
@@ -5,7 +24,7 @@
             <img src="<?php echo $profile_pic_path; ?>" alt="Profile Picture" class="img-fluid rounded-circle border border-primary" style="width: 200px; height: 200px; object-fit: cover;">
         </div>
     </div>
-    test
+    I'LL BE AT SCHOOL TOMORROW SO I PROMISE YOU FOR SURE I WILL FINISH THIS 
 
     <div class="col-xl-8 col-md-12 center-align text-lg-start text-center">
         <div class="fw-bold fs-1"><?php echo $Name; ?></div>
