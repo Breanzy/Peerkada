@@ -1,30 +1,42 @@
-<?php
-// Check for profile picture in various formats
-$school_id = $SchoolID; // Using the ID from the session
-$profile_pic_found = false;
-$profile_pic_path = "../assets/ProfilePictures/default.jpg"; // Default image
-
-// Check for possible file extensions
-$extensions = ['jpg', 'jpeg', 'png', 'gif'];
-foreach ($extensions as $ext) {
-    $test_path = "../assets/ProfilePictures/" . $school_id . "." . $ext;
-    if (file_exists($test_path)) {
-        $profile_pic_path = $test_path;
-        $profile_pic_found = true;
-        break;
-    }
-}
-?>
-
-
 <div class="row">
     <div class="col-xl-4 p-10 d-flex justify-content-center align-items-center">
-        <div class="" style="height: 250px; width: 250px;">
+        <div class="position-relative" style="height: 250px; width: 250px;">
+            <?php
+            // Check if user has a profile picture
+            $profilePicPath = "../assets/ProfilePictures/" . $SchoolID . ".jpg";
+            $defaultPicPath = "../assets/ProfilePictures/default.jpg";
 
-            <img src="<?php echo $profile_pic_path; ?>" alt="Profile Picture" class="img-fluid rounded-circle border border-primary" style="width: 200px; height: 200px; object-fit: cover;">
+            // If file doesn't exist with .jpg, try other extensions
+            if (!file_exists($profilePicPath)) {
+                $profilePicPath = "../assets/ProfilePictures/" . $SchoolID . ".jpeg";
+                if (!file_exists($profilePicPath)) {
+                    $profilePicPath = "../assets/ProfilePictures/" . $SchoolID . ".png";
+                    if (!file_exists($profilePicPath)) {
+                        $profilePicPath = "../assets/ProfilePictures/" . $SchoolID . ".gif";
+                        if (!file_exists($profilePicPath)) {
+                            // If no profile pic found with any extension, use default
+                            $profilePicPath = $defaultPicPath;
+                        }
+                    }
+                }
+            }
+
+            // Add a timestamp parameter to prevent browser caching
+            $profilePicPath = $profilePicPath . "?t=" . time();
+            ?>
+
+            <!-- Profile image with Bootstrap classes for borders and interactive elements -->
+            <div class="border border-primary border-3 rounded-circle p-1 h-100 w-100">
+                <img src="<?php echo $profilePicPath; ?>"
+                    class="h-100 w-100 rounded-circle"
+                    style="object-fit: cover;"
+                    alt="Profile Image"
+                    id="profilePicture"
+                    data-bs-toggle="modal"
+                    data-bs-target="#changeProfilePicModal">
+            </div>
         </div>
     </div>
-    I'LL BE AT SCHOOL TOMORROW SO I PROMISE YOU FOR SURE I WILL FINISH THIS 
 
     <div class="col-xl-8 col-md-12 center-align text-lg-start text-center">
         <div class="fw-bold fs-1"><?php echo $Name; ?></div>
@@ -70,6 +82,9 @@ foreach ($extensions as $ext) {
                     <p><?php echo $SchoolYr; ?></p>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
 
         </div>
     </div>

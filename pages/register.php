@@ -125,7 +125,7 @@
                                                     </div>
 
                                                     <div class="col-md-6">
-                                                        <input type="file" name="Picture" class="form-control-file">
+                                                        <input type="file" name="profile_picture" id="profile_picture" class="form-control-file">
                                                         <small class="help-block form-text">Please Select your Profile Picture</small>
                                                     </div>
                                                 </div>

@@ -16,6 +16,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $Sex = $_POST['Sex'];
     $Password = password_hash($_POST['Password'], PASSWORD_BCRYPT);
 
+    // Profile picture handling
+    $profile_picture = "default.jpg"; // Default image in case no upload
+
+    // Check if profile picture was uploaded
+    if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] == 0) {
+        $allowed = ['jpg', 'jpeg', 'png', 'gif'];
+        $filename = $_FILES['profile_picture']['name'];
+        $file_ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+
+        // Validate file extension
+        if (in_array($file_ext, $allowed)) {
+            // Create directory if it doesn't exist
+            $upload_dir = "../assets/ProfilePictures/";
+            if (!is_dir($upload_dir)) {
+                mkdir($upload_dir, 0777, true);
+            }
+
+            // Set the new filename to the user's School ID
+            $new_filename = $SchoolID . '.' . $file_ext;
+            $destination = $upload_dir . $new_filename;
+
+            // Move the uploaded file to our directory
+            if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $destination)) {
+                $profile_picture = $new_filename;
+            } else {
+                $_SESSION['warning'] = "Error uploading profile picture. Using default.";
+            }
+        } else {
+            $_SESSION['warning'] = "Invalid file format. Only JPG, JPEG, PNG and GIF are allowed.";
+        }
+    }
+
     // Check if ID Number already exists in the database
     require '../config.php';
     $stmt = $pdo->prepare("SELECT * FROM members_profile WHERE ID_NUMBER = :SchoolID");
