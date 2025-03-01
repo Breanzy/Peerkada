@@ -86,6 +86,42 @@
     </div>
 </div>
 
+<!-- Modal for changing profile picture -->
+<div class="modal fade" id="changeProfilePicModal" tabindex="-1" aria-labelledby="changeProfilePicModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changeProfilePicModalLabel">Change Profile Picture</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="../controllers/UpdateProfilePicture.php" method="POST" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="profile_picture" class="form-label">Select New Profile Picture</label>
+                        <input type="file" class="form-control" id="profile_picture" name="profile_picture" accept="image/jpeg,image/png,image/gif" required>
+                        <div class="form-text">Accepted formats: JPG, JPEG, PNG, GIF</div>
+                    </div>
+                    <input type="hidden" name="school_id" value="<?php echo $SchoolID; ?>">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Upload New Picture</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+<!-- Preview selected image script -->
+<script>
+    document.getElementById('profile_picture').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('profilePicture').src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
