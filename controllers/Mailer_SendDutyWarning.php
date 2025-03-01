@@ -62,13 +62,13 @@ try {
     $mail->isSMTP();
     $mail->Host       = 'smtp.gmail.com';
     $mail->SMTPAuth   = true;
-    $mail->Username   = 'julius.carbonilla@gmail.com';
+    $mail->Username   = 'peerkadaIIT@gmail.com';
     $mail->Password   = $_ENV['SMTP_PASSWORD'];
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
     $mail->Port       = 465;
 
     foreach ($unfulfilled as $user) {
-        $mail->setFrom('julius.carbonilla@gmail.com', 'Breanzyy');
+        $mail->setFrom('julius.carbonilla@gmail.com', 'Peerkada');
         $mail->addAddress($user['EMAIL_ADD']);
         $mail->addReplyTo('julius.carbonilla@gmail.com');
         $mail->isHTML(true);
