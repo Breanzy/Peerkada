@@ -18,7 +18,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
 
         case 'download':
-            // Download existing QR code
+            // Check if QR code exists first
+            $filename = $qrController->sanitizeFilename($userId) . '.png';
+            $filePath = $qrController->getBaseDir() . $filename;
+
+            // If QR code doesn't exist, create one
+            if (!file_exists($filePath)) {
+                // Get user name from database
+                $stmt = $pdo->prepare("SELECT NAME FROM members_profile WHERE ID_NUMBER = :id");
+                $stmt->execute(['id' => $userId]);
+                $userRow = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                if ($userRow) {
+                    // Generate the QR code with the user's name
+                    $qrController->generateQrCode($userId, $userRow['NAME']);
+                } else {
+                    http_response_code(404);
+                    echo json_encode(['success' => false, 'error' => 'User not found']);
+                    exit();
+                }
+            }
+
+            // Now download the QR code (either existing or newly created)
             $result = $qrController->downloadQrCode($userId);
 
             if ($result['success']) {

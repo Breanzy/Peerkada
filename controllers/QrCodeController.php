@@ -75,8 +75,14 @@ class QrCodeController
         ];
     }
 
-    private function sanitizeFilename($filename)
+    public function sanitizeFilename($filename)
     {
         return preg_replace('/[^a-zA-Z0-9-_]/', '', $filename);
+    }
+
+    // New method to expose the base directory
+    public function getBaseDir()
+    {
+        return $this->baseDir;
     }
 }
