@@ -7,12 +7,12 @@
 ehthumbs.db
 Thumbs.db
 
-# idk bruh
+# assets
 /assets/QrCodes/*
 !/assets/QrCodes/sample user.png
+/assets/ProfilePictures/*
+!/assets/ProfilePictures/default.jpg
 .env
 
 # Composer modules
 /vendor
-test.php
-test2.php
