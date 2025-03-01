@@ -11,7 +11,7 @@
 
     <div class="ms-auto d-flex align-items-center">
         <div class="text-white fw-lighter">Logged in as: <?php echo (isset($_SESSION["name"]) ? $_SESSION["name"] : "Guest"); ?></div>
-        <a class="text-white fw-bold ms-3" href="../controllers/logout.php">Log Out</a>
+        <a class="text-white fw-bold ms-3" href="../controllers/Logout.php">Log Out</a>
     </div>
 </nav>
 
