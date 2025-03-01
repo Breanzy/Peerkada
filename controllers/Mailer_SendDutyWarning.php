@@ -68,9 +68,9 @@ try {
     $mail->Port       = 465;
 
     foreach ($unfulfilled as $user) {
-        $mail->setFrom('julius.carbonilla@gmail.com', 'Peerkada');
+        $mail->setFrom('peerkadaIIT@gmail.com', 'Peerkada');
         $mail->addAddress($user['EMAIL_ADD']);
-        $mail->addReplyTo('julius.carbonilla@gmail.com');
+        $mail->addReplyTo('peerkadaIIT@gmail.com');
         $mail->isHTML(true);
         $mail->Subject = 'Peerkada | Insufficient Duty Time Warning: ' . date('F Y', strtotime($currentMonth));
         $mail->Body = "
