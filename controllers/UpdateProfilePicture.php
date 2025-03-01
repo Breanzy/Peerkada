@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['school_id'])) {
     // Security check - verify that the logged-in user is changing their own picture
     if ($_SESSION['ID_Number'] != $schoolID) {
         $_SESSION['error'] = "You can only change your own profile picture.";
-        header("Location: ../pages/profile.php");
+        header("Location: ../pages/Profile.php");
         exit();
     }
 
@@ -60,10 +60,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['school_id'])) {
     }
 
     // Redirect back to profile page
-    header("Location: ../pages/profile.php");
+    header("Location: ../pages/Profile.php");
     exit();
 } else {
     $_SESSION['error'] = "Invalid request.";
-    header("Location: ../pages/profile.php");
+    header("Location: ../pages/Profile.php");
     exit();
 }
