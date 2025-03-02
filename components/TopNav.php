@@ -1,20 +1,35 @@
-<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark p-2">
-    <!-- Navbar Brand-->
-    <div class="d-flex align-items-center">
+<nav class="sb-topnav navbar navbar-dark bg-dark p-2">
+    <!-- Container with position relative to allow absolute positioning -->
+    <div class="container-fluid position-relative">
+        <!-- Left side: Logo (hidden on xs screens) -->
         <div class="">
-            <img src="../assets/logowhite.png" alt="logo" class="" style="max-height: 75px;"> <!-- Use img-fluid for responsiveness -->
-            <img src="../assets/logowhite.png" alt="logo" class="" style="max-height: 75px;">
+            <img src="../assets/logowhite.png" alt="logo" style="height: 3rem; width: auto;">
         </div>
-        <a class="m-0 fw-bold fs-3 text-white navbar-brand text-center" href="index.php">PEERKADA</a>
-        <!-- Sidebar Toggle-->
-        <button class="btn btn-link btn-sm ms-3" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-    </div>
+        <a class="fw-bold text-white navbar-brand ms-2" href="index.php">PEERKADA</a>
 
-    <div class="ms-auto d-flex align-items-center">
-        <div class="text-white fw-lighter">Logged in as: <?php echo (isset($_SESSION["name"]) ? $_SESSION["name"] : "Guest"); ?></div>
-        <a class="text-white fw-bold ms-3" href="../controllers/Logout.php">Log Out</a>
+        <!-- Right side: Spacer, User info, logout, and toggle -->
+        <div class="ms-auto d-flex align-items-center">
+            <!-- User info - hidden on small screens -->
+            <span class="text-white fw-lighter me-2 d-none d-md-inline">
+                Logged in as: <?php echo (isset($_SESSION["name"]) ? $_SESSION["name"] : "Guest"); ?>
+            </span>
+
+            <!-- Logout button - hidden on small screens -->
+            <a class="btn btn-outline-light btn-sm me-2 d-none d-md-inline-flex" href="../controllers/Logout.php">
+                <i class="fas fa-sign-out-alt me-1"></i>Log Out
+            </a>
+
+            <!-- Sidebar toggle -->
+            <button class="btn btn-link btn-sm p-1" id="sidebarToggle" href="#!">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
     </div>
 </nav>
+
+
+
+
 
 <!-- Toggle the side navigation -->
 <script>
