@@ -1,4 +1,4 @@
-<table class="table table-hover table-bordered table-striped rounded-3 overflow-hidden" id="userTable">
+<table class="table table-hover table-bordered table-striped rounded-3 overflow-hidden w-100" id="userTable">
     <thead class="table-dark">
         <tr>
             <th>Name</th>
@@ -62,7 +62,8 @@
             scrollX: true,
             columnDefs: [{
                 className: 'text-center',
-                targets: '_all'
+                targets: '_all',
+                width: '1%',
             }],
             buttons: [{
                     text: "View ",

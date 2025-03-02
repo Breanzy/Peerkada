@@ -1,4 +1,4 @@
-<table class="table table-hover table-bordered table-striped rounded-3 overflow-hidden" id="<?php echo $tableID; ?>">
+<table class="table table-hover table-bordered table-striped rounded-3 overflow-hidden w-100" id="<?php echo $tableID; ?>">
     <thead class="table-dark">
         <tr>
             <th scope="col">Student ID</th>
@@ -49,7 +49,8 @@
             scrollX: true,
             columnDefs: [{
                 className: 'text-center',
-                targets: '_all'
+                targets: '_all',
+                width: '1%',
             }],
             buttons: [{
                     text: "View ",
