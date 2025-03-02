@@ -1,5 +1,4 @@
 <?php
-// File: ../controllers/Mailer_SendDutyWarning.php
 
 // Include database connection
 require_once '../config.php';
@@ -62,15 +61,15 @@ try {
     $mail->isSMTP();
     $mail->Host       = 'smtp.gmail.com';
     $mail->SMTPAuth   = true;
-    $mail->Username   = 'peerkadaIIT@gmail.com';
+    $mail->Username   = 'peerkadaiit@gmail.com';
     $mail->Password   = $_ENV['SMTP_PASSWORD'];
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
     $mail->Port       = 465;
 
     foreach ($unfulfilled as $user) {
-        $mail->setFrom('peerkadaIIT@gmail.com', 'Peerkada');
+        $mail->setFrom('peerkadaiit@gmail.com', 'Peerkada');
         $mail->addAddress($user['EMAIL_ADD']);
-        $mail->addReplyTo('peerkadaIIT@gmail.com');
+        $mail->addReplyTo('peerkadaiit@gmail.com');
         $mail->isHTML(true);
         $mail->Subject = 'Peerkada | Insufficient Duty Time Warning: ' . date('F Y', strtotime($currentMonth));
         $mail->Body = "

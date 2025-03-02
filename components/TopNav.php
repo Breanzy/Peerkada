@@ -3,6 +3,7 @@
     <div class="d-flex align-items-center">
         <div class="">
             <img src="../assets/logowhite.png" alt="logo" class="" style="max-height: 75px;"> <!-- Use img-fluid for responsiveness -->
+            <img src="../assets/logowhite.png" alt="logo" class="" style="max-height: 75px;">
         </div>
         <a class="m-0 fw-bold fs-3 text-white navbar-brand text-center" href="index.php">PEERKADA</a>
         <!-- Sidebar Toggle-->

@@ -14,7 +14,7 @@
 
 <!-- invisible form element to submit data using QR code -->
 <div id="form-container">
-    <form action="../controllers/QR_Log_insert.php" method="post" class="form-horizontal" name="text">
+    <form action="../controllers/QR_Log_Insert.php" method="post" class="form-horizontal" name="text">
         <input type="hidden" name="text" id="text" readonny="" placeholder="scan qrcode" class="form-control">
     </form>
 </div>
