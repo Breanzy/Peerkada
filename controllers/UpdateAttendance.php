@@ -18,6 +18,10 @@ try {
         }
     }
 
+    // Format times for database storage (HH:MM:SS format)
+    $timeIn = $_POST['timeIn'] . ':00'; // Add seconds to the time
+    $timeOut = !empty($_POST['timeOut']) ? $_POST['timeOut'] . ':00' : null;
+
     // Prepare update query
     $query = "UPDATE table_attendance SET 
               LOGDATE = :logDate,
@@ -30,8 +34,8 @@ try {
     // Execute update with sanitized data
     $result = $stmt->execute([
         'logDate' => htmlspecialchars($_POST['logDate']),
-        'timeIn' => htmlspecialchars($_POST['timeIn']),
-        'timeOut' => !empty($_POST['timeOut']) ? htmlspecialchars($_POST['timeOut']) : null,
+        'timeIn' => $timeIn,
+        'timeOut' => $timeOut,
         'attendanceId' => htmlspecialchars($_POST['attendanceId']),
     ]);
 
