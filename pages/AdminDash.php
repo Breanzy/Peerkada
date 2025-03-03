@@ -26,8 +26,6 @@ if (!isset($_SESSION['isAdmin'])) {
         <div id="layoutSidenav_content" class="d-flex flex-column justify-content-start">
             <main>
                 <?php require_once '../components/Notifications.php'; ?>
-                <h1>Admin Dashboard</h1>
-
                 <div class="card mb-3">
                     <div class="card-header mb-1">
 
