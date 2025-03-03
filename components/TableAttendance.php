@@ -29,8 +29,10 @@
                     <td><?php echo htmlspecialchars($log['TIMEOUT'] ? gmdate("H \\h\\r/\\s, i \\m\\i\\n/\\s, s \\s\\e\\c/\\s", strtotime($log['TIMEOUT']) - strtotime($log['TIMEIN'])) : 'N/A'); ?></td>
                     <?php if (isset($_SESSION['isAdmin'])): ?>
                         <td class='text-center'>
-                            <button class='btn btn-warning edit-btn fa-solid fa-pen-to-square m-1'>Edit</button>
-                            <button class='btn btn-danger delete-btn fa-solid fa-trash m-1'>Delete</button>
+                            <div class="btn-group" role="group">
+                                <button class='btn btn-warning edit-btn fa-solid fa-pen-to-square m-1'>Edit</button>
+                                <button class='btn btn-danger delete-btn fa-solid fa-trash m-1'>Delete</button>
+                            </div>
                         </td>
                     <?php endif; ?>
                 </tr>
@@ -44,8 +46,6 @@
         var table = $('#<?php echo $tableID; ?>').DataTable({
             lengthChange: false,
             pageLength: 5,
-            autoWidth: true,
-            responsive: true,
             scrollX: true,
             columnDefs: [{
                 className: 'text-center',
@@ -115,16 +115,26 @@
 
         // Edit button click handler
         $('#<?php echo $tableID; ?>').on('click', '.edit-btn', function() {
-            // Remove any existing event handlers
-            $('#<?php echo $tableID; ?>').off('click', '.save-btn');
-            $('#<?php echo $tableID; ?>').off('click', '.cancel-btn');
+            var table = $('#<?php echo $tableID; ?>').DataTable();
+            var $row = $(this).closest('tr');
 
-            var row = $(this).closest('tr');
-            var attendanceId = row.data('attendance-id');
-            var studentId = row.find('th:nth-child(1)').text();
-            var logDate = row.find('td:nth-child(2)').text();
-            var timeIn = row.find('td:nth-child(3)').text();
-            var timeOut = row.find('td:nth-child(4)').text();
+            // This gets the correct row data even with pagination, filtering, etc.
+            var data = table.row($row).data();
+
+            // If we're in responsive mode, we might need to get the parent row
+            if ($row.hasClass('child')) {
+                $row = $row.prev();
+                data = table.row($row).data();
+            }
+
+            // Use data-attendance-id attribute from the actual DOM element
+            var attendanceId = $row.data('attendance-id');
+
+            // Get the values from the data array
+            var studentId = data[0];
+            var logDate = data[1];
+            var timeIn = data[2];
+            var timeOut = data[3];
 
             // Convert display time format to HTML time input format (HH:mm)
             function convertToTimeInputFormat(timeStr) {
@@ -134,30 +144,65 @@
                     date.getMinutes().toString().padStart(2, '0');
             }
 
-            // Replace row content with input fields
-            row.html(`
-            <th scope='row'>${studentId}</th>
-            <td><input type='date' value='${logDate}' class='form-control' name='logDate'></td>
-            <td><input type='time' value='${convertToTimeInputFormat(timeIn)}' class='form-control' name='timeIn'></td>
-            <td><input type='time' value='${convertToTimeInputFormat(timeOut)}' class='form-control' name='timeOut'></td>
-            <td>Calculated on save</td>
-            <td class='text-center'>
-                <div class="btn-group" role="group">
-                    <button class='btn btn-success save-btn m-1 fa-check fa-solid'>Save</button>
-                    <button class='btn btn-secondary cancel-btn m-1 fa-times fa-solid'>Cancel</button>
+            // Create a modal with a form
+            var modalHtml = `
+            <div class="modal fade" id="editAttendanceModal" tabindex="-1" aria-labelledby="editAttendanceModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editAttendanceModalLabel">Edit Attendance for Student ID: ${studentId}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="editAttendanceForm">
+                                <input type="hidden" id="attendanceId" value="${attendanceId}">
+                                <div class="mb-3">
+                                    <label for="logDate" class="form-label">Log Date</label>
+                                    <input type="date" class="form-control" id="logDate" value="${logDate}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="timeIn" class="form-label">Time In</label>
+                                    <input type="time" class="form-control" id="timeIn" value="${convertToTimeInputFormat(timeIn)}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="timeOut" class="form-label">Time Out</label>
+                                    <input type="time" class="form-control" id="timeOut" value="${convertToTimeInputFormat(timeOut)}">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" id="cancelAttendance" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="saveAttendance">Save changes</button>
+                        </div>
+                    </div>
                 </div>
-            </td>
-        `);
+            </div>
+            `;
 
-            // Save button click handler
-            $('#<?php echo $tableID; ?>').on('click', '.save-btn', function() {
-                var saveRow = $(this).closest('tr');
+            // Remove existing modal if it exists
+            $('#editAttendanceModal').remove();
+
+            // Append modal to body
+            $('body').append(modalHtml);
+
+            // Initialize and show the modal
+            var editModal = new bootstrap.Modal(document.getElementById('editAttendanceModal'));
+            editModal.show();
+
+            // Save button click handler for the modal
+            $('#saveAttendance').off('click').on('click', function() {
                 var formData = {
-                    attendanceId: attendanceId,
-                    logDate: saveRow.find('input[name="logDate"]').val(),
-                    timeIn: saveRow.find('input[name="timeIn"]').val(),
-                    timeOut: saveRow.find('input[name="timeOut"]').val()
+                    attendanceId: $('#attendanceId').val(),
+                    logDate: $('#logDate').val(),
+                    timeIn: $('#timeIn').val(),
+                    timeOut: $('#timeOut').val()
                 };
+
+                // Validate inputs
+                if (!formData.logDate) {
+                    alert('Please enter a log date');
+                    return;
+                }
 
                 $.ajax({
                     url: '../controllers/UpdateAttendance.php',
@@ -168,8 +213,10 @@
                             const result = JSON.parse(response);
                             if (result.success) {
                                 // Format times for display
-                                const timeInDisplay = formData.timeIn ? new Date(`2000/01/01 ${formData.timeIn}`).toLocaleTimeString('en-US') : '';
-                                const timeOutDisplay = formData.timeOut ? new Date(`2000/01/01 ${formData.timeOut}`).toLocaleTimeString('en-US') : 'N/A';
+                                const timeInDisplay = formData.timeIn ?
+                                    new Date(`2000/01/01 ${formData.timeIn}`).toLocaleTimeString('en-US') : '';
+                                const timeOutDisplay = formData.timeOut ?
+                                    new Date(`2000/01/01 ${formData.timeOut}`).toLocaleTimeString('en-US') : 'N/A';
 
                                 // Calculate total time
                                 let totalTime = 'N/A';
@@ -184,21 +231,23 @@
                                     totalTime = `${hours} hrs, ${minutes} mins, ${seconds} secs`;
                                 }
 
-                                // Update the row with new values
-                                saveRow.html(`
-                                <th scope='row'>${studentId}</th>
-                                <td>${formData.logDate}</td>
-                                <td>${timeInDisplay}</td>
-                                <td>${timeOutDisplay}</td>
-                                <td>${totalTime}</td>
-                                <td class='text-center'>
-                                    <div class="btn-group" role="group">
-                                        <button class='btn btn-warning edit-btn fa-solid fa-pen-to-square m-1'>Edit</button>
-                                        <button class='btn btn-danger delete-btn fa-solid fa-trash m-1'>Delete</button>
-                                    </div>
-                                </td>
-                            `);
+                                // Create a new array with updated values
+                                var newData = [...data]; // Copy the original data array
+                                newData[1] = formData.logDate;
+                                newData[2] = timeInDisplay;
+                                newData[3] = timeOutDisplay;
+                                newData[4] = totalTime;
 
+                                // Update the row data and redraw
+                                table.row($row).data(newData).draw(false);
+
+                                // Make sure data-attendance-id attribute is preserved
+                                $row.attr('data-attendance-id', attendanceId);
+
+                                // Close the modal
+                                editModal.hide();
+
+                                // Show success message
                                 alert('Attendance record updated successfully!');
                             } else {
                                 alert('Error updating attendance: ' + result.message);
@@ -214,33 +263,16 @@
                         console.error('AJAX Error:', status, error);
                     }
                 });
-
-                // Clean up event handlers
-                $('#<?php echo $tableID; ?>').off('click', '.save-btn');
-                $('#<?php echo $tableID; ?>').off('click', '.cancel-btn');
             });
 
-            // Cancel button click handler
-            $('#<?php echo $tableID; ?>').on('click', '.cancel-btn', function() {
-                var cancelRow = $(this).closest('tr');
-                // Revert back to original row data
-                cancelRow.html(`
-                <th scope='row'>${studentId}</th>
-                <td>${logDate}</td>
-                <td>${timeIn}</td>
-                <td>${timeOut}</td>
-                <td>${row.find('td:nth-child(5)').text()}</td>
-                <td class='text-center'>
-                    <div class="btn-group" role="group">
-                        <button class='btn btn-warning edit-btn fa-solid fa-pen-to-square m-1'>Edit</button>
-                        <button class='btn btn-danger delete-btn fa-solid fa-trash m-1'>Delete</button>
-                    </div>
-                </td>
-            `);
+            // Cancel button handler - just close the modal
+            $('#cancelAttendance').off('click').on('click', function() {
+                editModal.hide();
+            });
 
-                // Clean up event handlers
-                $('#<?php echo $tableID; ?>').off('click', '.save-btn');
-                $('#<?php echo $tableID; ?>').off('click', '.cancel-btn');
+            // Handle modal close events to ensure clean up
+            $('#editAttendanceModal').on('hidden.bs.modal', function() {
+                $(this).remove(); // Remove the modal from DOM when closed
             });
         });
     });
