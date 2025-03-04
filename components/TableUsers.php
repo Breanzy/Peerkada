@@ -202,6 +202,7 @@
                     data: {
                         userId: userId
                     },
+                    
                     success: function(response) {
                         try {
                             const result = JSON.parse(response);
