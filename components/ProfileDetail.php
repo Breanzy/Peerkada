@@ -1,6 +1,7 @@
-<div class="row">
-    <div class="col-xl-4 p-10 d-flex justify-content-center align-items-center">
-        <div class="position-relative" style="height: 250px; width: 250px;">
+<div class="row g-4 py-4">
+    <!-- Profile Image Section - Left side -->
+    <div class="col-md-12 col-lg d-flex justify-content-center align-items-center">
+        <div class="position-relative" style="height: 350px; width: 350px;">
             <?php
             // Check if user has a profile picture
             $profilePicPath = "../assets/ProfilePictures/" . $SchoolID . ".jpg";
@@ -25,8 +26,9 @@
             $profilePicPath = $profilePicPath . "?t=" . time();
             ?>
 
-            <!-- Profile image with Bootstrap classes for borders and interactive elements -->
-            <div class="border border-primary border-3 rounded-circle p-1 h-100 w-100">
+            <!-- Profile image with enhanced styling -->
+            <div class="shadow-lg border-4 border-primary rounded-circle p-1 h-100 w-100 position-relative overflow-hidden"
+                style="transition: all 0.3s ease;">
                 <img src="<?php echo $profilePicPath; ?>"
                     class="h-100 w-100 rounded-circle"
                     style="object-fit: cover;"
@@ -34,59 +36,138 @@
                     id="profilePicture"
                     data-bs-toggle="modal"
                     data-bs-target="#changeProfilePicModal">
+                <div class="position-absolute bottom-0 start-0 end-0 bg-primary bg-opacity-75 text-white text-center py-1"
+                    style="cursor: pointer; font-size: 12px;">
+                    Change Photo
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="col-xl-8 col-md-12 center-align text-lg-start text-center">
-        <div class="fw-bold fs-1"><?php echo $Name; ?></div>
-        <h6 class="theme-color lead"><?php echo $Title; ?></h6>
-        <br>
-        <div class="row about-list fs-3">
-            <div class="col-sm-6 col-xs-12">
-                <div class="media">
-                    <label class="fw-bold">Birthday</label>
-                    <p><?php echo $Birth; ?></p>
-                </div>
-                <div class="media">
-                    <label class="fw-bold">Address</label>
-                    <p><?php echo $Address; ?></p>
+    <!-- Profile Details Section - Right side -->
+    <div class="col">
+        <div class="card shadow-lg border-0 h-100">
+            <div class="card-body">
+                <!-- Header with name and title -->
+                <div class="text-center mb-4 py-2 border-bottom">
+                    <h2 class="display-6 fw-bold mb-1"><?php echo $Name; ?></h2>
+                    <p class="text-primary fs-5 fst-italic"><?php echo $Title; ?></p>
                 </div>
 
-                <div class="media">
-                    <label class="fw-bold">E-mail</label>
-                    <p><?php echo $Email; ?></p>
-                </div>
-                <div class="media">
-                    <label class="fw-bold">Phone</label>
-                    <p><?php echo $Number; ?></p>
+                <!-- Information items in a clean grid -->
+                <div class="row g-3">
+                    <!-- Personal Information Section -->
+                    <div class="col-12 mb-2">
+                        <h5 class="text-primary border-bottom pb-2">Personal Information</h5>
+                    </div>
 
-                </div>
-            </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-shrink-0">
+                                <i class="bi bi-calendar-date fs-4 text-primary me-2"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-bold text-secondary small">Birthday</div>
+                                <div><?php echo $Birth; ?></div>
+                            </div>
+                        </div>
+                    </div>
 
-            <div class="col-sm-6 col-xs-12">
-                <div class="media">
-                    <label class="fw-bold">School ID</label>
-                    <p><?php echo $SchoolID; ?></p>
-                </div>
-                <div class="media">
-                    <label class="fw-bold">College</label>
-                    <p><?php echo $College; ?></p>
-                </div>
-                <div class="media">
-                    <label class="fw-bold">Course</label>
-                    <p><?php echo $Course; ?></p>
-                </div>
-                <div class="media">
-                    <label class="fw-bold">School Year</label>
-                    <p><?php echo $SchoolYr; ?></p>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-shrink-0">
+                                <i class="bi bi-envelope fs-4 text-primary me-2"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-bold text-secondary small">E-mail</div>
+                                <div class="text-break"><?php echo $Email; ?></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-shrink-0">
+                                <i class="bi bi-telephone fs-4 text-primary me-2"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-bold text-secondary small">Phone</div>
+                                <div><?php echo $Number; ?></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-shrink-0">
+                                <i class="bi bi-geo-alt fs-4 text-primary me-2"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-bold text-secondary small">Address</div>
+                                <div class="text-break"><?php echo $Address; ?></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Academic Information Section -->
+                    <div class="col-12 mt-2 mb-2">
+                        <h5 class="text-primary border-bottom pb-2">Academic Information</h5>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-shrink-0">
+                                <i class="bi bi-person-badge fs-4 text-primary me-2"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-bold text-secondary small">School ID</div>
+                                <div><?php echo $SchoolID; ?></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-shrink-0">
+                                <i class="bi bi-building fs-4 text-primary me-2"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-bold text-secondary small">College</div>
+                                <div class="text-break"><?php echo $College; ?></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-shrink-0">
+                                <i class="bi bi-book fs-4 text-primary me-2"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-bold text-secondary small">Course</div>
+                                <div class="text-break"><?php echo $Course; ?></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-shrink-0">
+                                <i class="bi bi-calendar3 fs-4 text-primary me-2"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-bold text-secondary small">School Year</div>
+                                <div><?php echo $SchoolYr; ?></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal for changing profile picture -->
+<!-- Modal for changing profile picture (unchanged) -->
 <div class="modal fade" id="changeProfilePicModal" tabindex="-1" aria-labelledby="changeProfilePicModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -112,7 +193,7 @@
     </div>
 </div>
 
-<!-- Preview selected image script -->
+<!-- Preview selected image script (unchanged) -->
 <script>
     document.getElementById('profile_picture').addEventListener('change', function(e) {
         const file = e.target.files[0];
