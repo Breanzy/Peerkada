@@ -54,6 +54,9 @@
     </tbody>
 </table>
 
+<?php include('../components/EditUserModal.php'); ?>
+<script src="../js/EditUserScript.js"></script>
+
 <script>
     $(document).ready(function() {
 
@@ -63,7 +66,6 @@
             responsive: true,
             scrollX: true,
             columnDefs: [{
-                className: 'text-center',
                 className: 'text-center align-middle',
                 targets: '_all'
             }],
@@ -203,7 +205,6 @@
                     data: {
                         userId: userId
                     },
-                    
 
                     success: function(response) {
                         try {
@@ -249,184 +250,42 @@
             var cells = tableRow.nodes().to$().find('td');
 
             // Extract data directly from the table cells
-            var name = $(cells[0]).text().trim();
-            var idNumber = $(cells[1]).text().trim();
-            var title = $(cells[2]).text().trim();
-            var college = $(cells[3]).text().trim();
-            var schoolYear = $(cells[4]).text().trim();
-            var course = $(cells[5]).text().trim();
-            var email = $(cells[6]).text().trim();
-            var phone = $(cells[7]).text().trim();
-            var address = $(cells[8]).text().trim();
-            var birthDate = $(cells[9]).text().trim();
-            var sex = $(cells[10]).text().trim();
+            var userData = {
+                userId: userId,
+                name: $(cells[0]).text().trim(),
+                idNumber: $(cells[1]).text().trim(),
+                title: $(cells[2]).text().trim(),
+                college: $(cells[3]).text().trim(),
+                schoolYear: $(cells[4]).text().trim(),
+                course: $(cells[5]).text().trim(),
+                email: $(cells[6]).text().trim(),
+                phone: $(cells[7]).text().trim(),
+                address: $(cells[8]).text().trim(),
+                birthDate: $(cells[9]).text().trim(),
+                sex: $(cells[10]).text().trim()
+            };
 
-            // Create a modal with a form
-            var modalHtml = `
-            <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editUserModalLabel">Edit User: ${name}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="editUserForm">
-                                <input type="hidden" id="userId" value="${userId}">
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="name" class="form-label">Name</label>
-                                        <input type="text" class="form-control" id="name" value="${name}">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="idNumber" class="form-label">ID Number</label>
-                                        <input type="number" class="form-control" id="idNumber" value="${idNumber}">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-4">
-                                        <label for="title" class="form-label">Title</label>
-                                        <select class="form-control" id="title">
-                                            <option value="Assistant" ${title === 'Assistant' ? 'selected' : ''}>Assistant</option>
-                                            <option value="Junior" ${title === 'Junior' ? 'selected' : ''}>Junior</option>
-                                            <option value="Senior" ${title === 'Senior' ? 'selected' : ''}>Senior</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="college" class="form-label">College</label>
-                                        <input type="text" class="form-control" id="college" value="${college}">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="schoolYear" class="form-label">School Year</label>
-                                        <input type="text" class="form-control" id="schoolYear" value="${schoolYear}">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="course" class="form-label">Course</label>
-                                        <input type="text" class="form-control" id="course" value="${course}">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="email" class="form-label">Email Address</label>
-                                        <input type="email" class="form-control" id="email" value="${email}">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="phone" class="form-label">Phone Number</label>
-                                        <input type="number" class="form-control" id="phone" value="${phone}">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="sex" class="form-label">Sex</label>
-                                        <select class="form-control" id="sex">
-                                            <option value="Male" ${sex === 'Male' ? 'selected' : ''}>Male</option>
-                                            <option value="Female" ${sex === 'Female' ? 'selected' : ''}>Female</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="birthDate" class="form-label">Birth Date</label>
-                                        <input type="date" class="form-control" id="birthDate" value="${birthDate}">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="address" class="form-label">Address</label>
-                                        <input type="text" class="form-control" id="address" value="${address}">
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-success" id="saveUser">Save changes</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            `;
+            // Load and show modal
+            userEditModal.loadUserData(userData);
+            userEditModal.showModal();
 
-            // Remove existing modal if it exists
-            $('#editUserModal').remove();
+            // Handle callback for when data is updated
+            $(document).on('user-data-updated', function(e, updatedData) {
+                // Update the cells in the row
+                $(cells[0]).text(updatedData.name);
+                $(cells[1]).text(updatedData.idNumber);
+                $(cells[2]).text(updatedData.title);
+                $(cells[3]).text(updatedData.college);
+                $(cells[4]).text(updatedData.schoolYear);
+                $(cells[5]).text(updatedData.course);
+                $(cells[6]).text(updatedData.email);
+                $(cells[7]).text(updatedData.phone);
+                $(cells[8]).text(updatedData.address);
+                $(cells[9]).text(updatedData.birthDate);
+                $(cells[10]).text(updatedData.sex);
 
-            // Append modal to body
-            $('body').append(modalHtml);
-
-            // Initialize and show the modal
-            var editModal = new bootstrap.Modal(document.getElementById('editUserModal'));
-            editModal.show();
-
-            // Save button click handler for the modal
-            $('#saveUser').off('click').on('click', function() {
-                var formData = {
-                    userId: $('#userId').val(),
-                    name: $('#name').val(),
-                    idNumber: $('#idNumber').val(),
-                    title: $('#title').val(),
-                    college: $('#college').val(),
-                    schoolYear: $('#schoolYear').val(),
-                    course: $('#course').val(),
-                    email: $('#email').val(),
-                    phone: $('#phone').val(),
-                    address: $('#address').val(),
-                    birthDate: $('#birthDate').val(),
-                    sex: $('#sex').val()
-                };
-
-                // Validate inputs
-                if (!formData.name || !formData.idNumber) {
-                    alert('Name and ID Number are required fields');
-                    return;
-                }
-
-                // Send AJAX request
-                $.ajax({
-                    url: '../controllers/UpdateUsers.php',
-                    method: 'POST',
-                    data: formData,
-                    success: function(response) {
-                        try {
-                            const result = JSON.parse(response);
-                            if (result.success) {
-                                // Update the cells in the row
-                                $(cells[0]).text(formData.name);
-                                $(cells[1]).text(formData.idNumber);
-                                $(cells[2]).text(formData.title);
-                                $(cells[3]).text(formData.college);
-                                $(cells[4]).text(formData.schoolYear);
-                                $(cells[5]).text(formData.course);
-                                $(cells[6]).text(formData.email);
-                                $(cells[7]).text(formData.phone);
-                                $(cells[8]).text(formData.address);
-                                $(cells[9]).text(formData.birthDate);
-                                $(cells[10]).text(formData.sex);
-
-                                // Redraw the table to ensure all DataTables features work correctly
-                                table.rows($row).invalidate().draw(false);
-
-                                // Close the modal
-                                editModal.hide();
-
-                                // Show success message
-                                alert('User information updated successfully!');
-                            } else {
-                                alert('Error updating user: ' + result.message);
-                            }
-                        } catch (e) {
-                            alert('Error processing server response');
-                            console.error('Response:', response);
-                            console.error('Error:', e);
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        alert('Error updating user: ' + error);
-                        console.error('AJAX Error:', status, error);
-                    }
-                });
-            });
-
-            // Handle modal close events to ensure clean up
-            $('#editUserModal').on('hidden.bs.modal', function() {
-                $(this).remove(); // Remove the modal from DOM when closed
+                // Redraw the table to ensure all DataTables features work correctly
+                table.rows($row).invalidate().draw(false);
             });
         });
 

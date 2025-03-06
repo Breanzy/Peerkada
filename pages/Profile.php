@@ -94,9 +94,19 @@ if ($row) {
                         </div>
                     </div>
 
-                    <button id="downloadQrCode" class="btn btn-primary">
-                        Download QR Code
-                    </button>
+                    <div class="row mt-3">
+                        <div class="col-xl">
+                            <button id="editProfileBtn" class="btn btn-primary me-2">
+                                <i class="fas fa-user-edit"></i> Edit Profile
+                            </button>
+                            <?php include('../components/EditUserModal.php'); ?>
+                            <script src="../js/EditUserScript.js"></script>
+
+                            <button id="downloadQrCode" class="btn btn-primary">
+                                <i class="fas fa-qrcode"></i> Download QR Code
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </main>
         </div>
@@ -127,5 +137,27 @@ if ($row) {
         document.body.appendChild(form);
         form.submit();
         document.body.removeChild(form);
+    });
+
+    document.getElementById('editProfileBtn').addEventListener('click', function() {
+        // Prepare user data from PHP variables
+        const userData = {
+            userId: '<?php echo $row['USER_ID']; ?>',
+            name: '<?php echo $Name; ?>',
+            idNumber: '<?php echo $SchoolID; ?>',
+            title: '<?php echo $Title; ?>',
+            college: '<?php echo $College; ?>',
+            schoolYear: '<?php echo $SchoolYr; ?>',
+            course: '<?php echo $Course; ?>',
+            email: '<?php echo $Email; ?>',
+            phone: '<?php echo $Number; ?>',
+            address: '<?php echo addslashes($Address); ?>',
+            birthDate: '<?php echo $Birth; ?>',
+            sex: '<?php echo $Sex; ?>'
+        };
+
+        // Load and show modal
+        userEditModal.loadUserData(userData);
+        userEditModal.showModal();
     });
 </script>
