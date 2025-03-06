@@ -48,7 +48,7 @@
             pageLength: 5,
             scrollX: true,
             columnDefs: [{
-                className: 'text-center',
+                className: 'text-center align-middle',
                 targets: '_all',
                 width: '1%',
             }],

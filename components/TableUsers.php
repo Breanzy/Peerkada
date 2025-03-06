@@ -64,6 +64,7 @@
             scrollX: true,
             columnDefs: [{
                 className: 'text-center',
+                className: 'text-center align-middle',
                 targets: '_all'
             }],
             buttons: [{
@@ -203,6 +204,7 @@
                         userId: userId
                     },
                     
+
                     success: function(response) {
                         try {
                             const result = JSON.parse(response);
