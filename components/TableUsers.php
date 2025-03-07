@@ -42,9 +42,15 @@
                     <?php if (isset($_SESSION['isAdmin'])): ?>
                         <td class='text-center'>
                             <div class="btn-group" role="group">
-                                <button class='btn btn-warning edit-btn fa-solid fa-pen-to-square m-1' title="Edit User">Edit</button>
-                                <button class='btn btn-danger delete-btn fa-solid fa-trash m-1' title="Delete User">Delete</button>
-                                <button class='btn btn-info qr-btn fa-solid fa-qrcode m-1' title="Download QR Code">QR</button>
+                                <button class="btn btn-warning edit-btn m-1" title="Edit User">
+                                    <i class="fa-solid fa-pen-to-square"></i> Edit User
+                                </button>
+                                <button class="btn btn-danger delete-btn m-1" title="Delete User">
+                                    <i class="fa-solid fa-trash"></i> Delete User
+                                </button>
+                                <button class="btn btn-info qr-btn m-1" title="Download QR Code">
+                                    <i class="fa-solid fa-qrcode"></i> Download QR Code
+                                </button>
                             </div>
                         </td>
                     <?php endif; ?>

@@ -1,6 +1,6 @@
 <div class="row g-4 py-4">
     <!-- Profile Image Section - Left side -->
-    <div class="col-md-12 col-lg d-flex justify-content-center align-items-center">
+    <div class="col-lg-12 col-xl d-flex justify-content-center align-items-center">
         <div class="position-relative" style="height: 350px; width: 350px;">
             <?php
             // Check if user has a profile picture
