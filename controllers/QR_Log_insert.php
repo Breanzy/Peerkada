@@ -24,7 +24,7 @@ if ($stmt->rowCount() > 0) {
     if ($attendanceStmt->rowCount() > 0) {
 
         // Prepare the update statement
-        $updateStmt = $pdo->prepare("UPDATE table_attendance SET TIMEOUT = :timeout WHERE STUDENTID = :student_id AND LOGDATE = :log_date");
+        $updateStmt = $pdo->prepare("UPDATE table_attendance SET TIMEOUT = :timeout WHERE STUDENTID = :student_id AND LOGDATE = :log_date AND TIMEOUT IS NULL");
         $updateStmt->execute([
             'timeout' => $time,
             'student_id' => $text,
