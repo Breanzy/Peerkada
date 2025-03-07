@@ -8,12 +8,11 @@ $qrController = new QrCodeController();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
     $userId = $_POST['userId'] ?? '';
-    $name = $_POST['name'] ?? '';
 
     switch ($action) {
         case 'generate':
             // Generate QR code during registration
-            $result = $qrController->generateQrCode($userId, $name);
+            $result = $qrController->generateQrCode($userId);
             echo json_encode($result);
             break;
 
@@ -24,19 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // If QR code doesn't exist, create one
             if (!file_exists($filePath)) {
-                // Get user name from database
-                $stmt = $pdo->prepare("SELECT NAME FROM members_profile WHERE ID_NUMBER = :id");
-                $stmt->execute(['id' => $userId]);
-                $userRow = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                if ($userRow) {
-                    // Generate the QR code with the user's name
-                    $qrController->generateQrCode($userId, $userRow['NAME']);
-                } else {
-                    http_response_code(404);
-                    echo json_encode(['success' => false, 'error' => 'User not found']);
-                    exit();
-                }
+                $qrController->generateQrCode($userId);
             }
 
             // Now download the QR code (either existing or newly created)

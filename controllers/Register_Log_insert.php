@@ -99,7 +99,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             data: {
                                 action: 'generate',
                                 userId: '<?php echo $SchoolID; ?>',
-                                name: '<?php echo $Name; ?>'
                             },
                             success: function(response) {
                                 const result = JSON.parse(response);

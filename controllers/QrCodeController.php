@@ -4,8 +4,6 @@ require_once '../vendor/autoload.php';
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Encoding\Encoding;
-use Endroid\QrCode\Label\Label;
-use Endroid\QrCode\Logo\Logo;
 use Endroid\QrCode\ErrorCorrectionLevel;
 
 class QrCodeController
@@ -20,7 +18,7 @@ class QrCodeController
         }
     }
 
-    public function generateQrCode($userId, $name)
+    public function generateQrCode($userId)
     {
         try {
             $writer = new PngWriter();
@@ -30,17 +28,10 @@ class QrCodeController
                 errorCorrectionLevel: ErrorCorrectionLevel::High
             );
 
-            $logo = new Logo(
-                path: __DIR__ . '/../assets/LogoRed.png',
-                resizeToWidth: 125,
-                punchoutBackground: false
-            );
-
-            $label = new Label(text: $name);
             $filename = $this->sanitizeFilename($userId) . '.png';
             $filePath = $this->baseDir . $filename;
 
-            $result = $writer->write($qrCode, $logo, $label);
+            $result = $writer->write($qrCode);
             $result->saveToFile($filePath);
 
             return [
