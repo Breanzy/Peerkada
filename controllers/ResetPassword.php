@@ -16,7 +16,7 @@ if (!isset($_POST['userId']) || empty($_POST['userId'])) {
 }
 
 $userId = $_POST['userId'];
-$id_number = isset($_SESSION['ID_NUMBER']) ? $_SESSION['ID_NUMBER'] : null;
+$id_number = isset($_SESSION['ID_Number']) ? $_SESSION['ID_Number'] : null;
 
 // Check authorization: Either the user is resetting their own password or they're an admin
 if ($userId != $id_number && $_SESSION['role'] != 'admin') {
