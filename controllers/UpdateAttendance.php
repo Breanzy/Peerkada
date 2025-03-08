@@ -3,14 +3,14 @@ require_once '../config.php';
 session_start();
 
 // Check if user is admin
-if ($_SESSION['role'] != 'user') {
+if ($_SESSION['role'] != 'admin') {
     echo json_encode(['success' => false, 'message' => 'Unauthorized access']);
     exit;
 }
 
 try {
     // Validate input
-    $requiredFields = ['attendanceId', 'logDate', 'timeIn'];
+    $requiredFields = ['attendanceId', 'logDate', 'timeIn', 'timeOut'];
 
     foreach ($requiredFields as $field) {
         if (!isset($_POST[$field]) || empty(trim($_POST[$field]))) {
@@ -20,7 +20,7 @@ try {
 
     // Format times for database storage (HH:MM:SS format)
     $timeIn = $_POST['timeIn'] . ':00'; // Add seconds to the time
-    $timeOut = !empty($_POST['timeOut']) ? $_POST['timeOut'] . ':00' : null;
+    $timeOut = $_POST['timeOut'] . ':00';
 
     // Prepare update query
     $query = "UPDATE table_attendance SET 
