@@ -105,6 +105,10 @@ if ($row) {
                             <button id="downloadQrCode" class="btn btn-primary">
                                 <i class="fas fa-qrcode"></i> Download QR Code
                             </button>
+
+                            <button id="resetPasswordBtn" class="btn btn-primary">
+                                <i class="fas fa-key"></i> Reset Password
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -114,6 +118,9 @@ if ($row) {
 </body>
 
 </html>
+
+<?php include('../components/ResetPasswordModal.php'); ?>
+<script src="../js/ResetPasswordScript.js"></script>
 
 <script>
     document.getElementById('downloadQrCode').addEventListener('click', function() {
@@ -159,5 +166,10 @@ if ($row) {
         // Load and show modal
         userEditModal.loadUserData(userData);
         userEditModal.showModal();
+    });
+
+    document.getElementById('resetPasswordBtn').addEventListener('click', function() {
+        // Show the reset password modal for the current user
+        resetPasswordModal.showModal('<?php echo $SchoolID; ?>', '<?php echo $Name; ?>');
     });
 </script>

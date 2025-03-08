@@ -51,6 +51,9 @@
                                 <button class="btn btn-info qr-btn m-1" title="Download QR Code">
                                     <i class="fa-solid fa-qrcode"></i> Download QR Code
                                 </button>
+                                <button class="btn btn-primary reset-pwd-btn m-1" title="Reset Password">
+                                    <i class="fa-solid fa-key"></i> Reset Password
+                                </button>
                             </div>
                         </td>
                     <?php endif; ?>
@@ -62,6 +65,8 @@
 
 <?php include('../components/EditUserModal.php'); ?>
 <script src="../js/EditUserScript.js"></script>
+<?php include('../components/ResetPasswordModal.php'); ?>
+<script src="../js/ResetPasswordScript.js"></script>
 
 <script>
     $(document).ready(function() {
