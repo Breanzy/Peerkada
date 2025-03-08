@@ -32,6 +32,7 @@ class UserEditModal {
                 })
                 .catch((error) => {
                     console.error("Error loading modal:", error);
+                    showSweetAlert("error", "Failed to load edit user modal");
                 });
         }
     }
@@ -89,6 +90,10 @@ class UserEditModal {
             this.modal.show();
         } else {
             console.error("Modal not initialized");
+            showSweetAlert(
+                "error",
+                "Could not display the edit form. Please try again."
+            );
         }
     }
 
@@ -117,9 +122,19 @@ class UserEditModal {
 
         // Validate inputs
         if (!formData.name || !formData.idNumber) {
-            alert("Name and ID Number are required fields");
+            showSweetAlert("warning", "Name and ID Number are required fields");
             return;
         }
+
+        // Show loading state
+        Swal.fire({
+            title: "Saving...",
+            text: "Updating user information",
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            },
+        });
 
         // Send AJAX request
         fetch("../controllers/UpdateUsers.php", {
@@ -136,16 +151,27 @@ class UserEditModal {
                     this.hideModal();
 
                     // Show success message
-                    alert("User information updated successfully!");
-
-                    // Reload page to refresh data
-                    window.location.reload();
+                    showSweetAlert(
+                        "success",
+                        "User information updated successfully!",
+                        {
+                            timer: 2000,
+                            timerProgressBar: true,
+                            willClose: () => {
+                                // Reload page to refresh data
+                                window.location.reload();
+                            },
+                        }
+                    );
                 } else {
-                    alert("Error updating user: " + result.message);
+                    showSweetAlert(
+                        "error",
+                        "Error updating user: " + result.message
+                    );
                 }
             })
             .catch((error) => {
-                alert("Error updating user: " + error);
+                showSweetAlert("error", "Error updating user: " + error);
                 console.error("AJAX Error:", error);
             });
     }

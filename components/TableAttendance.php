@@ -42,6 +42,8 @@
 </table>
 
 <script>
+    // Replace the existing script section in TableAttendance.php with this
+
     $(document).ready(function() {
         var table = $('#<?php echo $tableID; ?>').DataTable({
             lengthChange: false,
@@ -76,41 +78,51 @@
             var attendanceId = row.data('attendance-id');
             var studentId = row.find('th:first').text();
 
-            // Show confirmation dialog
-            if (confirm(`Are you sure you want to delete the attendance record for Student ID: ${studentId}?`)) {
-                $.ajax({
-                    url: '../controllers/DeleteAttendance.php',
-                    method: 'POST',
-                    data: {
-                        attendanceId: attendanceId
-                    },
-                    success: function(response) {
-                        try {
-                            const result = JSON.parse(response);
-                            if (result.success) {
-                                // Remove the row from the table
-                                row.fadeOut(400, function() {
-                                    // Get the DataTable instance
-                                    var table = $('#<?php echo $tableID; ?>').DataTable();
-                                    // Remove the row from DataTable
-                                    table.row(row).remove().draw();
-                                });
-                                alert('Attendance record deleted successfully!');
-                            } else {
-                                alert('Error deleting attendance: ' + result.message);
+            // Show confirmation dialog with SweetAlert
+            Swal.fire({
+                title: 'Delete Attendance Record',
+                text: `Are you sure you want to delete the attendance record for Student ID: ${studentId}?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '../controllers/DeleteAttendance.php',
+                        method: 'POST',
+                        data: {
+                            attendanceId: attendanceId
+                        },
+                        success: function(response) {
+                            try {
+                                const result = JSON.parse(response);
+                                if (result.success) {
+                                    // Remove the row from the table
+                                    row.fadeOut(400, function() {
+                                        // Get the DataTable instance
+                                        var table = $('#<?php echo $tableID; ?>').DataTable();
+                                        // Remove the row from DataTable
+                                        table.row(row).remove().draw();
+                                    });
+                                    showSweetAlert('success', 'Attendance record deleted successfully!');
+                                } else {
+                                    showSweetAlert('error', 'Error deleting attendance: ' + result.message);
+                                }
+                            } catch (e) {
+                                showSweetAlert('error', 'Error processing server response');
+                                console.error('Response:', response);
+                                console.error('Error:', e);
                             }
-                        } catch (e) {
-                            alert('Error processing server response');
-                            console.error('Response:', response);
-                            console.error('Error:', e);
+                        },
+                        error: function(xhr, status, error) {
+                            showSweetAlert('error', 'Error deleting attendance: ' + error);
+                            console.error('AJAX Error:', status, error);
                         }
-                    },
-                    error: function(xhr, status, error) {
-                        alert('Error deleting attendance: ' + error);
-                        console.error('AJAX Error:', status, error);
-                    }
-                });
-            }
+                    });
+                }
+            });
         });
 
         // Edit button click handler
@@ -146,38 +158,38 @@
 
             // Create a modal with a form
             var modalHtml = `
-            <div class="modal fade" id="editAttendanceModal" tabindex="-1" aria-labelledby="editAttendanceModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editAttendanceModalLabel">Edit Attendance for Student ID: ${studentId}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="editAttendanceForm">
-                                <input type="hidden" id="attendanceId" value="${attendanceId}">
-                                <div class="mb-3">
-                                    <label for="logDate" class="form-label">Log Date</label>
-                                    <input type="date" class="form-control" id="logDate" value="${logDate}">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="timeIn" class="form-label">Time In</label>
-                                    <input type="time" class="form-control" id="timeIn" value="${convertToTimeInputFormat(timeIn)}">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="timeOut" class="form-label">Time Out</label>
-                                    <input type="time" class="form-control" id="timeOut" value="${convertToTimeInputFormat(timeOut)}">
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" id="cancelAttendance" data-bs-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-primary" id="saveAttendance">Save changes</button>
-                        </div>
+        <div class="modal fade" id="editAttendanceModal" tabindex="-1" aria-labelledby="editAttendanceModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editAttendanceModalLabel">Edit Attendance for Student ID: ${studentId}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editAttendanceForm">
+                            <input type="hidden" id="attendanceId" value="${attendanceId}">
+                            <div class="mb-3">
+                                <label for="logDate" class="form-label">Log Date</label>
+                                <input type="date" class="form-control" id="logDate" value="${logDate}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="timeIn" class="form-label">Time In</label>
+                                <input type="time" class="form-control" id="timeIn" value="${convertToTimeInputFormat(timeIn)}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="timeOut" class="form-label">Time Out</label>
+                                <input type="time" class="form-control" id="timeOut" value="${convertToTimeInputFormat(timeOut)}">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="cancelAttendance" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="saveAttendance">Save changes</button>
                     </div>
                 </div>
             </div>
-            `;
+        </div>
+        `;
 
             // Remove existing modal if it exists
             $('#editAttendanceModal').remove();
@@ -200,7 +212,7 @@
 
                 // Validate inputs
                 if (!formData.logDate) {
-                    alert('Please enter a log date');
+                    showSweetAlert('error', 'Please enter a log date');
                     return;
                 }
 
@@ -247,19 +259,19 @@
                                 // Close the modal
                                 editModal.hide();
 
-                                // Show success message
-                                alert('Attendance record updated successfully!');
+                                // Show success message with SweetAlert
+                                showSweetAlert('success', 'Attendance record updated successfully!');
                             } else {
-                                alert('Error updating attendance: ' + result.message);
+                                showSweetAlert('error', 'Error updating attendance: ' + result.message);
                             }
                         } catch (e) {
-                            alert('Error processing server response');
+                            showSweetAlert('error', 'Error processing server response');
                             console.error('Response:', response);
                             console.error('Error:', e);
                         }
                     },
                     error: function(xhr, status, error) {
-                        alert('Error updating attendance: ' + error);
+                        showSweetAlert('error', 'Error updating attendance: ' + error);
                         console.error('AJAX Error:', status, error);
                     }
                 });

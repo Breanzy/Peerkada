@@ -3,8 +3,8 @@ session_start();
 
 // Check if user is logged in
 if (!isset($_SESSION['ID_Number'])) {
-    $_SESSION['error'] = "You must be logged in to change your profile picture.";
-    header("Location: ../pages/login.php");
+    $errorMessage = urlencode("You must be logged in to change your profile picture.");
+    header("Location: ../pages/login.php?error=" . $errorMessage);
     exit();
 }
 
@@ -14,8 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['school_id'])) {
 
     // Security check - verify that the logged-in user is changing their own picture
     if ($_SESSION['ID_Number'] != $schoolID) {
-        $_SESSION['error'] = "You can only change your own profile picture.";
-        header("Location: ../pages/Profile.php");
+        $errorMessage = urlencode("You can only change your own profile picture.");
+        header("Location: ../pages/Profile.php?error=" . $errorMessage);
         exit();
     }
 
@@ -48,22 +48,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['school_id'])) {
 
             // Move the uploaded file to our directory
             if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $destination)) {
-                $_SESSION['success'] = "Profile picture updated successfully!";
+                $successMessage = urlencode("Profile picture updated successfully!");
+                header("Location: ../pages/Profile.php?success=" . $successMessage);
             } else {
-                $_SESSION['error'] = "Failed to upload profile picture.";
+                $errorMessage = urlencode("Failed to upload profile picture.");
+                header("Location: ../pages/Profile.php?error=" . $errorMessage);
             }
         } else {
-            $_SESSION['error'] = "Invalid file format. Only JPG, JPEG, PNG and GIF are allowed.";
+            $errorMessage = urlencode("Invalid file format. Only JPG, JPEG, PNG and GIF are allowed.");
+            header("Location: ../pages/Profile.php?error=" . $errorMessage);
         }
     } else {
-        $_SESSION['error'] = "No file was uploaded or an error occurred.";
+        $errorMessage = urlencode("No file was uploaded or an error occurred.");
+        header("Location: ../pages/Profile.php?error=" . $errorMessage);
     }
-
-    // Redirect back to profile page
-    header("Location: ../pages/Profile.php");
     exit();
 } else {
-    $_SESSION['error'] = "Invalid request.";
-    header("Location: ../pages/Profile.php");
+    $errorMessage = urlencode("Invalid request.");
+    header("Location: ../pages/Profile.php?error=" . $errorMessage);
     exit();
 }

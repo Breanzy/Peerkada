@@ -15,7 +15,6 @@
         <div id="layoutSidenav_content">
             <div id="layoutAuthentication">
                 <div id="layoutAuthentication_content" class="d-flex flex-column justify-content-start">
-                    <?php require '../components/Notifications.php'; ?>
                     <main>
                         <div class="container">
                             <div class="row justify-content-center">

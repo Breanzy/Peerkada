@@ -170,10 +170,13 @@ const UserTableManager = {
                         form.submit();
                         document.body.removeChild(form);
                     } else {
-                        alert("Error generating QR code: " + result.error);
+                        showSweetAlert(
+                            "error",
+                            "Error generating QR code: " + result.error
+                        );
                     }
                 } catch (e) {
-                    alert("Error processing server response");
+                    showSweetAlert("error", "Error processing server response");
                     console.error("Response:", response);
                     console.error("Error:", e);
                 }
@@ -186,7 +189,7 @@ const UserTableManager = {
                 } catch (e) {
                     console.error("Raw server error:", xhr.responseText);
                 }
-                alert(errorMessage);
+                showSweetAlert("error", errorMessage);
             },
         });
     },
@@ -197,42 +200,63 @@ const UserTableManager = {
         const userName = rowData.userData.name;
         const userId = rowData.userData.idNumber;
 
-        // Show confirmation dialog with user name
-        if (
-            confirm(
-                `Are you sure you want to delete the user "${userName}"? This action cannot be undone.`
-            )
-        ) {
-            $.ajax({
-                url: "../controllers/DeleteUser.php",
-                method: "POST",
-                data: {
-                    userId: userId,
-                },
-                success: (response) => {
-                    try {
-                        const result = JSON.parse(response);
-                        if (result.success) {
-                            // Animate row removal and remove from DataTable
-                            rowData.$row.fadeOut(400, () => {
-                                this.table.row(rowData.$row).remove().draw();
-                            });
-                            alert("User deleted successfully!");
-                        } else {
-                            alert("Error deleting user: " + result.message);
+        // Show SweetAlert confirmation dialog with user name
+        Swal.fire({
+            title: "Are you sure?",
+            text: `Are you sure you want to delete the user "${userName}"? This action cannot be undone.`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes, delete it!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "../controllers/DeleteUser.php",
+                    method: "POST",
+                    data: {
+                        userId: userId,
+                    },
+                    success: (response) => {
+                        try {
+                            const result = JSON.parse(response);
+                            if (result.success) {
+                                // Animate row removal and remove from DataTable
+                                rowData.$row.fadeOut(400, () => {
+                                    this.table
+                                        .row(rowData.$row)
+                                        .remove()
+                                        .draw();
+                                });
+                                showSweetAlert(
+                                    "success",
+                                    "User deleted successfully!"
+                                );
+                            } else {
+                                showSweetAlert(
+                                    "error",
+                                    "Error deleting user: " + result.message
+                                );
+                            }
+                        } catch (e) {
+                            showSweetAlert(
+                                "error",
+                                "Error processing server response"
+                            );
+                            console.error("Response:", response);
+                            console.error("Error:", e);
                         }
-                    } catch (e) {
-                        alert("Error processing server response");
-                        console.error("Response:", response);
-                        console.error("Error:", e);
-                    }
-                },
-                error: (xhr, status, error) => {
-                    alert("Error deleting user: " + error);
-                    console.error("AJAX Error:", status, error);
-                },
-            });
-        }
+                    },
+                    error: (xhr, status, error) => {
+                        showSweetAlert(
+                            "error",
+                            "Error deleting user: " + error
+                        );
+                        console.error("AJAX Error:", status, error);
+                    },
+                });
+            }
+        });
     },
 
     // Handle user editing

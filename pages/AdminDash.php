@@ -20,8 +20,6 @@ if ($_SESSION['role'] != 'admin') {
 
     <div id="layoutSidenav">
         <?php require_once('../components/SideNav.php'); ?>
-        <?php require_once '../components/Notifications.php'; ?>
-
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4 d-flex flex-column gap-4">

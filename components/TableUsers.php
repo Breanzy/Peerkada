@@ -69,6 +69,8 @@
 <script src="../js/ResetPasswordScript.js"></script>
 
 <script>
+    // Replace the existing script section in TableUsers.php with this
+
     $(document).ready(function() {
 
         var table = $('#userTable').DataTable({
@@ -160,10 +162,10 @@
                             form.submit();
                             document.body.removeChild(form);
                         } else {
-                            alert('Error generating QR code: ' + result.error);
+                            showSweetAlert('error', 'Error generating QR code: ' + result.error);
                         }
                     } catch (e) {
-                        alert('Error processing server response');
+                        showSweetAlert('error', 'Error processing server response');
                         console.error('Response:', response);
                         console.error('Error:', e);
                     }
@@ -176,7 +178,7 @@
                     } catch (e) {
                         console.error('Raw server error:', xhr.responseText);
                     }
-                    alert(errorMessage);
+                    showSweetAlert('error', errorMessage);
                 }
             });
         });
@@ -198,40 +200,52 @@
             var userName = $(cells[0]).text().trim();
             var userId = $(cells[1]).text().trim();
 
-            // Show confirmation dialog with user name
-            if (confirm(`Are you sure you want to delete the user "${userName}"? This action cannot be undone.`)) {
-                $.ajax({
-                    url: '../controllers/DeleteUser.php',
-                    method: 'POST',
-                    data: {
-                        userId: userId
-                    },
+            // Show confirmation dialog with user name using SweetAlert instead of confirm
+            Swal.fire({
+                title: 'Delete User',
+                text: `Are you sure you want to delete the user "${userName}"? This action cannot be undone.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '../controllers/DeleteUser.php',
+                        method: 'POST',
+                        data: {
+                            userId: userId
+                        },
 
-                    success: function(response) {
-                        try {
-                            const result = JSON.parse(response);
-                            if (result.success) {
-                                // Use $row instead of row here
-                                $row.fadeOut(400, function() {
-                                    // Get the DataTable instance
-                                    table.row($row).remove().draw();
-                                });
-                                alert('User deleted successfully!');
-                            } else {
-                                alert('Error deleting user: ' + result.message);
+                        success: function(response) {
+                            try {
+                                const result = JSON.parse(response);
+                                if (result.success) {
+                                    // Use SweetAlert instead of alert
+                                    showSweetAlert('success', 'User deleted successfully!');
+
+                                    // Use $row instead of row here
+                                    $row.fadeOut(400, function() {
+                                        // Get the DataTable instance
+                                        table.row($row).remove().draw();
+                                    });
+                                } else {
+                                    showSweetAlert('error', 'Error deleting user: ' + result.message);
+                                }
+                            } catch (e) {
+                                showSweetAlert('error', 'Error processing server response');
+                                console.error('Response:', response);
+                                console.error('Error:', e);
                             }
-                        } catch (e) {
-                            alert('Error processing server response');
-                            console.error('Response:', response);
-                            console.error('Error:', e);
+                        },
+                        error: function(xhr, status, error) {
+                            showSweetAlert('error', 'Error deleting user: ' + error);
+                            console.error('AJAX Error:', status, error);
                         }
-                    },
-                    error: function(xhr, status, error) {
-                        alert('Error deleting user: ' + error);
-                        console.error('AJAX Error:', status, error);
-                    }
-                });
-            }
+                    });
+                }
+            });
         });
 
         // Edit user function
@@ -287,6 +301,9 @@
 
                 // Redraw the table to ensure all DataTables features work correctly
                 table.rows($row).invalidate().draw(false);
+
+                // Show success message with SweetAlert
+                showSweetAlert('success', 'User updated successfully!');
             });
         });
 

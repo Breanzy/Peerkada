@@ -94,6 +94,10 @@ const QRScanner = {
             )
             .catch((err) => {
                 console.error("Error starting QR scanner:", err);
+                showSweetAlert(
+                    "error",
+                    "Failed to start camera. Please check camera permissions."
+                );
             });
     },
 
@@ -107,6 +111,11 @@ const QRScanner = {
     onScanSuccess: function (decodedText, decodedResult) {
         // Stop scanning after successful detection
         this.scanner.stop().then(() => {
+            // Show success notification
+            showSweetAlert("success", "QR code scanned successfully!", {
+                timer: 1500,
+            });
+
             // Populate form and submit
             this.elements.input.value = decodedText;
             this.elements.form.submit();

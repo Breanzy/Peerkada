@@ -92,19 +92,22 @@ const resetPasswordModal = {
                         // Show success message
                         this.showResultSection();
                     } else {
-                        alert("Error resetting password: " + result.message);
+                        showSweetAlert(
+                            "error",
+                            "Error resetting password: " + result.message
+                        );
                         this.resetModalState();
                         this.modal.hide();
                     }
                 } catch (e) {
                     console.error("Error parsing response:", response);
-                    alert("Error processing server response");
+                    showSweetAlert("error", "Error processing server response");
                     this.resetModalState();
                     this.modal.hide();
                 }
             },
             error: (xhr, status, error) => {
-                alert("Error resetting password: " + error);
+                showSweetAlert("error", "Error resetting password: " + error);
                 console.error("AJAX Error:", status, error);
                 this.resetModalState();
                 this.modal.hide();

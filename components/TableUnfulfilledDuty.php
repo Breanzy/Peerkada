@@ -96,6 +96,8 @@ $unfulfilled = $stmt->fetchAll();
 <button id="sendWarningEmail" class="btn btn-danger">Send Duty Warning Emails</button>
 
 <script>
+    // Replace the existing script section in TableUnfulfilledDuty.php with this
+
     $(document).ready(function() {
         // Initialize DataTable
         var table = $('#unfulfilledTable').DataTable({
@@ -114,46 +116,57 @@ $unfulfilled = $stmt->fetchAll();
 
         // Handle email button click
         $('#sendWarningEmail').on('click', function() {
-            if (confirm('Are you sure you want to send warning emails to all unfulfilled users?')) {
-                // Show loading state
-                $(this).prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...');
+            // Show confirmation with SweetAlert instead of confirm
+            Swal.fire({
+                title: 'Send Warning Emails',
+                text: 'Are you sure you want to send warning emails to all unfulfilled users?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, send emails'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Show loading state
+                    $(this).prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...');
 
-                $.ajax({
-                    url: '../controllers/Mailer_SendDutyWarning.php',
-                    type: 'POST',
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.success) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Success!',
-                                text: response.message
-                            });
-                        } else {
-                            let errorMsg = response.message;
-                            if (response.errors) {
-                                errorMsg += '\nDetails:\n' + response.errors.map(e => `${e.email}: ${e.message}`).join('\n');
+                    $.ajax({
+                        url: '../controllers/Mailer_SendDutyWarning.php',
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success!',
+                                    text: response.message
+                                });
+                            } else {
+                                let errorMsg = response.message;
+                                if (response.errors) {
+                                    errorMsg += '\nDetails:\n' + response.errors.map(e => `${e.email}: ${e.message}`).join('\n');
+                                }
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: errorMsg
+                                });
                             }
+                        },
+                        error: function(xhr, status, error) {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Error',
-                                text: errorMsg
+                                text: 'Failed to send emails: ' + error
                             });
+                        },
+                        complete: function() {
+                            // Reset button state
+                            $('#sendWarningEmail').prop('disabled', false).html('Send Duty Warning Emails');
                         }
-                    },
-                    error: function(xhr, status, error) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: 'Failed to send emails: ' + error
-                        });
-                    },
-                    complete: function() {
-                        // Reset button state
-                        $('#sendWarningEmail').prop('disabled', false).html('Send Duty Warning Emails');
-                    }
-                });
-            }
+                    });
+                }
+            });
         });
     });
 </script>

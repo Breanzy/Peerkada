@@ -23,7 +23,6 @@ if (!isset($_SESSION['role'])) {
         <!-- THE WHOLE CONTENT -->
         <div id="layoutSidenav_content" class="d-flex flex-column justify-content-start">
             <!-- Notifications -->
-            <?php require_once '../components/Notifications.php'; ?>
             <main>
                 <div class="container-fluid d-flex flex-column justify-content-start gap-2">
 

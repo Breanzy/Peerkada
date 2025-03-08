@@ -22,7 +22,6 @@ if ($stmt->rowCount() > 0) {
 
     // IF TRUE, UPDATE NEW TIME OUT LOG
     if ($attendanceStmt->rowCount() > 0) {
-
         // Prepare the update statement
         $updateStmt = $pdo->prepare("UPDATE table_attendance SET TIMEOUT = :timeout WHERE STUDENTID = :student_id AND LOGDATE = :log_date AND TIMEOUT IS NULL");
         $updateStmt->execute([
@@ -30,7 +29,8 @@ if ($stmt->rowCount() > 0) {
             'student_id' => $text,
             'log_date' => $date
         ]);
-        $_SESSION['success'] = "Successfully Signed Out!";
+        $successMessage = urlencode("Successfully Signed Out!");
+        header("location: ../pages/index.php?success=" . $successMessage);
     } else {
         // IF FALSE, CREATE A NEW UNCLOSED TIME-IN LOG
         $insertStmt = $pdo->prepare("INSERT INTO table_attendance (STUDENTID, TIMEIN, LOGDATE) VALUES (:student_id, :timein, :log_date)");
@@ -39,11 +39,12 @@ if ($stmt->rowCount() > 0) {
             'timein' => $time,
             'log_date' => $date,
         ]);
-        $_SESSION['success'] = "Successfully Signed In!";
+        $successMessage = urlencode("Successfully Signed In!");
+        header("location: ../pages/index.php?success=" . $successMessage);
     }
 } else {
-    $_SESSION['error'] = 'No Such Member ID exist!';
+    $errorMessage = urlencode('No Such Member ID exist!');
+    header("location: ../pages/index.php?error=" . $errorMessage);
 }
 
-header("location: ../pages/index.php");
-$conn->close();
+exit();

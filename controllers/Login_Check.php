@@ -21,11 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['ID_Number'] = $user['ID_NUMBER'];
         }
 
-        $_SESSION['success'] = 'Logged in Successfully!';
-        header("location: ../pages/index.php");
+        $successMessage = urlencode('Logged in Successfully!');
+        header("location: ../pages/index.php?success=" . $successMessage);
     } else {
-        $_SESSION['error'] = 'Incorrect Password / User does not exist. Please try again.';
-        header("location: ../pages/login.php");
+        $errorMessage = urlencode('Incorrect Password / User does not exist. Please try again.');
+        header("location: ../pages/login.php?error=" . $errorMessage);
     }
     exit();
 } else {

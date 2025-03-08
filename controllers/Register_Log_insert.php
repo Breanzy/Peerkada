@@ -41,10 +41,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $destination)) {
                 $profile_picture = $new_filename;
             } else {
-                $_SESSION['warning'] = "Error uploading profile picture. Using default.";
+                $warningMessage = "Error uploading profile picture. Using default.";
             }
         } else {
-            $_SESSION['warning'] = "Invalid file format. Only JPG, JPEG, PNG and GIF are allowed.";
+            $warningMessage = "Invalid file format. Only JPG, JPEG, PNG and GIF are allowed.";
         }
     }
 
@@ -55,8 +55,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($stmt->rowCount() > 0) {
         // Registered Profile already exists
-        $_SESSION['error'] = "ID Number Already Exist in the Database!";
-        header("location: ../pages/login.php");
+        $errorMessage = urlencode("ID Number Already Exist in the Database!");
+        header("location: ../pages/login.php?error=" . $errorMessage);
         exit();
     } else {
         // Proceed with function
@@ -81,13 +81,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 ':Sex' => $Sex,
                 ':Password' => $Password,
             ])) {
-                $_SESSION['success'] = "Successfully registered!";
+                // Set success message for sweet alert
+                $successMsg = "Successfully registered!";
 ?>
                 <!DOCTYPE html>
                 <html>
 
                 <head>
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                    <script>
+                        // Show success message right away
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: '<?php echo $successMsg; ?>',
+                            timer: 3000,
+                            timerProgressBar: true
+                        });
+                    </script>
                 </head>
 
                 <body>
@@ -123,18 +135,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     document.body.appendChild(form);
                                     form.submit();
 
-                                    // Redirect to login page after a short delay
+                                    // Redirect to login page after a short delay with success message
                                     setTimeout(() => {
-                                        window.location.href = "../pages/login.php";
+                                        window.location.href = "../pages/login.php?success=" + encodeURIComponent("Successfully registered! You can now log in.");
                                     }, 1000);
                                 } else {
-                                    alert('Error generating QR code: ' + result.error);
-                                    window.location.href = "../pages/login.php";
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error!',
+                                        text: 'Error generating QR code: ' + result.error,
+                                        timer: 3000,
+                                        timerProgressBar: true
+                                    });
+
+                                    setTimeout(() => {
+                                        window.location.href = "../pages/login.php";
+                                    }, 2000);
                                 }
                             },
                             error: function() {
-                                alert('Error generating QR code');
-                                window.location.href = "../pages/login.php";
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: 'Error generating QR code',
+                                    timer: 3000,
+                                    timerProgressBar: true
+                                });
+
+                                setTimeout(() => {
+                                    window.location.href = "../pages/login.php";
+                                }, 2000);
                             }
                         });
                     </script>
@@ -146,8 +176,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 throw new Exception($stmt->errorInfo()[2]);
             }
         } catch (Exception $e) {
-            $_SESSION['error'] = "Error: " . $e->getMessage();
-            header("location:../pages/register.php");
+            $errorMessage = urlencode("Error: " . $e->getMessage());
+            header("location:../pages/register.php?error=" . $errorMessage);
             exit();
         }
     }
@@ -155,4 +185,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     header("location:../pages/register.php");
     exit();
 }
-?>
