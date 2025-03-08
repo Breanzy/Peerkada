@@ -27,10 +27,6 @@
     </div>
 </nav>
 
-
-
-
-
 <!-- Toggle the side navigation -->
 <script>
     window.addEventListener("DOMContentLoaded", (event) => {

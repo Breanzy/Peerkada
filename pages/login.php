@@ -43,7 +43,6 @@
                         </form>
                         <div class="d-flex justify-content-between mt-3">
                             <p class="text-center my-auto">Not a member? <a data-toggle="tab" href="register.php">Sign Up</a></p>
-                            <p class="text-center my-auto"><a data-toggle="tab" href="index.php">GUEST MODE</a></p>
                         </div>
                     </div>
                 </div>
