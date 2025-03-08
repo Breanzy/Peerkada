@@ -14,8 +14,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($user && password_verify($password, $user['PASSWORD'])) {
         // SETS SESSION 'name' TO THE ID NUMBER OF USER AND GOES TO MAIN DASHBOARD
         $_SESSION['name'] = $user['NAME'];
-        $_SESSION['ID_Number'] = $user['ID_NUMBER'];
-        $_SESSION['isAdmin'] = $user['IS_ADMIN'];
+        $_SESSION['role'] = $user['ROLE'];
+
+        // Only users will have their ID number set at in session to prevent admin & scanner access to profile pages
+        if ($_SESSION['role'] == 'user') {
+            $_SESSION['ID_Number'] = $user['ID_NUMBER'];
+        }
+
         $_SESSION['success'] = 'Logged in Successfully!';
         header("location: ../pages/index.php");
     } else {

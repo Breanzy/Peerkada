@@ -1,5 +1,10 @@
 <?php session_start();
 require_once '../config.php';
+if (!isset($_SESSION['role'])) {
+    // If not set, redirect to login page
+    header('Location: login.php');
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,17 +25,15 @@ require_once '../config.php';
             <!-- Notifications -->
             <?php require_once '../components/Notifications.php'; ?>
             <main>
-                <div class="container-fluid p-4">
-                    <!-- QR tab -->
-                    <div class="d-flex flex-column justify-content-center gap-2">
-                        <div class="card">
-                            <div class="card-header">
-                                <i class="fa fa-camera " aria-hidden="true"></i>
-                                QR Scanner
-                            </div>
-                            <?php require_once '../components/QRCamera.php'; ?>
-                        </div>
+                <div class="container-fluid d-flex flex-column justify-content-start gap-2">
 
+                    <?php
+                    if ($_SESSION['role'] == 'scanner') {
+                        //Only show when role is scanner
+                        require_once '../components/QRCamera.php';
+                    } ?>
+
+                    <div class="d-flex flex-column justify-content-center gap-2">
                         <div class="card">
                             <div class="card-header mb-2">
                                 <i class="fa-solid fa-arrows-rotate " aria-hidden="true"></i>

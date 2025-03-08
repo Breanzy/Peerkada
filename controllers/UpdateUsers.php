@@ -4,6 +4,7 @@ session_start();
 
 // Check if user is admin
 if (!(isset($_SESSION['isAdmin']) || $_POST['idNumber'] == $_SESSION['ID_Number'])) {
+if ($_SESSION['role'] != 'admin' && $_POST['idNumber'] != $_SESSION['ID_Number']) {
     echo json_encode(['success' => false, 'message' => 'Unauthorized access']);
     exit;
 }

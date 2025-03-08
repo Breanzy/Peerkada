@@ -12,7 +12,7 @@
             <th>Address</th>
             <th>Birth Date</th>
             <th>Sex</th>
-            <?php if (isset($_SESSION['isAdmin'])): ?>
+            <?php if ($_SESSION['role'] == 'admin'): ?>
                 <th>Actions</th>
             <?php endif; ?>
         </tr>
@@ -39,7 +39,7 @@
                     <td><?php echo htmlspecialchars($user['ADDRESS']); ?></td>
                     <td><?php echo htmlspecialchars(trim($user['BIRTH'])); ?></td>
                     <td><?php echo htmlspecialchars($user['SEX']); ?></td>
-                    <?php if (isset($_SESSION['isAdmin'])): ?>
+                    <?php if ($_SESSION['role'] == 'admin'): ?>
                         <td class='text-center'>
                             <div class="btn-group" role="group">
                                 <button class="btn btn-warning edit-btn m-1" title="Edit User">

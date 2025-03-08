@@ -1,14 +1,21 @@
+<?php $role = isset($_SESSION['role']) ? $_SESSION['role'] : null; ?>
+
+
 <div id="layoutSidenav_nav">
     <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
         <div class="sb-sidenav-menu">
             <div class="nav">
-                <div class="sb-sidenav-menu-heading">Core</div>
-                <a class="nav-link" href="../pages/index.php">
-                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                    Dashboard
-                </a>
+                <?php if ($role != null) { ?>
 
-                <?php if (isset($_SESSION['isAdmin'])) { ?>
+                    <div class="sb-sidenav-menu-heading">Core</div>
+                    <a class="nav-link" href="../pages/index.php">
+                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        Dashboard
+                    </a>
+                <?php } ?>
+
+
+                <?php if ($role == 'admin') { ?>
                     <a class="nav-link" href="../pages/AdminDash.php">
                         <div class="sb-nav-link-icon"><i class="fas fa-user-shield"></i></div>
                         Admin Dashboard
@@ -16,7 +23,7 @@
                 <?php } ?>
 
 
-                <?php if (isset($_SESSION['name'])) { ?>
+                <?php if ($role == 'user') { ?>
                     <div class="sb-sidenav-menu-heading">User</div>
                     <a class="nav-link" href="../pages/Profile.php">
                         <div class="sb-nav-link-icon"><i class="fas fa-user-circle"></i></div>

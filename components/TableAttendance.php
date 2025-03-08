@@ -6,7 +6,7 @@
             <th scope="col">Time In</th>
             <th scope="col">Time Out</th>
             <th scope="col">Total Time</th>
-            <?php if (isset($_SESSION['isAdmin'])): ?>
+            <?php if ($_SESSION['role'] == 'admin'): ?>
                 <th scope="col">Actions</th>
             <?php endif; ?>
         </tr>
@@ -27,7 +27,7 @@
                     <td><?php echo htmlspecialchars($log['TIMEIN'] ? date('h:i:s A', strtotime($log['TIMEIN'])) : null); ?></td>
                     <td><?php echo htmlspecialchars($log['TIMEOUT'] ? date('h:i:s A', strtotime($log['TIMEOUT'])) : 'N/A'); ?></td>
                     <td><?php echo htmlspecialchars($log['TIMEOUT'] ? gmdate("H \\h\\r/\\s, i \\m\\i\\n/\\s, s \\s\\e\\c/\\s", strtotime($log['TIMEOUT']) - strtotime($log['TIMEIN'])) : 'N/A'); ?></td>
-                    <?php if (isset($_SESSION['isAdmin'])): ?>
+                    <?php if ($_SESSION['role'] == 'admin'): ?>
                         <td class='text-center'>
                             <div class="btn-group" role="group">
                                 <button class='btn btn-warning edit-btn fa-solid fa-pen-to-square m-1'>Edit</button>

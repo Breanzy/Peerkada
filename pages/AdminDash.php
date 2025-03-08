@@ -1,7 +1,7 @@
 <?php session_start();
 require_once '../config.php';
 
-if (!isset($_SESSION['isAdmin'])) {
+if ($_SESSION['role'] != 'admin') {
     // If not set, redirect to login page
     header('Location: login.php');
     exit();
@@ -34,7 +34,7 @@ if (!isset($_SESSION['isAdmin'])) {
                     <div class="p-2">
                         <?php
                         // Fetch users
-                        $query = "SELECT * FROM members_profile";
+                        $query = "SELECT * FROM members_profile WHERE ROLE = 'user'";
                         require_once '../components/TableUsers.php';
                         ?>
 
@@ -50,7 +50,7 @@ if (!isset($_SESSION['isAdmin'])) {
                         <?php
                         // Fetch attendance logs where TIMEOUT is not null
                         $tableID = 'signedOut';
-                        $query = "SELECT * FROM table_attendance WHERE TIMEOUT IS NOT NULL";
+                        $query = "SELECT * FROM table_attendance WHERE TIMEOUT IS NOT NULL ";
                         require '../components/TableAttendance.php';
                         ?>
                     </div>

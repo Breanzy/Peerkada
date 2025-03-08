@@ -3,7 +3,7 @@ require_once '../config.php';
 session_start();
 
 // Check if user is admin
-if (!isset($_SESSION['isAdmin'])) {
+if ($_SESSION['role'] != 'user') {
     echo json_encode(['success' => false, 'message' => 'Unauthorized access']);
     exit;
 }

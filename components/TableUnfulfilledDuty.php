@@ -48,8 +48,10 @@ LEFT JOIN
     AND ta.LOGDATE >= ? 
     AND ta.LOGDATE <= ?
     AND ta.TIMEOUT IS NOT NULL
+WHERE 
+    mp.ROLE = 'user'  -- Added this condition to filter only users
 GROUP BY 
-    mp.USER_ID, mp.NAME, mp.ID_NUMBER, mp.TITLE  -- in GROUP BY
+    mp.USER_ID, mp.NAME, mp.ID_NUMBER, mp.TITLE  
 HAVING 
     remaining_hours > 0
 ORDER BY 
