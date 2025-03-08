@@ -101,16 +101,6 @@
             }
         });
 
-        // Force column adjustment after a slight delay to ensure DOM is ready
-        setTimeout(function() {
-            table.columns.adjust().draw();
-        }, 100);
-
-        // Ensure column adjustment when tab or panel becomes visible
-        $('a[data-bs-toggle="tab"], a[data-bs-toggle="pill"]').on('shown.bs.tab', function() {
-            table.columns.adjust().draw();
-        });
-
         table.buttons().container().appendTo('#userTable_wrapper .col-md-6:eq(0)');
 
         // Add QR code download handler
@@ -293,6 +283,27 @@
                 // Redraw the table to ensure all DataTables features work correctly
                 table.rows($row).invalidate().draw(false);
             });
+        });
+
+        // Reset Password button handler
+        $('#userTable').on('click', '.reset-pwd-btn', function() {
+            var table = $('#userTable').DataTable();
+            var $row = $(this).closest('tr');
+
+            // This handles responsive mode and child rows
+            if ($row.hasClass('child')) {
+                $row = $row.prev();
+            }
+
+            var tableRow = table.row($row);
+
+            // Get data from the specific row
+            var cells = tableRow.nodes().to$().find('td');
+            var userName = $(cells[0]).text().trim();
+            var userId = $(cells[1]).text().trim();
+
+            // Show reset password modal
+            resetPasswordModal.showModal(userId, userName);
         });
 
     });
