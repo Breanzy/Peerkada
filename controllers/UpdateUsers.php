@@ -3,7 +3,6 @@ require_once '../config.php';
 session_start();
 
 // Check if user is admin
-if (!(isset($_SESSION['isAdmin']) || $_POST['idNumber'] == $_SESSION['ID_Number'])) {
 if ($_SESSION['role'] != 'admin' && $_POST['idNumber'] != $_SESSION['ID_Number']) {
     echo json_encode(['success' => false, 'message' => 'Unauthorized access']);
     exit;
@@ -37,6 +36,12 @@ try {
         throw new Exception("Invalid email format");
     }
 
+    // Fetch the current ID number to check if it's being changed
+    $currentIdStmt = $pdo->prepare("SELECT ID_NUMBER FROM members_profile WHERE USER_ID = :userId");
+    $currentIdStmt->execute(['userId' => $_POST['userId']]);
+    $currentIdNumber = $currentIdStmt->fetchColumn();
+    $idNumberChanged = ($currentIdNumber !== $_POST['idNumber']);
+
     // Check if ID number already exists (excluding the current user)
     $checkStmt = $pdo->prepare("SELECT COUNT(*) FROM members_profile WHERE ID_NUMBER = :idNumber AND USER_ID != :userId");
     $checkStmt->execute([
@@ -48,7 +53,10 @@ try {
         throw new Exception("ID Number already exists");
     }
 
-    // Prepare update query
+    // Start transaction to ensure both updates succeed or fail together
+    $pdo->beginTransaction();
+
+    // Prepare update query for user profile
     $query = "UPDATE members_profile SET
         NAME = :name,
         ID_NUMBER = :idNumber,
@@ -81,11 +89,35 @@ try {
         'userId' => htmlspecialchars($_POST['userId'])
     ]);
 
-    if ($result) {
-        echo json_encode(['success' => true]);
-    } else {
-        throw new Exception("Failed to update user");
+    // If ID number was changed, update attendance records
+    if ($idNumberChanged && $result) {
+        // Update the attendance records with the new ID number
+        // Assuming there's an ID_NUMBER field in the attendance table
+        $attendanceQuery = "UPDATE table_attendance SET 
+                            STUDENTID = :newIdNumber 
+                            WHERE STUDENTID = :oldIdNumber";
+
+        $attendanceStmt = $pdo->prepare($attendanceQuery);
+        $attendanceResult = $attendanceStmt->execute([
+            'newIdNumber' => htmlspecialchars($_POST['idNumber']),
+            'oldIdNumber' => $currentIdNumber
+        ]);
+
+        if (!$attendanceResult) {
+            // If attendance update fails, roll back the transaction
+            $pdo->rollBack();
+            throw new Exception("Failed to update attendance records");
+        }
     }
+
+    // Commit the transaction if everything succeeded
+    $pdo->commit();
+
+    echo json_encode(['success' => true]);
 } catch (Exception $e) {
+    // Roll back transaction on error
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);
 }
