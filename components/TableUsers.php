@@ -27,30 +27,37 @@
 
         if (!empty($users)) {
             foreach ($users as $user) { ?>
-                <tr data-user-id="<?php echo htmlspecialchars($user['USER_ID']); ?>">
-                    <td><?php echo htmlspecialchars($user['NAME']); ?></td>
-                    <td><?php echo htmlspecialchars($user['ID_NUMBER']); ?></td>
-                    <td><?php echo htmlspecialchars($user['TITLE']); ?></td>
-                    <td><?php echo htmlspecialchars($user['COLLEGE']); ?></td>
-                    <td><?php echo htmlspecialchars($user['SCHOOL_YR']); ?></td>
-                    <td><?php echo htmlspecialchars($user['COURSE']); ?></td>
-                    <td><?php echo htmlspecialchars($user['EMAIL_ADD']); ?></td>
-                    <td><?php echo htmlspecialchars($user['PHONE_NUM']); ?></td>
-                    <td><?php echo htmlspecialchars($user['ADDRESS']); ?></td>
-                    <td><?php echo htmlspecialchars(trim($user['BIRTH'])); ?></td>
-                    <td><?php echo htmlspecialchars($user['SEX']); ?></td>
+                <tr data-user-id="<?php echo htmlspecialchars($user['USER_ID']); ?>"
+                    class="<?php echo ($user['ROLE'] != 'user') ? 'table-primary' : ''; ?>">
+                    <td>
+                        <?php echo htmlspecialchars($user['NAME']); ?>
+                    </td>
+                    <!-- These cells must exist for every row regardless of role -->
+                    <td><?php echo ($user['ROLE'] == 'user') ? htmlspecialchars($user['ID_NUMBER']) : ''; ?></td>
+                    <td><?php echo ($user['ROLE'] == 'user') ? htmlspecialchars($user['TITLE']) : ''; ?></td>
+                    <td><?php echo ($user['ROLE'] == 'user') ? htmlspecialchars($user['COLLEGE']) : ''; ?></td>
+                    <td><?php echo ($user['ROLE'] == 'user') ? htmlspecialchars($user['SCHOOL_YR']) : ''; ?></td>
+                    <td><?php echo ($user['ROLE'] == 'user') ? htmlspecialchars($user['COURSE']) : ''; ?></td>
+                    <td><?php echo ($user['ROLE'] == 'user') ? htmlspecialchars($user['EMAIL_ADD']) : ''; ?></td>
+                    <td><?php echo ($user['ROLE'] == 'user') ? htmlspecialchars($user['PHONE_NUM']) : ''; ?></td>
+                    <td><?php echo ($user['ROLE'] == 'user') ? htmlspecialchars($user['ADDRESS']) : ''; ?></td>
+                    <td><?php echo ($user['ROLE'] == 'user') ? htmlspecialchars(trim($user['BIRTH'])) : ''; ?></td>
+                    <td><?php echo ($user['ROLE'] == 'user') ? htmlspecialchars($user['SEX']) : ''; ?></td>
+
                     <?php if ($_SESSION['role'] == 'admin'): ?>
                         <td class='text-center'>
                             <div class="btn-group" role="group">
-                                <button class="btn btn-warning edit-btn m-1" title="Edit User">
-                                    <i class="fa-solid fa-pen-to-square"></i> Edit User
-                                </button>
-                                <button class="btn btn-danger delete-btn m-1" title="Delete User">
-                                    <i class="fa-solid fa-trash"></i> Delete User
-                                </button>
-                                <button class="btn btn-info qr-btn m-1" title="Download QR Code">
-                                    <i class="fa-solid fa-qrcode"></i> Download QR Code
-                                </button>
+                                <?php if ($user['ROLE'] == 'user'): ?>
+                                    <button class="btn btn-warning edit-btn m-1" title="Edit User">
+                                        <i class="fa-solid fa-pen-to-square"></i> Edit User
+                                    </button>
+                                    <button class="btn btn-danger delete-btn m-1" title="Delete User">
+                                        <i class="fa-solid fa-trash"></i> Delete User
+                                    </button>
+                                    <button class="btn btn-info qr-btn m-1" title="Download QR Code">
+                                        <i class="fa-solid fa-qrcode"></i> Download QR Code
+                                    </button>
+                                <?php endif; ?>
                                 <button class="btn btn-primary reset-pwd-btn m-1" title="Reset Password">
                                     <i class="fa-solid fa-key"></i> Reset Password
                                 </button>
@@ -69,8 +76,6 @@
 <script src="../js/ResetPasswordScript.js"></script>
 
 <script>
-    // Replace the existing script section in TableUsers.php with this
-
     $(document).ready(function() {
 
         var table = $('#userTable').DataTable({
@@ -211,40 +216,40 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $.ajax({
-                        url: '../controllers/DeleteUser.php',
-                        method: 'POST',
-                        data: {
-                            userId: userId
-                        },
+                $.ajax({
+                    url: '../controllers/DeleteUser.php',
+                    method: 'POST',
+                    data: {
+                        userId: userId
+                    },
 
-                        success: function(response) {
-                            try {
-                                const result = JSON.parse(response);
-                                if (result.success) {
+                    success: function(response) {
+                        try {
+                            const result = JSON.parse(response);
+                            if (result.success) {
                                     // Use SweetAlert instead of alert
                                     showSweetAlert('success', 'User deleted successfully!');
 
-                                    // Use $row instead of row here
-                                    $row.fadeOut(400, function() {
-                                        // Get the DataTable instance
-                                        table.row($row).remove().draw();
-                                    });
-                                } else {
+                                // Use $row instead of row here
+                                $row.fadeOut(400, function() {
+                                    // Get the DataTable instance
+                                    table.row($row).remove().draw();
+                                });
+                            } else {
                                     showSweetAlert('error', 'Error deleting user: ' + result.message);
-                                }
-                            } catch (e) {
-                                showSweetAlert('error', 'Error processing server response');
-                                console.error('Response:', response);
-                                console.error('Error:', e);
                             }
-                        },
-                        error: function(xhr, status, error) {
-                            showSweetAlert('error', 'Error deleting user: ' + error);
-                            console.error('AJAX Error:', status, error);
+                        } catch (e) {
+                                showSweetAlert('error', 'Error processing server response');
+                            console.error('Response:', response);
+                            console.error('Error:', e);
                         }
-                    });
-                }
+                    },
+                    error: function(xhr, status, error) {
+                            showSweetAlert('error', 'Error deleting user: ' + error);
+                        console.error('AJAX Error:', status, error);
+                    }
+                });
+            }
             });
         });
 

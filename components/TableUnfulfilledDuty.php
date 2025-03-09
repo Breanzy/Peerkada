@@ -74,22 +74,16 @@ $unfulfilled = $stmt->fetchAll();
         </tr>
     </thead>
     <tbody>
-        <?php if (!empty($unfulfilled)): ?>
-            <?php foreach ($unfulfilled as $user): ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($user['NAME']); ?></td>
-                    <td><?php echo htmlspecialchars($user['ID_NUMBER']); ?></td>
-                    <td><?php echo htmlspecialchars($user['TITLE']); ?></td>
-                    <td><?php echo number_format($user['total_hours'], 2); ?></td>
-                    <td><?php echo htmlspecialchars($user['required_hours']); ?></td>
-                    <td class="text-danger fw-bold"><?php echo number_format($user['remaining_hours'], 2); ?></td>
-                </tr>
-            <?php endforeach; ?>
-        <?php else: ?>
+        <?php foreach ($unfulfilled as $user): ?>
             <tr>
-                <td colspan="8" class="text-center">All users have fulfilled their monthly duty requirements.</td>
+                <td><?php echo htmlspecialchars($user['NAME']); ?></td>
+                <td><?php echo htmlspecialchars($user['ID_NUMBER']); ?></td>
+                <td><?php echo htmlspecialchars($user['TITLE']); ?></td>
+                <td><?php echo number_format($user['total_hours'], 2); ?></td>
+                <td><?php echo htmlspecialchars($user['required_hours']); ?></td>
+                <td class="text-danger fw-bold"><?php echo number_format($user['remaining_hours'], 2); ?></td>
             </tr>
-        <?php endif; ?>
+        <?php endforeach; ?>
     </tbody>
 </table>
 

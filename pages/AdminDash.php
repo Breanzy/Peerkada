@@ -192,7 +192,7 @@ if ($_SESSION['role'] != 'admin') {
                         <div class="card-body">
                             <?php
                             // Fetch users
-                            $query = "SELECT * FROM members_profile WHERE ROLE = 'user'";
+                            $query = "SELECT * FROM members_profile";
                             require_once '../components/TableUsers.php';
                             ?>
                         </div>
