@@ -1,5 +1,6 @@
 <?php
 require_once '../config.php';
+require_once 'UserAssetHandler.php';
 session_start();
 
 // Check if user is admin
@@ -89,10 +90,13 @@ try {
         'userId' => htmlspecialchars($_POST['userId'])
     ]);
 
-    // If ID number was changed, update attendance records
+    // Initialize the asset handler
+    $assetHandler = new UserAssetHandler();
+    $assetResults = ['updated' => false];
+
+    // If ID number was changed, update assets and attendance records
     if ($idNumberChanged && $result) {
         // Update the attendance records with the new ID number
-        // Assuming there's an ID_NUMBER field in the attendance table
         $attendanceQuery = "UPDATE table_attendance SET 
                             STUDENTID = :newIdNumber 
                             WHERE STUDENTID = :oldIdNumber";
@@ -108,12 +112,21 @@ try {
             $pdo->rollBack();
             throw new Exception("Failed to update attendance records");
         }
+
+        // Update user's assets (profile picture and QR code)
+        $assetResults = $assetHandler->updateUserAssets(
+            $currentIdNumber,
+            htmlspecialchars($_POST['idNumber'])
+        );
     }
 
     // Commit the transaction if everything succeeded
     $pdo->commit();
 
-    echo json_encode(['success' => true]);
+    echo json_encode([
+        'success' => true,
+        'assetResults' => $assetResults
+    ]);
 } catch (Exception $e) {
     // Roll back transaction on error
     if ($pdo->inTransaction()) {

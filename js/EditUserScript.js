@@ -150,19 +150,24 @@ class UserEditModal {
                     // Hide modal
                     this.hideModal();
 
+                    // Check if there were asset updates
+                    let message = "User information updated successfully!";
+                    if (result.assetResults && result.assetResults.updated) {
+                        // Log the asset updates but don't confuse the user with too much detail
+                        console.log("Asset updates:", result.assetResults);
+                        message =
+                            "User information and associated files updated successfully!";
+                    }
+
                     // Show success message
-                    showSweetAlert(
-                        "success",
-                        "User information updated successfully!",
-                        {
-                            timer: 2000,
-                            timerProgressBar: true,
-                            willClose: () => {
-                                // Reload page to refresh data
-                                window.location.reload();
-                            },
-                        }
-                    );
+                    showSweetAlert("success", message, {
+                        timer: 2000,
+                        timerProgressBar: true,
+                        willClose: () => {
+                            // Reload page to refresh data
+                            window.location.reload();
+                        },
+                    });
                 } else {
                     showSweetAlert(
                         "error",
@@ -175,7 +180,6 @@ class UserEditModal {
                 console.error("AJAX Error:", error);
             });
     }
-
     objectToFormData(obj) {
         return Object.keys(obj)
             .map(

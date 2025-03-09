@@ -15,6 +15,7 @@ if (!isset($_POST['userId'])) {
 }
 
 require_once '../config.php';
+require_once 'UserAssetHandler.php';
 
 try {
     // Start transaction
@@ -22,6 +23,9 @@ try {
 
     // Get the user ID
     $userId = $_POST['userId'];
+
+    // Initialize the asset handler
+    $assetHandler = new UserAssetHandler();
 
     // Delete associated records first (if any)
     // For example, if you have attendance records linked to this user:
@@ -33,8 +37,15 @@ try {
     $result = $stmtUser->execute([$userId]);
 
     if ($result) {
+        // Delete user's assets (profile picture and QR code)
+        $assetResult = $assetHandler->deleteUserAssets($userId);
+
         $pdo->commit();
-        echo json_encode(['success' => true, 'message' => 'User deleted successfully']);
+        echo json_encode([
+            'success' => true,
+            'message' => 'User deleted successfully',
+            'assetResults' => $assetResult
+        ]);
     } else {
         $pdo->rollBack();
         echo json_encode(['success' => false, 'message' => 'Failed to delete user']);
