@@ -32,8 +32,8 @@
                     <td>
                         <?php echo htmlspecialchars($user['NAME']); ?>
                     </td>
+                    <td><?php echo htmlspecialchars($user['ID_NUMBER']); ?></td>
                     <!-- These cells must exist for every row regardless of role -->
-                    <td><?php echo ($user['ROLE'] == 'user') ? htmlspecialchars($user['ID_NUMBER']) : ''; ?></td>
                     <td><?php echo ($user['ROLE'] == 'user') ? htmlspecialchars($user['TITLE']) : ''; ?></td>
                     <td><?php echo ($user['ROLE'] == 'user') ? htmlspecialchars($user['COLLEGE']) : ''; ?></td>
                     <td><?php echo ($user['ROLE'] == 'user') ? htmlspecialchars($user['SCHOOL_YR']) : ''; ?></td>
@@ -216,40 +216,40 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                $.ajax({
-                    url: '../controllers/DeleteUser.php',
-                    method: 'POST',
-                    data: {
-                        userId: userId
-                    },
+                    $.ajax({
+                        url: '../controllers/DeleteUser.php',
+                        method: 'POST',
+                        data: {
+                            userId: userId
+                        },
 
-                    success: function(response) {
-                        try {
-                            const result = JSON.parse(response);
-                            if (result.success) {
+                        success: function(response) {
+                            try {
+                                const result = JSON.parse(response);
+                                if (result.success) {
                                     // Use SweetAlert instead of alert
                                     showSweetAlert('success', 'User deleted successfully!');
 
-                                // Use $row instead of row here
-                                $row.fadeOut(400, function() {
-                                    // Get the DataTable instance
-                                    table.row($row).remove().draw();
-                                });
-                            } else {
+                                    // Use $row instead of row here
+                                    $row.fadeOut(400, function() {
+                                        // Get the DataTable instance
+                                        table.row($row).remove().draw();
+                                    });
+                                } else {
                                     showSweetAlert('error', 'Error deleting user: ' + result.message);
-                            }
-                        } catch (e) {
+                                }
+                            } catch (e) {
                                 showSweetAlert('error', 'Error processing server response');
-                            console.error('Response:', response);
-                            console.error('Error:', e);
-                        }
-                    },
-                    error: function(xhr, status, error) {
+                                console.error('Response:', response);
+                                console.error('Error:', e);
+                            }
+                        },
+                        error: function(xhr, status, error) {
                             showSweetAlert('error', 'Error deleting user: ' + error);
-                        console.error('AJAX Error:', status, error);
-                    }
-                });
-            }
+                            console.error('AJAX Error:', status, error);
+                        }
+                    });
+                }
             });
         });
 
