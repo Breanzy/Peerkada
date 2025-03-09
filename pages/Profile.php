@@ -46,9 +46,6 @@ if ($row) {
         case 'Senior':
             $DutyHour = 10;
             break;
-        case 'LAV':
-            $DutyHour = 20;
-            break;
         default:
             $DutyHour = 0;
             break;

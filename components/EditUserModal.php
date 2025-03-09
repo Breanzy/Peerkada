@@ -26,7 +26,6 @@
                                 <option value="Assistant">Assistant</option>
                                 <option value="Junior">Junior</option>
                                 <option value="Senior">Senior</option>
-                                <option value="LAV">LAV</option>
                             </select>
                         </div>
                         <div class="col-md-4">

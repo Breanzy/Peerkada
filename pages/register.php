@@ -44,7 +44,6 @@
                                                             <option value="Assistant">SPF Assistant</option>
                                                             <option value="Junior">SPF Junior</option>
                                                             <option value="Senior">SPF Senior</option>
-                                                            <option value="LAV">LAV Associate</option>
                                                         </select>
                                                         <small class="help-block form-text">Select Org Title</small>
                                                     </div>
